@@ -1,0 +1,6 @@
+order,script,status,start,end
+1,R/pipeline_reproducible/02_import_validate.R,completed,2026-07-13T16:40:24.163001Z,2026-07-13T16:40:27.938564Z
+2,R/pipeline_reproducible/03_build_modules.R,completed,2026-07-13T16:40:27.940361Z,2026-07-13T16:40:44.218592Z
+3,R/pipeline_reproducible/04_join_final.R,completed,2026-07-13T16:40:44.220696Z,2026-07-13T16:40:46.540635Z
+4,R/pipeline_reproducible/05_validate.R,completed,2026-07-13T16:40:46.547206Z,2026-07-13T16:40:47.479811Z
+5,R/pipeline_reproducible/06_certify.R,completed,2026-07-13T16:40:47.481297Z,2026-07-13T16:40:47.578778Z

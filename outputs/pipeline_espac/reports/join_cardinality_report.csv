@@ -1,0 +1,16 @@
+left_object,right_object,key,join_type,left_rows,left_unique,right_rows,right_unique,result_rows,result_unique,expansion,cardinality
+base_master,sunac,Identificador,left_join,42444,42444,42444,42444,42444,42444,0,uno a uno
+base_master,adnac,Identificador,left_join,42444,42444,4426,4426,42444,42444,0,uno a uno
+base_master,cpnac,Identificador,left_join,42444,42444,9542,9542,42444,42444,0,uno a uno
+base_master,ctnac,Identificador,left_join,42444,42444,9483,9483,42444,42444,0,uno a uno
+base_master,fpnac,Identificador,left_join,42444,42444,322,322,42444,42444,0,uno a uno
+base_master,ftnac,Identificador,left_join,42444,42444,53,53,42444,42444,0,uno a uno
+base_master,pcnac,Identificador,left_join,42444,42444,11621,11621,42444,42444,0,uno a uno
+base_master,acnac,Identificador,left_join,42444,42444,42444,42444,42444,42444,0,uno a uno
+base_master,apnac,Identificador,left_join,42444,42444,42444,42444,42444,42444,0,uno a uno
+base_master,glnac,Identificador,left_join,42444,42444,14476,14476,42444,42444,0,uno a uno
+base_master,gpnac,Identificador,left_join,42444,42444,6543,6543,42444,42444,0,uno a uno
+base_master,gvnac,Identificador,left_join,42444,42444,2966,2966,42444,42444,0,uno a uno
+base_master,oenac,Identificador,left_join,42444,42444,6914,6914,42444,42444,0,uno a uno
+base_master,eunac,Identificador,left_join,42444,42444,30502,30502,42444,42444,0,uno a uno
+base_master,insumos,Identificador,left_join,42444,42444,42444,42444,42444,42444,0,uno a uno

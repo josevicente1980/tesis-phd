@@ -1,0 +1,49 @@
+# Archivos de R y RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Resultados generados por Quarto
+_book/
+_freeze/
+.quarto/
+*_cache/
+*_files/
+index_cache/
+
+# Datos originales y procesados
+data/raw/
+data/processed/
+data/external/
+
+# Resultados del pipeline
+outputs/pipeline_espac/intermediate/
+outputs/pipeline_espac/processed/
+outputs/pipeline_espac/reports/figures/
+outputs/figures/
+outputs/tables/
+
+# Archivos de seguimiento del agente
+agent/logs/
+agent/reports/
+
+# Documentos privados de revisión
+docs/revisiones/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+~$*
+.DS_Store
+Thumbs.db
+
+# Credenciales y variables privadas
+.env
+.Renviron
+*.key
+*.pem
+
+# Configuración local de Claude Code
+.claude/settings.local.json

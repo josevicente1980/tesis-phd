@@ -1,0 +1,5 @@
+source_type,path,role
+manuales,docs/espac_2022/manuales,documentacion_oficial_ESPAC
+sintaxis_txt,docs/espac_2022/sintaxis_txt,documentacion_oficial_ESPAC
+raw_data,data/raw,datos_crudos_ESPAC
+researcher_input,docs/espac_2022/precios/Precio_Junio_25.xlsx,insumo_propio_investigador_no_documentacion_oficial

@@ -1,0 +1,513 @@
+Producto,Precio_kg,n_values,rule
+490,10.5,1,precio_unico
+abaca,5.9,1,precio_unico
+abacá,5.9,1,precio_unico
+aceite crudo de palma o aceite rojo,1.29706021037332,1,precio_unico
+aceite de palma,1.28731857142857,1,precio_unico
+aceite de palmiste,1.62050520833333,1,precio_unico
+aceite vegetal - cocinero,2.86374360220279,1,precio_unico
+aceite vegetal - favorita,3.12205655216946,1,precio_unico
+aceite vegetal - girasol,4.43765051724591,1,precio_unico
+acelga,0.2755775,1,precio_unico
+achillea,6.24,1,precio_unico
+achiote,0.715071507150715,1,precio_unico
+agapanthus,6.24,1,precio_unico
+aguacate,0.66006600660066,1,precio_unico
+aguacate fuerte,1.49249773683107,1,precio_unico
+aji,0.9,1,precio_unico
+ajo,0.605060506050605,1,precio_unico
+ajo bulbo seco,1.84188898672919,1,precio_unico
+ajonjoli,0.99009900990099,1,precio_unico
+alcachofa,3,1,precio_unico
+alfalfa,2.5,1,precio_unico
+algodon,0.66006600660066,1,precio_unico
+amaranto,3.30693,1,precio_unico
+amy n – gardenia,6.24,1,precio_unico
+anémona,6.24,1,precio_unico
+apio,6,1,precio_unico
+arandano,10.5,1,precio_unico
+arándano,10.5,1,precio_unico
+araza,0.16,1,precio_unico
+arrocillo,0.471666666666667,1,precio_unico
+arroz,0.35,1,precio_unico
+arroz (pilado),0.528052805280528,1,precio_unico
+arroz blanco 15% grano partido,0.432233986291509,1,precio_unico
+arroz cascara,0.605060506050605,1,precio_unico
+arroz cáscara,0.336841055651093,1,precio_unico
+arroz en cáscara grano corto,0.320078281666427,1,precio_unico
+arroz en cáscara grano largo,0.351067784544185,1,precio_unico
+arroz envejecido artificial,0.731705798059965,1,precio_unico
+arroz pilado envejecido artificial,0.814879681174089,1,precio_unico
+arroz pilado envejecido natural,0.923327759197324,1,precio_unico
+arroz pilado natural grano corto,0.648223062779423,1,precio_unico
+arroz pilado natural grano largo,0.738781509249466,1,precio_unico
+arveja seca,1.10486690384966,1,precio_unico
+arveja seca (grano seco),1.1,1,precio_unico
+"arveja seca (grano
+seco)",1.32275132275132,1,precio_unico
+arveja seca (vaina seca),0.962757554,1,precio_unico
+"arveja seca (vaina
+seca)",0.495049504950495,1,precio_unico
+arveja tierna (grano tierno),0.661386,1,precio_unico
+"arveja tierna (grano
+tierno)",0.605060506050605,1,precio_unico
+arveja tierna (vaina),1.32275132275132,1,precio_unico
+arveja tierna en vaina,0.869569854130592,1,precio_unico
+arveja tierna en vaina-quantum,1.15603870082909,1,precio_unico
+asno,1.11,1,precio_unico
+aster,4.44,1,precio_unico
+astromellas,4.75,1,precio_unico
+avena,1.0582176|1.10229276895944,2,conflicto_resuelto_con_precio_minimo
+avena forrajera,1.22,1,precio_unico
+avena hojuelas,0.980640446023511,1,precio_unico
+avestruces,16,1,precio_unico
+azúcar - contrato 11,0.414801336833933,1,precio_unico
+azúcar - contrato 5,0.537765099441621,1,precio_unico
+azúcar blanca,0.700370278172414,1,precio_unico
+babaco,0.561629685129685,1,precio_unico
+badea,0.47,1,precio_unico
+balanceado para camarón,0.89,1,precio_unico
+bambú o caña guadua,0.4,1,precio_unico
+banano - cavendish,0.934144977379465,1,precio_unico
+banano (guineo),0.221824321954641,1,precio_unico
+banano cavendish,0.320064482029598,1,precio_unico
+banano cavendish enano,1.6046002309587,1,precio_unico
+banano cavendish spot,1.10767438626101,1,precio_unico
+banano de exportacion,0.33125,1,precio_unico
+banano de exportación,0.33125,1,precio_unico
+"banano de
+exportacion",0.33125,1,precio_unico
+barbecho o rastrojo,0.1,1,precio_unico
+borojo,4.5,1,precio_unico
+bosques artificiales,4,1,precio_unico
+bovino a la canal,3.36317592592593,1,precio_unico
+bovino en pie - toretes,1.78858333333333,1,precio_unico
+bovino en pie - toros,1.77896666666667,1,precio_unico
+bovino en pie - vacas,1.45223333333333,1,precio_unico
+bovino en pie - vaconas,1.54593333333333,1,precio_unico
+brachiaria,2.5,1,precio_unico
+brocoli,0.665,1,precio_unico
+brócoli,1.19912937885134,1,precio_unico
+caballar,4.41,1,precio_unico
+cabuya,0.77007700770077,1,precio_unico
+cacao,2.37391892646705,1,precio_unico
+cacao (almendra seca),1.614663688,1,precio_unico
+cacao ccn51 almendra seca,1.8548736727087,1,precio_unico
+cacao ccn51 o ramilla (almendra fresca),1.9739,1,precio_unico
+cacao ccn51 o ramilla (almendra seca),2.0662,1,precio_unico
+"cacao ccn51 o
+ramilla(almendra
+fresca o baba)",1.54323709412864,1,precio_unico
+"cacao ccn51 o
+ramilla(almendra
+seca)",2.07,1,precio_unico
+cacao fino de aroma (almendra fresca),0.7084,1,precio_unico
+cacao fino de aroma (almendra seca),2.0981,1,precio_unico
+cacao fino de aroma almendra seca,1.90444605891674,1,precio_unico
+"cacao fino de
+aroma(almendra
+fresca o baba)",3.58251468279864,1,precio_unico
+"cacao fino de
+aroma(almendra
+seca)",4.18878639834918,1,precio_unico
+café  arabigo (cereza fresca o madura),0.67,1,precio_unico
+café (grano oro),0.5738,1,precio_unico
+café arábiga,5.63141666666667,1,precio_unico
+café arabigo (cereza o bola seca),5.58,1,precio_unico
+café arabigo (grano oro),1.9731349,1,precio_unico
+café arábigo (grano oro),4.56,1,precio_unico
+café arabigo (pergamino oreado),3.468308184,1,precio_unico
+café arabigo (pergamino seco),3.45,1,precio_unico
+café arábigo grano oro,4.39039824854376,1,precio_unico
+"cafe arabigo
+(cereza fresca o
+madura)",3.96825396825397,1,precio_unico
+"cafe arabigo
+(cereza o bola
+seca)",1.21252204585538,1,precio_unico
+café robusta,2.267537875,1,precio_unico
+café robusta (cereza fresca o madura),0.79,1,precio_unico
+café robusta (cereza o bola seca),1.2813,1,precio_unico
+café robusta (grano oro),1.286616232,1,precio_unico
+café robusta cereza,0.480180169210366,1,precio_unico
+"cafe robusta
+(cereza fresca o
+madura)",1.66116611661166,1,precio_unico
+"cafe robusta
+(cereza o bola
+seca)",1.66116611661166,1,precio_unico
+caimito,6,1,precio_unico
+camote,0.385038503850385,1,precio_unico
+caña de azúcar / azúcar,0.0304,1,precio_unico
+caña de azucar / otros usos,1.68102275,1,precio_unico
+caña de azúcar / otros usos,0.205,1,precio_unico
+"caña de azucar /
+azucar",0.121012101210121,1,precio_unico
+"caña de azucar /
+otros usos",1.67766776677668,1,precio_unico
+caña de azucar /biocombustible,0.205,1,precio_unico
+caña de azúcar /biocombustible,0.205,1,precio_unico
+caña de azúcar para azúcar,0.341904761904762,1,precio_unico
+caña de azúcar tallo fresco,2.50005419979551,1,precio_unico
+caña forrajera,0.03505,1,precio_unico
+caprino,6.7796,1,precio_unico
+capuli,2.38,1,precio_unico
+cartucho - cala,6.24,1,precio_unico
+caucho,0.55,1,precio_unico
+cebada,1.04510451045105,1,precio_unico
+cebada en grano consumo humano,0.512354166666667,1,precio_unico
+cebada forrajera,0.8267325,1,precio_unico
+cebolla blanca,0.165016501650165,1,precio_unico
+cebolla blanca en rama,0.772827937167,1,precio_unico
+cebolla colorada,0.525280253025302,1,precio_unico
+cebolla colorada nacional húmeda,0.415543642121767,1,precio_unico
+cebolla colorada nacional seca,0.467980799592564,1,precio_unico
+cebolla colorada peruana seca,0.524824079539989,1,precio_unico
+cebolla colorada seca y limpia de primera,0.367305075038667,1,precio_unico
+cebolla perla,0.33003300330033,1,precio_unico
+cebolla perla nacional seca,0.553159571909572,1,precio_unico
+cebolla perla roja,0.5291088,1,precio_unico
+cebolla perla seca y limpia de primera,0.438441666666667,1,precio_unico
+centeno,0.275027502750275,1,precio_unico
+centeno forrajero,0.2755775,1,precio_unico
+cerdo en pie - descarte,1.9416,1,precio_unico
+cerdo en pie - engorde,2.39403333333333,1,precio_unico
+cerdo en pie para faenamiento,1.97334785142131,1,precio_unico
+cereza,8,1,precio_unico
+chirimoya,0.561056105610561,1,precio_unico
+chocho,2.64861111111111,1,precio_unico
+cilantro,0.314945714285714,1,precio_unico
+ciruelo,0.165016501650165,1,precio_unico
+claudia,0.55,1,precio_unico
+clavel,5.47,1,precio_unico
+coco (cocotero),0.82,1,precio_unico
+coco manila,0.31,1,precio_unico
+coco seco,0.82,1,precio_unico
+codornices,3.38,1,precio_unico
+col,0.208006088182651,1,precio_unico
+coliflor,0.08,1,precio_unico
+craspedias,6.24,1,precio_unico
+crisantemos – pompones,4.78,1,precio_unico
+dalis,7.08,1,precio_unico
+delphinium  (lackpur),6.24,1,precio_unico
+delphinium (lackpur),6.24,1,precio_unico
+durazno (melocoton),0.9369635,1,precio_unico
+"durazno
+(melocoton)",0.935093509350935,1,precio_unico
+engorde para cerdos,0.647083333333333,1,precio_unico
+eryngium,6.24,1,precio_unico
+esparrago,3,1,precio_unico
+espinaca,0.80168,1,precio_unico
+fideo lazo chico,1.27462708161721,1,precio_unico
+final - engorde para aves-broiler,0.748333333333333,1,precio_unico
+fréjol amarillo seco,1.75998192087967,1,precio_unico
+fréjol en vaina - gema,0.912176112001693,1,precio_unico
+fréjol rojo tierno en vaina,0.461301451392887,1,precio_unico
+frejol seco (grano seco),1.1574255,1,precio_unico
+"frejol seco (grano
+seco)",2.42504409171076,1,precio_unico
+fréjol seco (no seleccionado),1.06916666666667,1,precio_unico
+frejol seco (vaina seca),2.425082,1,precio_unico
+"frejol seco (vaina
+seca)",1.43300587311946,1,precio_unico
+fréjol seco bayo bolon,1.73749038461539,1,precio_unico
+fréjol seco canario,1.81000854994365,1,precio_unico
+fréjol seco panamito,1.29657436367052,1,precio_unico
+frejol tierno (grano tierno),1.1574255,1,precio_unico
+"frejol tierno (grano
+tierno)",1.15511551155116,1,precio_unico
+frejol tierno (vaina),2.42504409171076,1,precio_unico
+fréjol tierno en vaina blanco leche,0.553333333333333,1,precio_unico
+fréjol tierno en vaina canario,1.00385245824135,1,precio_unico
+fréjol tierno en vaina cargabello,0.654461416757845,1,precio_unico
+frejol tierno en vaina centenario,0.476071097883598,1,precio_unico
+frutilla,1.46836808781276,1,precio_unico
+frutillas o fresas,1.763696,1,precio_unico
+"frutillas o
+fresas",2.75578052522972,1,precio_unico
+gallinas ponedoras,1.8596,1,precio_unico
+gallinas reproductoras,1.8596,1,precio_unico
+gallos y gallinas,1.8596,1,precio_unico
+gerberas,6.58,1,precio_unico
+girasoles,6.24,1,precio_unico
+gladiolos,6.24,1,precio_unico
+granadilla,1.36614027407778,1,precio_unico
+guaba,1,1,precio_unico
+guanabana,1.00714285714286,1,precio_unico
+guayaba,0.1,1,precio_unico
+gysophilla,6.65,1,precio_unico
+haba seca,1.77413522588523,1,precio_unico
+haba seca (grano seco),1.7741,1,precio_unico
+"haba seca (grano
+seco)",2.42504409171076,1,precio_unico
+haba seca (vaina seca),1.1574255,1,precio_unico
+"haba seca (vaina
+seca)",3.80297712481702,1,precio_unico
+haba tierna (grano tierno),1.1243562,1,precio_unico
+"haba tierna (grano
+tierno)",1.12211221122112,1,precio_unico
+haba tierna (vaina),2.42504409171076,1,precio_unico
+haba tierna en vaina,0.317911573158311,1,precio_unico
+harina de pescado 50 % de proteína,0.94,1,precio_unico
+harina de pescado 58% de proteína,1.34,1,precio_unico
+harina de pescado 65 % de proteína,1.67333333333333,1,precio_unico
+harina de trigo - panadería,0.817272727272727,1,precio_unico
+harina de trigo - repostería,0.8415,1,precio_unico
+hidrrangia hortencia,6.24,1,precio_unico
+higo,4.6,1,precio_unico
+higuerilla,0.8,1,precio_unico
+huerto frutal,3.55,1,precio_unico
+huerto horticola,0.49,1,precio_unico
+huevo grande,1.63,1,precio_unico
+huevo mediano,1.5,1,precio_unico
+huevo pequeño,1.3,1,precio_unico
+huevos grande,0.10151,1,precio_unico
+huevos mediano,0.0977066666666667,1,precio_unico
+huevos pequeños,0.09299,1,precio_unico
+hypericum,6.24,1,precio_unico
+iris - lirios,6.23,1,precio_unico
+jamaica,1.653465,1,precio_unico
+janeiro,2,1,precio_unico
+jengibre,0.661386,1,precio_unico
+kikuyo,0.09,1,precio_unico
+leche,0.4413,1,precio_unico
+leche cruda,0.43,1,precio_unico
+leche pasteurizada empaque en funda plástica - entera homogeneizada,1,1,precio_unico
+leche uht - entera,1,1,precio_unico
+lechero para bovinos,0.505,1,precio_unico
+lechuga,0.238037637282203,1,precio_unico
+lenteja,1.77025752656434,1,precio_unico
+lenteja forrajera,1.779569264,1,precio_unico
+lilium,5.65,1,precio_unico
+lima,1,1,precio_unico
+limon,2.24867724867725,1,precio_unico
+limón,0.690241304728861,1,precio_unico
+limón  (referencia limón sutil),0.777,1,precio_unico
+limón  sutil,0.777,1,precio_unico
+limón sutil,0.796753886352845,1,precio_unico
+limonium - statice,6.24,1,precio_unico
+linaza,4.40924,1,precio_unico
+lisianthus,6.24,1,precio_unico
+lyatris,6.24,1,precio_unico
+macadamia,4.92,1,precio_unico
+maíz amarillo 15% embolsado,0.299241291883117,1,precio_unico
+maíz amarillo choclo,0.35,1,precio_unico
+maíz amarillo no. 2,0.327651277255639,1,precio_unico
+maíz duro amarillo (seco y limpio),0.471310626526251,1,precio_unico
+maíz duro amarillo (sucio y húmedo),0.392807592501132,1,precio_unico
+maíz duro choclo,0.285123677248677,1,precio_unico
+maiz duro choclo (choclo),1.3448182,1,precio_unico
+maíz duro choclo (choclo),1.34,1,precio_unico
+"maiz duro choclo
+(choclo)",0.726072607260726,1,precio_unico
+maíz duro seco,0.412072433851204,1,precio_unico
+maiz duro seco (grano seco),1.3448182,1,precio_unico
+maíz duro seco (grano seco),0.412484402,1,precio_unico
+maiz duro seco (mazorca),1.7196036,1,precio_unico
+"maiz duro seco
+(grano seco)",1.34213421342134,1,precio_unico
+"maiz duro seco
+(mazorca)",1.69416941694169,1,precio_unico
+maiz forrajero,1.33,1,precio_unico
+maíz suave choclo,0.442972924537528,1,precio_unico
+maiz suave choclo (choclo),1.322772,1,precio_unico
+maíz suave choclo (choclo),0.4268946,1,precio_unico
+"maiz suave choclo
+(choclo)",1.32277465211027,1,precio_unico
+maíz suave seco  blanco - mote,1.3907933562748,1,precio_unico
+maíz suave seco (blanco-semilla),5.72,1,precio_unico
+maiz suave seco (grano seco),3.30693,1,precio_unico
+maíz suave seco (grano seco),1.5055,1,precio_unico
+maiz suave seco (mazorca),1.1243562,1,precio_unico
+maíz suave seco amarillo - tostado,1.65378769784867,1,precio_unico
+"maiz suave seco
+(grano seco)",3.30693663027567,1,precio_unico
+"maiz suave seco
+(mazorca)",1.37789026261486,1,precio_unico
+malanga,1.0471945,1,precio_unico
+mamey,2.14,1,precio_unico
+mandarina,0.572057205720572,1,precio_unico
+mandarina (costa),0.5379,1,precio_unico
+mandarina (sierra),0.7387,1,precio_unico
+mandarina de la costa,0.538479640336023,1,precio_unico
+mandarina de la sierra,0.743328277491739,1,precio_unico
+mango,3,1,precio_unico
+mango de chupar,0.645348484848485,1,precio_unico
+mani,1.12211221122112,1,precio_unico
+maní,1.925,1,precio_unico
+maní en grano,1.90541272978229,1,precio_unico
+maní en vaina,1.4465,1,precio_unico
+mantequilla,1.6,1,precio_unico
+manzana,1.12211221122112,1,precio_unico
+manzana importada,1.36333056989307,1,precio_unico
+maracuya,2.615,1,precio_unico
+maracuyá,2.62,1,precio_unico
+marandu,2.62,1,precio_unico
+marañon,6.724091,1,precio_unico
+marañón,6.72,1,precio_unico
+mashua,0.734873333333333,1,precio_unico
+melaza,0.35,1,precio_unico
+melloco,0.275027502750275,1,precio_unico
+melloco amarillo,0.850608516483517,1,precio_unico
+melloco blanco,0.530222294540476,1,precio_unico
+melloco caramelo,0.273144945963128,1,precio_unico
+melloco rojo,0.438246054871055,1,precio_unico
+melon,1.135,1,precio_unico
+melón,0.67211264050415,1,precio_unico
+menbrillo,1.6,1,precio_unico
+merkeron,3.07,1,precio_unico
+montes y bosques naturales,3,1,precio_unico
+mora,1.22314530264525,1,precio_unico
+mora de castilla,1.69703208299637,1,precio_unico
+mular,7.77,1,precio_unico
+nabo,0.169586153846154,1,precio_unico
+naranja,0.333307386505339,1,precio_unico
+naranjilla,0.715071507150715,1,precio_unico
+naranjilla de jugo,1.30101693214193,1,precio_unico
+naranjilla hibrida,0.9654,1,precio_unico
+naranjilla híbrida,0.847381910069006,1,precio_unico
+naranjilla roja palora,0.864026880526881,1,precio_unico
+nispero,3.30693,1,precio_unico
+nuez ó almendra de palmiste,0.237565476190476,1,precio_unico
+oca,0.605060506050605,1,precio_unico
+orito,0.225522552255225,1,precio_unico
+orquídeas,18.12,1,precio_unico
+otras flores permanentes,7.211,1,precio_unico
+otras flores transitorias,6.01376483794466,1,precio_unico
+otros bananos,0.088008800880088,1,precio_unico
+ovino a la canal,6.77966666666667,1,precio_unico
+palma africana,1.51815181518152,1,precio_unico
+palma de aceite,0.243727608005218,1,precio_unico
+palma de aceite - guinensis,0.244957560717137,1,precio_unico
+palma de aceite - híbrida,0.223611498467579,1,precio_unico
+palmito,0.493463158994523,1,precio_unico
+panela en bloque,0.618876404763211,1,precio_unico
+panela granulada,0.807504355013696,1,precio_unico
+papa,0.572057205720572,1,precio_unico
+papa bolona,0.607090909090909,1,precio_unico
+papa capiro,0.381008276643991,1,precio_unico
+papa chaucha,0.53934476981352,1,precio_unico
+"papa china, pelma",0.638063806380638,1,precio_unico
+papa fripapa,0.392536928188091,1,precio_unico
+papa gabriela,0.397696381396381,1,precio_unico
+papa leona blanca o cecilia,0.469118836410503,1,precio_unico
+papa nabo,0.375005862,1,precio_unico
+papa puzda,0.305842093092093,1,precio_unico
+papa rosita,0.275916800791801,1,precio_unico
+papa semi uvilla,0.271279276279276,1,precio_unico
+papa súper chola,0.44271985479798,1,precio_unico
+papa superchola,0.458850356612012,1,precio_unico
+papa suprema,0.355208333333333,1,precio_unico
+papa única,0.392215592886645,1,precio_unico
+papa uvilla o bolona,0.40336531986532,1,precio_unico
+papaya,0.605060506050605,1,precio_unico
+papaya camila,0.571689028143574,1,precio_unico
+papaya hawaiana,0.443936682004864,1,precio_unico
+papaya nacional,0.46681545561718,1,precio_unico
+pasto azul,0.09,1,precio_unico
+pasto elefante,0.09,1,precio_unico
+pasto guinea,0.09,1,precio_unico
+pasto miel (chilena),0.09,1,precio_unico
+pasto mixto,0.09,1,precio_unico
+pastos naturales,0.09,1,precio_unico
+patos,4.85,1,precio_unico
+pavos,5.22,1,precio_unico
+pepinillo,0.572057205720572,1,precio_unico
+pepinillo pepino,0.419996561790186,1,precio_unico
+pepino dulce,0.171428571428571,1,precio_unico
+pera,1,1,precio_unico
+perejil,2.5,1,precio_unico
+pimienta negra (grano fresco),10,1,precio_unico
+pimienta negra (grano seco),10,1,precio_unico
+pimiento,0.599503707142177,1,precio_unico
+piña,0.463772893772894,1,precio_unico
+piña md-2,0.463772893772894,1,precio_unico
+piña nacional,0.463772893772894,1,precio_unico
+pitahaya,3.31284716665747,1,precio_unico
+platano,0.792079207920792,1,precio_unico
+plátano,0.0869,1,precio_unico
+plátano 2,0.29,1,precio_unico
+plátano barraganete,3.78465901760603,1,precio_unico
+plátano barraganete de exportación,0.297524372609334,1,precio_unico
+plátano barraganete maduro,0.386317811697682,1,precio_unico
+plátano barraganete verde,0.357768094265285,1,precio_unico
+plátano dominico,2.6609320542402,1,precio_unico
+plátano dominico maduro,0.306893959575778,1,precio_unico
+plátano dominico verde,0.296415372682873,1,precio_unico
+plátano verde,1.20920463490168,1,precio_unico
+pollitos,1.8596,1,precio_unico
+pollo en pie,1.83726224556874,1,precio_unico
+pollo faenado con vísceras,2.42778799522451,1,precio_unico
+pollo faenado sin vísceras,2.49558935144337,1,precio_unico
+pollos y pollas,1.8596,1,precio_unico
+porcino a la canal,3.97460185185185,1,precio_unico
+postura para aves,0.688333333333333,1,precio_unico
+queso fresco mesa,4.59742753650689,1,precio_unico
+queso mozzarella,7.03564544962088,1,precio_unico
+quinua,1.48663025727465,1,precio_unico
+rabano,2.5,1,precio_unico
+rábano,0.129683529411765,1,precio_unico
+raigras,3.30693,1,precio_unico
+ranunculos,0.881848,1,precio_unico
+ranúnculos,0.881848,1,precio_unico
+remolacha,0.290361005076795,1,precio_unico
+romanesco,2.5,1,precio_unico
+rosa,5.92,1,precio_unico
+sabila,0.69,1,precio_unico
+saboya,1.3,1,precio_unico
+sacha inchi,0.2,1,precio_unico
+sandia,1.5,1,precio_unico
+sandía nacional,0.386091811098954,1,precio_unico
+sandía peruana,0.366644902319902,1,precio_unico
+scabiosas,6.24,1,precio_unico
+setaria espléndida,0.13,1,precio_unico
+snapdragon,6.24,1,precio_unico
+solidago,6.24,1,precio_unico
+sorgo,1.15,1,precio_unico
+soya,0.5513918275,1,precio_unico
+suquini (zuchini),0.605665503025303,1,precio_unico
+tabaco,15.35,1,precio_unico
+tamarindo,2.89,1,precio_unico
+taxo,5,1,precio_unico
+té,15.43234,1,precio_unico
+tomate de arbol,0.715071507150715,1,precio_unico
+tomate de árbol,0.997892672149665,1,precio_unico
+tomate riñon,0.605060506050605,1,precio_unico
+tomate riñón,0.444073457142857,1,precio_unico
+tomate riñón a campo abierto,0.386679584017515,1,precio_unico
+tomate riñón de invernadero,0.543433144908778,1,precio_unico
+tomatillo,0.9,1,precio_unico
+toro en pie - descarte,1.67708333333333,1,precio_unico
+toronja,2.9100984,1,precio_unico
+torta de soya,0.564200443818162,1,precio_unico
+torta palmiste,0.285363095238095,1,precio_unico
+trachelium,6.24,1,precio_unico
+trebol blanco,0.2645544,1,precio_unico
+trebol rojo,0.1,1,precio_unico
+trigo,0.661375661375661,1,precio_unico
+trigo en grano,0.419349952415211,1,precio_unico
+trigo importado,0.509090909090909,1,precio_unico
+trigo nacional,0.522863636363636,1,precio_unico
+tuna,1.10231,1,precio_unico
+uva (vid),1.8194,1,precio_unico
+uva negra,1.87108551432464,1,precio_unico
+uva rosada-chile,2.54534935652583,1,precio_unico
+uva rosada - perú,1.89965188794434,1,precio_unico
+uvilla,0.572057205720572,1,precio_unico
+vainita,1.322772,1,precio_unico
+veronica,7,1,precio_unico
+verónica,7,1,precio_unico
+vicia forrajera,2.11,1,precio_unico
+viveros de permanentes,5,1,precio_unico
+viveros transitorios,3,1,precio_unico
+yaragua,0.8,1,precio_unico
+yogurt,1.5,1,precio_unico
+yuca,0.463893215632105,1,precio_unico
+yuca amarga,0.275974274087024,1,precio_unico
+yuca bolona blanca,0.338845052689671,1,precio_unico
+zambo,1.375,1,precio_unico
+zanahoria amarilla,0.300304313707299,1,precio_unico
+zanahoria blanca,0.385038503850385,1,precio_unico
+zapallo,0.247666666666667,1,precio_unico
+zapallo (calabaza),0.495049504950495,1,precio_unico
+zapote,1.49504950495049,1,precio_unico

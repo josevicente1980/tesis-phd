@@ -1,0 +1,35 @@
+name: Jose Research Agent
+
+version: 0.1.0
+
+status: development
+
+coordinator:
+  enabled: true
+  role: "Central Coordinator"
+
+profiles:
+
+  scientific_editor:
+    enabled: true
+
+  econometrician:
+    enabled: true
+
+  r_developer:
+    enabled: true
+
+  quarto_expert:
+    enabled: true
+
+  bibliography_expert:
+    enabled: true
+
+memory:
+  enabled: true
+
+reports:
+  enabled: true
+
+logs:
+  enabled: true

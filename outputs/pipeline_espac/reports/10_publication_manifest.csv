@@ -1,0 +1,7 @@
+"elemento","ruta","estado"
+"pipeline_root","R/pipeline_reproducible","pipeline_reproducible"
+"raw_dir","data/raw","origen_datos_crudos"
+"official_prices","docs/espac_2022/precios/Precio_Junio_25.xlsx","precio_oficial_usado"
+"outputs_dir","outputs/pipeline_espac","salidas_tecnicas"
+"processed_candidate","outputs/pipeline_espac/processed/15_Base_final_diciembre.csv","base_candidata_no_publicada"
+"processed_official","data/processed/15_Base_final_diciembre.csv","base_oficial_no_modificada"

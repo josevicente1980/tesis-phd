@@ -1,0 +1,64 @@
+# Anexo II. Construcción de la base analítica de la investigación
+
+La base analítica se construyó a partir de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022 del Instituto Nacional de Estadística y Censos. La documentación oficial se conserva en `docs/espac_2022/manuales/` y `docs/espac_2022/sintaxis_txt/`, mientras que los módulos originales de trabajo se almacenan en `data/raw/`. Como insumo complementario de valorización, el pipeline identifica el archivo del investigador ubicado en `docs/espac_2022/precios/Precio_Junio_25.xlsx`; la propia configuración aclara que este archivo no constituye documentación oficial de la ESPAC.
+
+La unidad final es la unidad de producción agropecuaria (UPA), operacionalizada como una fila por UPA o cuestionario. La llave primaria es `Identificador`, preservada como texto y validada con una longitud de 17 dígitos. Esta definición orienta tanto la agregación de los módulos con registros de detalle como las reglas de unión y los controles de duplicación.
+
+## Secuencia metodológica
+
+La importación se realiza desde los archivos `.rds` de `data/raw/`. El pipeline genera un inventario de fuentes y comprueba la presencia y validez de `Identificador` antes de transformar los módulos. A continuación selecciona las variables necesarias para la base maestra y construye agregados específicos de uso del suelo y tenencia, cultivos, producción pecuaria, trabajo, características de la persona productora e insumos tecnológicos. Las etiquetas originales se convierten de forma controlada y las respuestas tecnológicas se distinguen como `SI`, `NO`, `NO_APLICA` o ausencia; por ello, la falta de información no se recodifica de manera general como cero.
+
+Los módulos de detalle se consolidan por `Identificador` antes de integrarse. En particular, las superficies de tenencia se suman dentro de cada UPA y la categoría predominante se determina por la mayor superficie agregada. Los componentes productivos físicos se convierten a valores económicos mediante reglas explícitas de unidad y precio, con registro separado de las imputaciones de precios. Una vez incorporados los módulos, los componentes de valor ausentes se tratan como cero para efectuar la suma de `produccion_ec`; esta regla acotada no equivale a reemplazar por cero los faltantes de las demás variables.
+
+La integración utiliza uniones izquierdas uno a uno respecto de la base maestra. Antes de cada unión se verifica la unicidad de ambas tablas y después se comprueba que no exista expansión de filas. Sobre la base consolidada se calculan `productividad_superficie` y `productividad_trabajo` únicamente cuando los denominadores respectivos son positivos. También se conserva `fact_exp_fin`, empleado cuando corresponden descripciones ponderadas; el capítulo metodológico establece que este factor no integra la especificación econométrica final reportada.
+
+Los filtros de completitud y comparabilidad requeridos por cada modelo se aplican después de generar la base analítica, de acuerdo con las variables de cada estimación. En particular, los estados tecnológicos `NO_APLICA` y ausentes no se confunden con respuestas negativas. Esta separación permite conservar en la base final la trazabilidad de los códigos y delimitar las muestras analíticas sin alterar el universo maestro durante la integración.
+
+\vspace{0.5cm}
+
+\begingroup
+\small
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{6pt}
+\begin{longtable}{@{}p{2.6cm}p{7.2cm}p{4.2cm}@{}}
+\caption{Etapas de construcción de la base analítica}\label{tbl-anexo-ii-etapas-base}\\
+\textbf{Etapa} & \textbf{Procedimiento general} & \textbf{Resultado} \\
+\hline
+\endfirsthead
+\multicolumn{3}{l}{\textit{Continuación de la tabla \ref{tbl-anexo-ii-etapas-base}}}\\
+\textbf{Etapa} & \textbf{Procedimiento general} & \textbf{Resultado} \\
+\hline
+\endhead
+1. Importación & Lectura de módulos ESPAC en formato \texttt{.rds}, inventario de fuentes y control de identificadores. & Objetos originales disponibles y auditados. \\
+2. Selección & Conservación de la llave y de las variables requeridas en cada módulo. & Base maestra y módulos de trabajo. \\
+3. Depuración & Conversión controlada de tipos y etiquetas; distinción de códigos tecnológicos y valores ausentes. & Variables con dominios verificables. \\
+4. Transformación & Agregación por UPA, clasificación de tenencia predominante y valorización de componentes productivos. & Módulos únicos por \texttt{Identificador}. \\
+5. Integración & Uniones izquierdas uno a uno de los módulos agregados con la base maestra. & Base consolidada sin expansión de filas. \\
+6. Validación & Comprobación de unicidad, cardinalidad, variables críticas, factor de expansión y fórmulas analíticas. & Base analítica final y reportes de auditoría. \\
+\hline
+\multicolumn{3}{p{14cm}}{\footnotesize Fuente: elaboración propia a partir de los scripts de \texttt{R/pipeline\_reproducible/} y del Capítulo V.}\\
+\end{longtable}
+\endgroup
+
+El flujo general puede representarse mediante el siguiente extracto abreviado. Su finalidad es ilustrativa.
+
+```{r}
+#| eval: FALSE
+#| echo: TRUE
+source(file.path("R", "paths.R"))
+source(path_pipeline_reproducible("00_config.R"))
+source(path_pipeline_reproducible("01_functions.R"))
+source(path_pipeline_reproducible("02_import_validate.R"))
+source(path_pipeline_reproducible("03_build_modules.R"))
+source(path_pipeline_reproducible("04_join_final.R"))
+source(path_pipeline_reproducible("05_validate.R"))
+source(path_pipeline_reproducible("06_certify.R"))
+```
+
+La ruta general de entrada es `data/raw/`; los productos intermedios y los reportes de control se dirigen a `outputs/pipeline_espac/`, y la base procesada vigente se ubica en `data/processed/base_final_v1.1.csv`. La configuración central y las funciones auxiliares están en `R/pipeline_reproducible/00_config.R` y `R/pipeline_reproducible/01_functions.R`; la secuencia de importación, construcción modular, integración, validación y certificación se distribuye en los scripts numerados de esa misma carpeta. El pipeline histórico de `R/pipeline_espac/` se conserva como respaldo y no constituye la referencia principal de esta descripción.
+
+## Disponibilidad y reproducibilidad
+
+Los scripts completos se encuentran en la carpeta `R/` y sus rutas fueron diseñadas para funcionar desde la raíz del proyecto. Los datos originales de `data/raw/` se mantienen separados de los datos procesados de `data/processed/` y de los productos de auditoría almacenados en `outputs/pipeline_espac/`. Esta organización permite auditar las fuentes, las agregaciones, la cardinalidad de las uniones, las imputaciones documentadas y las fórmulas de las variables finales.
+
+Los fragmentos incluidos en este anexo son únicamente ilustrativos; el procesamiento íntegro permanece en `R/pipeline_reproducible/`. Los procedimientos principales pueden reproducirse de manera explícita mediante el script orquestador correspondiente, pero no se ejecutan automáticamente al renderizar la tesis: `index.qmd` solo carga la configuración general y las funciones compartidas, y no invoca `R/pipeline_reproducible/run_pipeline.R`.

@@ -1,0 +1,100 @@
+# Anexo I. Construcción de la base de precios agropecuarios
+
+La incorporación de precios agropecuarios responde a la necesidad metodológica de disponer de referencias monetarias comparables para valorar productos registrados originalmente en unidades físicas. En esta investigación, dicha información cumple una función auxiliar: aporta insumos para la construcción documentada de precios de referencia, sin sustituir las decisiones de homologación, selección temporal y validación que requiere su eventual uso analítico.
+
+La fuente institucional corresponde al Sistema de Información Pública Agropecuaria (SIPA) del Ministerio de Agricultura y Ganadería del Ecuador. Los archivos publicados en formato Excel se identificaron en el portal institucional y se descargaron mediante un script reproducible de R. Todas las rutas locales se resolvieron de forma relativa desde la raíz del proyecto con `here::here()`, y los archivos originales se conservaron en `data/external/sipa/archivos_excel/`.
+
+\vspace{0.5cm}
+
+\begingroup
+\small
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{6pt}
+\begin{longtable}{@{}p{4.2cm}p{9.8cm}@{}}
+\caption{Trazabilidad de los archivos de precios agropecuarios}\label{tbl-anexo-i-trazabilidad-precios}\\
+\textbf{Elemento} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\multicolumn{2}{l}{\textit{Continuación de la tabla \ref{tbl-anexo-i-trazabilidad-precios}}}\\
+\textbf{Elemento} & \textbf{Descripción} \\
+\hline
+\endhead
+Fuente institucional & Sistema de Información Pública Agropecuaria. \\
+Entidad responsable & Ministerio de Agricultura y Ganadería del Ecuador. \\
+Formato original & Archivos Excel. \\
+Carpeta de almacenamiento & \texttt{data/external/sipa/archivos\_excel/}. \\
+Script reproducible & \texttt{R/03-descargar-precios-sipa.R}. \\
+Función dentro de la investigación & Fuente auxiliar para la construcción de precios agropecuarios. \\
+\hline
+\multicolumn{2}{p{14cm}}{\footnotesize Fuente: elaboración propia con base en la estructura reproducible del proyecto.}\\
+\end{longtable}
+\endgroup
+
+El siguiente fragmento ilustra la resolución de rutas, la identificación de enlaces y la descarga condicionada a la inexistencia previa del archivo. Se presenta únicamente con fines de trazabilidad.
+
+```{r}
+#| eval: FALSE
+#| echo: TRUE
+
+ruta_archivos_excel <- here::here(
+  "data",
+  "external",
+  "sipa",
+  "archivos_excel"
+)
+
+dir.create(
+  ruta_archivos_excel,
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+pagina <- rvest::read_html(
+  url_sipa
+)
+
+enlaces <- pagina |>
+  rvest::html_elements(
+    "a[href]"
+  ) |>
+  rvest::html_attr(
+    "href"
+  )
+
+enlaces <- enlaces[
+  grepl(
+    "\\.xlsx$",
+    enlaces,
+    ignore.case = TRUE
+  )
+]
+
+enlaces <- xml2::url_absolute(
+  enlaces,
+  url_sipa
+)
+
+for (enlace in enlaces) {
+
+  destino <- here::here(
+    "data",
+    "external",
+    "sipa",
+    "archivos_excel",
+    basename(enlace)
+  )
+
+  if (!file.exists(destino)) {
+
+    utils::download.file(
+      enlace,
+      destino,
+      mode = "wb"
+    )
+  }
+}
+```
+
+La descarga se mantiene separada de los cálculos principales de la tesis. Los archivos ubicados en `data/external/sipa/archivos_excel/` no intervienen automáticamente en el análisis, los capítulos o la renderización, y el script `R/03-descargar-precios-sipa.R` tampoco forma parte del ensamblaje ejecutable del documento. Cualquier procesamiento posterior debe iniciarse de manera explícita, controlada y documentada, con reglas verificables de selección, unidades y tratamiento de faltantes.
+
+El código íntegro, documentado y reproducible se conserva en la carpeta `R/` del proyecto; el fragmento anterior solo representa la etapa de descarga y no reemplaza el script fuente.

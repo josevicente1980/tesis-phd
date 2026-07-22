@@ -1,0 +1,149 @@
+* Encoding: UTF-8.
+* TÍTULO DE LA SINTAXIS:							   
+* TABLAS 11,61,64,67 AVES DE CAMPO
+* OPERACIÓN ESTADÍSTICA:													   
+* Encuesta de Superficie y Producción Agropecuaria Continua ESPAC_2022			   
+* UNIDAD TÉCNICA RESPONSABLE: 												   
+* Dirección de Estadísticas Agropecuarias y Ambientales					   
+* ENTIDAD EJECUTORA:														   
+* Instituto Nacional de Estadística y Censos (INEC)							   
+*==============================================================================*.
+* Fecha de elaboración:          Septiembre - 2014						   
+* Fecha última modificación:   Marzo- 2022			   
+*==============================================================================*.
+* Elaborado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias    						   
+* Aprobado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias  							       
+*==============================================================================*.
+* Revisado por:																   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias     						   
+*==============================================================================*.
+*Indicaciones.
+*1- Descargue la Bases de datos de aves de campo"acnac2022" de la página web: http://www.ecuadorencifras.gob.ec//estadisticas-agropecuarias-2/#
+
+*2- Guarde la base y copie el directorio en:.
+get file = 'C:\....\acnac2022.sav'.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 11                                    *
+*==============================================================================*.
+WEIGHT BY fact_exp_fin.
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_k1201 ac_k1202 ac_k1203 ac_k1204 
+    DISPLAY=LABEL  /VLABELS VARIABLES=aves_existencia DISPLAY=NONE
+  /TABLE ac_k1201 [SUM] + ac_k1202 [SUM] + ac_k1203 [SUM] + ac_k1204 [SUM] BY 
+    aves_existencia
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=aves_existencia ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCION AGROPECUARIA CONTINUA ESPAC 2022'
+    'TABLA 11. NÚMERO DE AVES POR EXISTENCIA Y MOVIMIENTO, SEGÚN TIPO DE CRIANZA Y ESPECIES'
+    CORNER='TIPO DE CRIANZA Y ESPECIES'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_k021211 ac_k021212 ac_k021213 ac_k021214 
+    DISPLAY=LABEL  /VLABELS VARIABLES=aves_ventas DISPLAY=NONE
+  /TABLE ac_k021211 [SUM] + ac_k021212 [SUM] + ac_k021213 [SUM] + ac_k021214 [SUM] BY aves_ventas
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=aves_ventas ORDER=A KEY=VALUE EMPTY=INCLUDE.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_cons_gallos ac_cons_pollitos ac_cons_patos ac_cons_pavos
+    DISPLAY=LABEL  /VLABELS VARIABLES=aves_autoconsumo DISPLAY=NONE
+  /TABLE ac_cons_gallos [SUM] + ac_cons_pollitos [SUM] + ac_cons_patos [SUM] + ac_cons_pavos [SUM] BY 
+    aves_autoconsumo
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=aves_autoconsumo ORDER=A KEY=VALUE EMPTY=INCLUDE.
+
+WEIGHT OFF. 
+FILTER OFF. 
+USE ALL. 
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 62                                *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_tn ac_trs ac_trc ac_tro ual_prov DISPLAY=NONE  /VLABELS VARIABLES=ac_total 
+    ac_k1201 ac_k1202 ac_k1203 ac_k1204 DISPLAY=LABEL
+  /TABLE ac_tn [C] + ac_trs [C] + ac_trc [C] + ac_tro [C]  + ual_prov [C] BY ac_total [S][SUM] + 
+    ac_k1201 [S][SUM] + ac_k1202 [S][SUM] + ac_k1203 [S][SUM] + ac_k1204 [S][SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ac_tn ac_trs ac_trc ac_tro  ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCION AGROPECUARIA CONTINUA 2022'
+    'TABLA 62. NÚMERO DE AVES CRIADAS EN CAMPO POR ESPECIES, SEGÚN REGIÓN Y PROVINCIA' 
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 65                                *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_tn ac_trs ac_trc ac_tro ual_prov DISPLAY=NONE  /VLABELS 
+    VARIABLES=ac_vengayga ac_autogayga ac_venpoypo ac_autopoypo ac_venpatos ac_autopatos ac_venpavos 
+    ac_autopavos 
+    DISPLAY=LABEL
+  /TABLE ac_tn [C] + ac_trs [C] + ac_trc [C] + ac_tro [C]  + ual_prov [C] BY ac_vengayga [SUM] + 
+    ac_autogayga [SUM] + ac_venpoypo [SUM] + ac_autopoypo [SUM] + ac_venpatos [SUM] + ac_autopatos 
+    [SUM] + ac_venpavos [SUM] + ac_autopavos [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ac_tn ac_trs ac_trc ac_tro  ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 65. DESTINO DE LAS AVES CRIADAS EN CAMPO POR ESPECIES, SEGÚN REGIÓN Y '+
+    'PROVINCIA'
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 68                                *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ac_tn ac_trs ac_trc ac_tro ual_prov DISPLAY=NONE  /VLABELS VARIABLES=ac_k1216 
+    ac_k1217 ac_k1218 ac_k1219 DISPLAY=LABEL
+  /TABLE ac_tn + ac_trs + ac_trc + ac_tro + ual_prov BY ac_k1216 [SUM] + ac_k1217 [SUM] + ac_k1218 
+    [SUM] + ac_k1219 [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ac_tn ac_trs ac_trc ac_tro ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 68. PRODUCCIÓN Y DESTINO DE HUEVOS DE GALLINA, SEGÚN REGIÓN Y PROVINCIA' 
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+FILTER OFF.
+USE ALL.
+EXECUTE.

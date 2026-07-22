@@ -1,0 +1,60 @@
+```{r}
+#| label: setup-global
+#| include: false
+
+source(file.path("R", "paths.R"))
+source(project_path("R", "00-setup.R"))
+source(project_path("R", "01-functions.R"))
+```
+
+{{< include Portada.qmd >}}
+
+\clearpage
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+\tableofcontents
+\clearpage
+\listoftables
+\clearpage
+\listoffigures
+\clearpage
+
+{{< include preambulo/siglas.qmd >}}
+{{< include preambulo/dedicatoria.qmd >}}
+{{< include preambulo/agradecimientos.qmd >}}
+{{< include preambulo/resumen.qmd >}}
+{{< include preambulo/abstract.qmd >}}
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+{{< include capitulos/CapituloI.qmd >}}
+{{< include capitulos/CapituloII.qmd >}}
+{{< include capitulos/CapituloIII.qmd >}}
+{{< include capitulos/CapituloIV.qmd >}}
+{{< include capitulos/CapituloV.qmd >}}
+{{< include capitulos/CapituloVI.qmd >}}
+{{< include capitulos/CapituloVII.qmd >}}
+{{< include capitulos/CapituloVIII.qmd >}}
+
+# Bibliografía {.unnumbered}
+
+\markboth{Bibliografía}{Bibliografía}
+
+::: {#refs}
+:::
+
+\clearpage
+
+{{< include anexos/AnexoI_Precios.qmd >}}
+
+\clearpage
+
+{{< include anexos/AnexoII_Construccion_Base.qmd >}}
+
+

@@ -1,0 +1,38 @@
+project:
+  name: "TESIS_PhD"
+  agent_name: "Jose Research Agent"
+  version: "0.1.0"
+  language: "es-EC"
+
+paths:
+  root: "."
+  chapters: "capitulos"
+  preamble: "preambulo"
+  annexes: "anexos"
+  data: "data"
+  r_scripts: "R"
+  references: "references"
+  outputs: "outputs"
+  styles: "styles"
+
+quarto:
+  main_file: "index.qmd"
+  config_file: "_quarto.yml"
+  render_command: "quarto render"
+
+git:
+  main_branch: "main"
+  require_commit_before_changes: true
+
+agent:
+  mode: "assisted"
+  apply_changes: false
+  create_reports: true
+  create_backups: true
+
+profiles:
+  scientific_editor: true
+  econometrician: true
+  r_developer: true
+  quarto_expert: true
+  bibliography_expert: true

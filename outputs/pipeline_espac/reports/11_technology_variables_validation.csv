@@ -1,0 +1,4 @@
+variable,SI,NO,NO_APLICA,NA_real,invalid_domain,source_yes_ending_as_no,no_without_applicable_record,no_aplica_with_record_or_surface,missing_target_surface_without_detail
+usa_riego_global,9020,16306,16705,413,0,0,0,0,413
+usa_fert_global,14556,10770,16705,413,0,0,0,0,413
+usa_plag_global,11876,13450,16705,413,0,0,0,0,413

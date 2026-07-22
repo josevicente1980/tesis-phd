@@ -1,0 +1,89 @@
+# Capítulo I: Introducción
+
+## Contexto y antecedentes
+
+La agricultura cumple una función estratégica en las economías en desarrollo por su contribución al abastecimiento de alimentos, el empleo, los ingresos y el bienestar de los hogares rurales. En Ecuador, la actividad agropecuaria constituye un medio de vida para una parte importante de la población y se desarrolla sobre una estructura agraria marcada por profundas diferencias de escala, acceso a recursos y condiciones territoriales [@de_janvry_access_2001]. Pese a su relevancia económica y social, persisten brechas de productividad vinculadas con infraestructura, tecnología, capital humano, acceso a información y mercados, y organización de los factores productivos [@banco_mundial_ecuador_2020].
+
+Entre esos factores, la tenencia de la tierra ocupa un lugar central. Los derechos de acceso, uso, control y transferencia condicionan el horizonte de las decisiones productivas, la posibilidad de realizar inversiones y, en determinados contextos, el acceso al financiamiento. La teoría de los derechos de propiedad sostiene que una tenencia segura puede favorecer inversiones de largo plazo y prácticas de conservación [@deininger_tenure_2006; @besley_property_2010]. Sin embargo, la propiedad formal no garantiza por sí sola un mejor desempeño. El arrendamiento puede facilitar la reasignación de tierra hacia productores con mayor capacidad o disposición para explotarla, mientras que sus resultados dependen de la duración y seguridad de los contratos, los costos de transacción y las condiciones de mercado [@otsuka_efficiency_2007]. La evidencia internacional es, por ello, heterogénea y dependiente del contexto [@fenske_land_2011; @ghebru_technical_2015].
+
+En Ecuador coexisten propiedad, herencia, usufructo, posesión, arrendamiento, aparcería, formas comunales y situaciones de litigio u otras modalidades. Esta diversidad es el resultado de procesos históricos, jurídicos e institucionales que han configurado una estructura agraria desigual y territorialmente heterogénea. Aunque la literatura nacional ha estudiado la concentración de la tierra, las reformas agrarias y la regularización predial, existe menos evidencia cuantitativa reciente sobre la asociación entre el régimen predominante de tenencia y el desempeño económico de las UPA, una vez consideradas sus diferencias productivas, tecnológicas, sociodemográficas y territoriales.
+
+La tesis aborda este vacío con información de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022. El desempeño se examina mediante dos indicadores de productividad parcial —valor económico de la producción agropecuaria por hectárea y por trabajador— y mediante estimaciones de eficiencia técnica. La estrategia empírica combina modelos OLS con inferencia robusta, modelos multinivel con interceptos aleatorios provinciales y modelos de frontera estocástica. Esta combinación permite contrastar asociaciones promedio, cuantificar la heterogeneidad territorial y separar, bajo los supuestos paramétricos de la frontera, el ruido aleatorio del componente de ineficiencia [@aigner_formulation_1977; @battese_model_1995].
+
+## Planteamiento del problema
+
+La forma de acceso a la tierra puede alterar los incentivos y las restricciones bajo los cuales opera una UPA. Los derechos seguros pueden ampliar el horizonte de inversión, pero el arrendamiento también puede cumplir una función productiva al permitir el acceso temporal a tierra y exigir retornos capaces de cubrir el costo contractual. Las tenencias comunales, posesiones sin título, tierras en litigio y otras formas especiales responden a arreglos institucionales distintos y pueden enfrentar restricciones específicas. Por consiguiente, no cabe asumir a priori que un régimen produzca resultados uniformemente superiores.
+
+El problema empírico consiste en distinguir la asociación de la tenencia con la productividad de las diferencias de escala, capital humano, conectividad, adopción de insumos y entorno provincial. Una comparación simple entre categorías podría atribuir a la tenencia diferencias que en realidad provienen de la composición de cultivos, la intensidad laboral, la localización, las condiciones agroecológicas o la selección de productores en el mercado de tierras. Además, la productividad observada no permite identificar por sí sola cuánto se aproxima cada UPA al desempeño potencial definido por una frontera común.
+
+La ESPAC 2022 ofrece información oficial de cobertura nacional sobre superficie, producción, empleo, tenencia, características de la persona productora y prácticas tecnológicas. No obstante, su diseño transversal y observacional impide identificar efectos causales estrictos. En consecuencia, la investigación estima asociaciones condicionadas y medidas paramétricas de eficiencia para muestras analíticas definidas de manera explícita; no interpreta los coeficientes como consecuencias causales de cambiar un régimen de tenencia.
+
+### Pregunta de investigación
+
+¿Cómo se asocia el régimen predominante de tenencia de la tierra con la productividad de la tierra, la productividad del trabajo y la eficiencia técnica de las UPA del Ecuador continental en 2022, una vez consideradas sus características productivas, tecnológicas, sociodemográficas y territoriales?
+
+## Objetivos de la investigación
+
+### Objetivo general
+
+Analizar la asociación entre los regímenes predominantes de tenencia de la tierra, la productividad agropecuaria y la eficiencia técnica de las UPA del Ecuador continental, mediante información de la ESPAC 2022 y métodos descriptivos y econométricos complementarios.
+
+### Objetivos específicos
+
+- Caracterizar la estructura de tenencia y las principales condiciones productivas, tecnológicas, sociodemográficas y territoriales de las UPA incluidas en el estudio.
+
+- Construir y comparar indicadores de productividad de la tierra y del trabajo según régimen predominante de tenencia.
+
+- Estimar la asociación condicionada entre tenencia y productividad mediante modelos OLS con errores estándar robustos y modelos multinivel con intercepto aleatorio provincial.
+
+- Estimar fronteras estocásticas para ambas medidas de productividad y analizar los niveles de eficiencia técnica de las UPA pertenecientes a la muestra aplicable.
+
+Los objetivos se formulan en términos de asociación porque el diseño no experimental de corte transversal no permite identificar un efecto causal de la tenencia. La tesis tampoco plantea una hipótesis confirmatoria única: contrasta empíricamente la expectativa tradicional de una ventaja de la propiedad con mecanismos alternativos vinculados al funcionamiento del arrendamiento y a la heterogeneidad de las formas de acceso.
+
+## Justificación y relevancia
+
+### Relevancia científica
+
+La investigación contribuye al debate sobre derechos de propiedad y desempeño agropecuario en un contexto donde la estructura agraria, la diversidad institucional y las diferencias territoriales pueden modificar los mecanismos previstos por la teoría. Su aporte consiste en evaluar la tenencia sin reducir el análisis a una comparación bivariada y en tratar la productividad de la tierra y la del trabajo como dimensiones complementarias, no intercambiables. La incorporación de modelos multinivel y fronteras estocásticas amplía la evidencia disponible al considerar tanto el contexto provincial como la eficiencia técnica.
+
+### Relevancia social y económica
+
+Las brechas de productividad inciden en la capacidad de las UPA para generar ingresos y sostener los medios de vida rurales. Identificar las condiciones asociadas con un mejor desempeño ayuda a evitar recomendaciones centradas exclusivamente en la titulación y orienta la atención hacia restricciones concomitantes como conectividad, formación, infraestructura y acceso seguro a la tierra. La evidencia es pertinente para políticas de desarrollo rural, siempre que se respete el carácter no causal de las estimaciones.
+
+### Relevancia territorial
+
+Las UPA operan dentro de provincias con condiciones agroecológicas, infraestructura, mercados e instituciones diferentes. Tratar esta dependencia como parte del diseño analítico permite estimar qué proporción de la variabilidad se relaciona con el territorio y sustenta la necesidad de intervenciones adaptadas a los contextos locales, en lugar de respuestas uniformes para todo el país.
+
+### Relevancia metodológica
+
+La tesis construye una medida monetaria común para integrar productos agropecuarios heterogéneos y deriva indicadores parciales por hectárea y por trabajador. La comparación de OLS, modelos multinivel y SFA se realiza respetando los universos y supuestos de cada familia. Este diseño ofrece una lectura más completa del desempeño y, a la vez, hace explícitas las restricciones de interpretación derivadas de la fuente de datos.
+
+## Delimitación y alcance
+
+### Delimitación temporal y geográfica
+
+El estudio utiliza la ESPAC 2022 y se circunscribe al Ecuador continental. Se excluye Galápagos por sus condiciones ecológicas, normativas y productivas particulares. Los resultados describen y modelan relaciones correspondientes a ese período y no permiten establecer su estabilidad a través del tiempo.
+
+### Delimitación poblacional y unidad de análisis
+
+La unidad de análisis es la UPA, entendida como el conjunto de terrenos y medios de producción administrados bajo una misma dirección técnica y económica. La base consolidada integra información de los módulos de la ESPAC mediante el identificador de cada UPA. Las muestras econométricas no equivalen al universo completo de la encuesta: OLS y multinivel emplean 22.075 UPA con las variables requeridas completas y estados `SI` o `NO` en riego, fertilizantes y plaguicidas; la SFA emplea 21.430 UPA que además presentan productividades de la tierra y del trabajo estrictamente positivas.
+
+### Delimitación sectorial y analítica
+
+La medida de producción agrega el valor económico de componentes agrícolas y pecuarios registrados en la base consolidada. Por tanto, el objeto empírico es la productividad agropecuaria de las UPA, aunque el debate sustantivo se articula alrededor de la tierra y de la producción rural. La productividad de la tierra se define como el valor económico agregado por hectárea de superficie declarada; la productividad del trabajo, como ese valor por trabajador registrado.
+
+La tenencia se resume mediante la modalidad que concentra la mayor proporción de superficie en cada UPA y se clasifica en tres grupos analíticos: propiedad, arrendamiento o aparcería, y tenencias especiales. Esta reducción facilita la comparación econométrica, pero no representa toda la complejidad jurídica o contractual de los arreglos existentes.
+
+### Alcance inferencial y limitaciones
+
+La investigación tiene alcance descriptivo y explicativo en sentido asociativo. La ausencia de datos longitudinales, variables detalladas sobre calidad del suelo, clima local, composición productiva, contratos e inversión acumulada, así como la posible selección en los regímenes de tenencia, impide atribuir causalidad a los coeficientes. Las medidas de eficiencia dependen, además, de la forma funcional y de los supuestos distributivos de la SFA. Los resultados son aplicables a las muestras definidas y deben generalizarse con cautela al conjunto de UPA del país.
+
+## Aportes de la tesis
+
+La tesis realiza cuatro aportes principales. Primero, sistematiza la discusión histórica, jurídica y económica sobre la tenencia de la tierra en Ecuador. Segundo, construye una base analítica a nivel de UPA que integra producción valorizada, superficie, trabajo, tenencia, tecnología, capital humano y territorio. Tercero, compara dos dimensiones de productividad mediante tres familias econométricas complementarias y muestras claramente delimitadas. Cuarto, deriva implicaciones de política que reconocen la seguridad de la tenencia, pero también la conectividad, la formación, los servicios de extensión, la infraestructura y la heterogeneidad provincial.
+
+## Organización de la tesis
+
+La tesis se organiza en ocho capítulos. Tras esta introducción, el Capítulo II presenta el marco teórico y conceptual sobre tenencia, productividad y eficiencia técnica. El Capítulo III examina la evolución histórica, jurídica e institucional de la propiedad y la tenencia de la tierra en Ecuador. El Capítulo IV revisa la evidencia empírica nacional e internacional y los principales enfoques utilizados para estudiar la relación entre tenencia y productividad.
+
+El Capítulo V expone la metodología, la fuente de información, la construcción de la base y las variables, las muestras analíticas y las especificaciones econométricas. El Capítulo VI caracteriza la estructura agropecuaria, los regímenes de tenencia y los patrones descriptivos de productividad. El Capítulo VII presenta los diagnósticos y resultados de los modelos OLS, multinivel y SFA, y desarrolla su discusión e implicaciones. El Capítulo VIII está destinado a las conclusiones generales, las limitaciones y las recomendaciones derivadas de la investigación.

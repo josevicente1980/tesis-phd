@@ -1,0 +1,59 @@
+project:
+  type: default
+  output-dir: _book
+  execute-dir: project
+  render:
+    - index.qmd
+
+bibliography: references/references.bib
+csl: references/apa.csl
+cite-method: citeproc
+
+lang: es-EC
+fontsize: 12pt
+mainfont: "Times New Roman"
+
+format:
+  pdf:
+    pdf-engine: xelatex
+
+    pandoc-args:
+      - --pdf-engine=C:/TinyTeX/bin/windows/xelatex.exe
+
+    documentclass: book
+
+    classoption:
+      - twoside
+      - openany
+
+    papersize: letter
+
+    toc: false
+
+    number-sections: true
+    number-depth: 4
+
+    link-citations: true
+
+    tbl-pos: H
+    fig-pos: H
+
+    kable-dependencies: false
+
+    geometry:
+      - top=3cm
+      - bottom=3cm
+      - inner=3cm
+      - outer=2cm
+      - headheight=28pt
+      - headsep=0.6cm
+      - footskip=1cm
+
+    include-in-header:
+      - styles/usc-header.tex
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: false

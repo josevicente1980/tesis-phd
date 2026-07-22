@@ -1,0 +1,5 @@
+"orden","script","estado","inicio","fin"
+1,"R/pipeline_reproducible/0_Importacion.R","ejecutado",2026-07-05 07:34:01.697646,2026-07-05 07:34:08.374487
+2,"R/pipeline_reproducible/1_Simplificacion.R","ejecutado",2026-07-05 07:34:08.382199,2026-07-05 07:34:16.033105
+3,"R/pipeline_reproducible/2_Base.R","ejecutado",2026-07-05 07:34:16.036161,2026-07-05 07:38:56.493736
+4,"R/pipeline_reproducible/3_Base_final.R","ejecutado",2026-07-05 07:38:56.498838,2026-07-05 07:43:34.951986

@@ -1,0 +1,7 @@
+table,product_var,rows,unique_products,imputed_price_usd_kg,imputed_price_products,imputed_price_rows
+adnac2022,rc_clacul,9283,61,0.1,otros permanentes,171
+cpnac2022,rc_clacul,14743,74,0.1,otros permanentes|plantas medicinales,18
+ctnac2022,rc_clacul,17512,86,0.1,árboles forestales|otros forrajes|otros transitorios|plantas medicinales,69
+fpnac2022,rc_clacul,577,11,0.1,"",0
+ftnac2022,rc_clacul,391,22,0.1,"",0
+pcnac2022,rc_clacul,15000,23,0.1,gramalote|micay|otros pastos cultivados|pueraria jabanica,745

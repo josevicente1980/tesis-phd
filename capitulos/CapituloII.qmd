@@ -1,0 +1,611 @@
+# Capítulo II. Marco teórico y conceptual
+
+```{r}
+#| label: setup-capitulo-ii
+#| include: false
+
+# 1. Cargamos el resolvedor central de rutas del proyecto
+source(file.path("R", "paths.R"))
+
+# 2. Cargamos configuración y paquetes 
+source(project_path("R", "00-setup.R"))
+
+# 3. Cargamos tus funciones personalizadas 
+source(project_path("R", "01-functions.R"))
+```
+
+```{r}
+#| label: cargar-datos-capitulo-ii
+#| include: false
+
+# Usamos el resolvedor central para leer desde la raiz del proyecto
+sunac2022 <- readRDS(path_raw("sunac2022.rds"))
+```
+
+
+En este capítulo se exponen y analizan en detalle los conceptos fundamentales necesarios para el desarrollo de la presente investigación, abordándolos desde una perspectiva global y con una referencia específica a la realidad de Ecuador. Los conceptos que consideramos necesario precisar se refieren a los dos ámbitos centrales de la investigación: por un lado, la propiedad y los modos de tenencia de la tierra; por el otro, la definición y métodos de medición de la productividad en el sector agrario.
+
+## Tenencia, seguridad y propiedad de la tierra; conceptos básicos
+
+La tenencia de la tierra es un concepto complejo que varía según el contexto social, económico y legal; históricamente, este concepto se remonta al feudalismo inglés, donde la tierra era concedida por la monarquía y los tenedores debían cumplir obligaciones hacia el Estado o los señores feudales. Con el tiempo, la tenencia evolucionó hacia formas modernas basadas en la propiedad privada, como el freehold (propiedad sin obligaciones hacia el Estado) y el arrendamiento (cesión temporal de la tierra a cambio de un pago) [@bruce_no_2000].
+
+La tenencia de la tierra hace referencia, de modo general, al sistema mediante el cual las personas o grupos adquieren derechos para utilizar y gestionar terrenos. Su concreción depende del marco jurídico de cada país e incluye tanto sistemas formales (como títulos legales otorgados por el Estado) como informales (basados en costumbres o prácticas tradicionales). En el derecho anglosajón la tenencia se concibe como un "conjunto de derechos" (bundle of rights) que permite una distribución flexible entre individuos o grupos. En contraste, en sistemas jurídicos de tradición romana, como en América Latina, los derechos sobre la tierra tienden a ser más rígidos. En algunos contextos rurales la regulación se rige por sistemas consuetudinarios, donde los derechos de uso y usufructo son comunes y se prioriza el bienestar colectivo sobre el individual [@bruce_no_2000].
+
+@gobien_land_2015 indica que la tenencia de la tierra es un sistema de formas reconocidas legal o consuetudinariamente mediante las cuales los miembros de una sociedad ejercen derechos sobre la tierra. Esto se expresa en un "haz de poderes", un conjunto específico de derechos que determinan qué se puede hacer con la tierra. Este sistema aborda cinco cuestiones clave: ¿qué derechos se otorgan?, ¿a quiénes?, ¿cómo se ejercen?, ¿dónde? y ¿cuándo pueden ejercerse?
+
+Según el artículo “La tenencia de la tierra en las operaciones financiadas por el FIDA” [@fida_tenencia_2016] existen tres derechos principales ligados a la dimensión espacial de la tierra: i) los derechos de uso, que se refieren al derecho a usar la tierra para cultivos, paso y pastoreo de animales y la utilización de sus productos naturales y forestales; ii) los derechos de control, concernientes al derecho a tomar decisiones acerca del uso de la tierra y la asignación de los beneficios; y iii) los derechos de transferencia, referentes al derecho a vender o hipotecar la tierra, cederla a otros, transmitirla por herencia y reasignar los derechos de uso y control. En ese marco general, podemos establecer una primera definición de tenencia de la tierra:
+
+> Por tenencia de la tierra se entiende las normas, autoridades, instituciones, derechos y reglamentaciones que rigen el acceso a la tierra, su control y el de los recursos relacionados con ella. Con esta expresión se definen las normas y derechos que rigen la apropiación, el cultivo y la utilización de los recursos naturales en un espacio determinado o en una parcela de tierra. El sistema de tenencia de la tierra determina quién usa qué recursos, por cuánto tiempo y en qué condiciones. En este sentido, no se trata de quien posee tierras en sí; más bien se trata de los derechos y deberes sobre ella [@fida_tenencia_2016].
+
+La diversidad de regímenes de tenencia es amplia, abarcando desde derechos consuetudinarios hasta títulos formales emitidos por el Estado, que suelen superponerse formando conjuntos que reflejan múltiples relaciones sociales. Estas relaciones pueden involucrar distintos niveles: dentro del hogar (hombres, mujeres, jóvenes), entre clases sociales (propietarios, campesinos, agricultores, trabajadores agrícolas), dentro de la comunidad (aldea, pueblo, nación), e incluso a nivel transnacional, como en el manejo de recursos pastoriles compartidos entre países [@simbizi_land_2014]. La coexistencia de sistemas legales formales e informales añade otra capa de complejidad.
+
+En muchos países la falta de reconocimiento legal de los derechos consuetudinarios crea una brecha significativa entre los derechos percibidos por las comunidades y los reconocidos por el Estado, lo que puede llevar a la marginalización de comunidades indígenas y la pérdida de sus tierras ancestrales [@knox_land_2011].
+
+Por tanto, la tenencia de la tierra, aunque parezca un concepto sencillo, es en realidad una estructura compleja de derechos, deberes y percepciones, donde la legislación y la realidad a menudo no coinciden. Esta discrepancia entre derechos legales y percibidos genera tensiones y conflictos, especialmente en países en desarrollo. La regulación de la tenencia varía según el contexto social, político y económico, dando lugar a diferentes "conjuntos de derechos" y al concepto de seguridad de la tenencia, que se refiere al grado de estabilidad y protección de los derechos sobre la tierra frente a conflictos, expropiaciones o disputas [@cotula_recalibrating_2022].
+
+@simbizi_land_2014 presentan un marco conceptual que evalúa la seguridad de la tenencia de la tierra, integrando aspectos legales, consuetudinarios y percibidos. Este enfoque holístico subraya que la seguridad de la tenencia no solo depende de la existencia de títulos formales, sino también de la percepción de los individuos sobre la continuidad de sus derechos, incluyendo además consideraciones de género y poder, ya que los derechos sobre la tierra pueden variar significativamente entre diferentes grupos sociales. Estas dimensiones son cruciales para entender cómo la seguridad de la tenencia afecta de manera diferenciada a hombres y mujeres. El FIDA define de forma similar la seguridad de la tenencia: “Seguridad de la tenencia de la tierra. Es la capacidad de las personas para controlar y gestionar una parcela de tierra, usarla y disponer de lo que produce, así como para realizar transacciones, entre ellas, transferencias” [@fida_tenencia_2016].
+
+La seguridad de la tenencia de la tierra presenta tres característicasbprincipales: duración, es decir cuánto tiempo duran los diferentes derechos sobre la tierra; protección, referente al nivel de protección de los derechos sobre la tierra si se ponen en cuestión o en peligro; y solidez, lo que determina si los titulares de los derechos sobre la tierra pueden usarlos y disponer de ellos libremente sin interferencias. La seguridad en la tenencia se relaciona con la propiedad de la tierra, concepto que incluye los derechos exclusivos de uso, transferencia y herencia del terreno. La propiedad formal, reconocida por un marco legal, permite acceder a beneficios como créditos agrícolas y protección jurídica. Sin embargo, en muchos contextos rurales la propiedad se define por normas tradicionales [@sesabo_deciphering_2024].
+
+La propiedad de la tierra nunca es absoluta; está sujeta a restricciones y conlleva obligaciones para proteger los derechos de terceros, como vecinos o arrendatarios, y para servir al interés público, como la protección del medio ambiente. Este equilibrio entre derechos, limitaciones y responsabilidades es clave para una gobernanza efectiva de la tierra, aunque a menudo es fuente de conflictos, dado que las distintas partes pueden tener interpretaciones divergentes [@cotula_recalibrating_2022]. Por tanto, la propiedad no solo implica la posesión de un terreno, sino también su administración y gestión, que incluye la aplicación de normas sobre la tenencia y abarca procesos como la asignación de derechos, la delimitación de parcelas, la transferencia de derechos y la resolución de conflictos. También implica la planificación del uso del suelo y la recaudación de impuestos sobre la tierra, utilizando tanto sistemas formales de registro como mecanismos informales en comunidades tradicionales [@gobien_land_2015].
+
+Para que la administración de tierras sea efectiva se requiere la protección y cumplimiento de los derechos sobre la tierra, ya sea a través del Estado o mediante la presión comunitaria. Los procedimientos relacionados con la transferencia, uso, valoración y tributación de la tierra son esenciales para que las transacciones se realicen de manera eficiente y transparente. Sin embargo, en muchas regiones estos procedimientos son complejos y costosos, lo que puede fomentar las prácticas informales. Los actores involucrados en la administración de tierras incluyen tanto autoridades tradicionales en contextos consuetudinarios como organismos estatales en sistemas formales [@borras_jr_land_2012].
+
+A modo de recapitulación inicial podemos destacar que la tenencia de la tierra se refiere a las normas, autoridades, instituciones, derechos y regulaciones que rigen el acceso a la tierra, su control y el de los recursos relacionados con ella. La seguridad de la tenencia otorga a las personas la capacidad para controlar y gestionar la tierra, usarla y disponer de lo que esta produce. La administración de tierras (mapas, títulos, registros, etc.) constituye una parte del sistema de tenencia.
+
+## Categorías o tipos de tenencia de la tierra
+
+Las categorías de tenencia de la tierra son variadas y reflejan las diferentes maneras en que las personas y las comunidades pueden acceder y utilizar este recurso. Para una primera aproximación, comenzamos señalando las categorías comúnmente reconocidas en la literatura y las fuentes estadísticas.
+
+### Tenencia directa o en propiedad
+
+La tenencia directa o en propiedad otorga al titular plenos derechos sobre la tierra, incluyendo su uso, disfrute y disposición [@hernandez_ejemplo_2001]. Este régimen es predominante en algunos países de la Unión Europea, acompañándose de grados diversos de concentración tanto de la propiedad como de la estructura de las explotaciones agrarias. En España, por ejemplo, un pequeño porcentaje de las explotaciones controla una gran parte de la superficie agrícola, un fenómeno intensificado por políticas de ajuste estructural y la creciente competitividad global [@soler_estructura_2017]. En América Latina la tenencia en propiedad también es común, estando acompañada en general de altos niveles de concentración de la tierra. En algunos países esta desigualdad estructural ha generado tensiones sociales y conflictos persistentes [@fao_gobernanza_2008].
+
+### Arrendamiento
+
+El arrendamiento consiste en la cesión por el propietario (arrendador) del derecho de uso de la tierra a otra persona (arrendatario) por un tiempo determinado a cambio de un pago periódico, en general en dinero [@hernandez_ejemplo_2001]. Partiendo de esa definición general, su regulación concreta puede variar mucho de unos a otros países, tanto en lo referido a la duración del contrato como al establecimiento de la renta anual y los restantes derechos de arrendador y arrendatario [@soler_estructura_2017]. En América Latina se trata de un régimen de tenencia menos frecuente que, por ejemplo, en Europa, aunque alcanza cierta presencia en algunos países. Así, por ejemplo, países como México y Colombia utilizan esta modalidad para permitir que pequeños agricultores trabajen tierras que de otro modo no podrían adquirir [@fao_gobernanza_2008].
+
+### Aparcería
+
+La aparcería constituye un tipo de acuerdo o contrato en el que el propietario de la tierra y el agricultor que la trabaja comparten tanto los riesgos como los beneficios de la producción. De este modo, la contrapartida pagada a cambio de la cesión de las tierras consiste en una fracción de la cosecha o producción obtenida. Se trata de un régimen de tenencia en claro retroceso en Europa durante las últimas décadas, aunque mantiene cierta presencia [@olmo_geografirural_1997]. En América Latina, dadas las desigualdades en la distribución de la tierra, permite en ocasiones que agricultores sin tierra accedan a este recurso [@fao_gobernanza_2008].
+
+### Otros regímenes de tenencia
+
+Al lado de los tres regímenes de tenencia citados, encontramos en todos los países situaciones que no encajan en ninguno de ellos y que presentan una gran variedad en función del contexto socioeconómico y los factores históricos. Ello obliga con frecuencia a incorporar, en los estudios y en las fuentes estadísticas, otras categorías de tenencia adaptadas a la realidad analizada. Un ejemplo de ello es el caso de América Latina, donde las tierras comunales desempeñan un papel clave para comunidades indígenas en países como Bolivia y Ecuador [@fao_gobernanza_2008].
+
+## Diversidad de los sistemas de tenencia a nivel internacional
+
+Si bien todas las sociedades tienen sistemas de tenencia de la tierra, cada sistema tiene un conjunto único de reglas que definen quién puede usar los recursos, por cuánto tiempo y en qué condiciones. Estas normas pueden ser claras o ambiguas, lo que genera confusión cuando coexisten sistemas formales e informales. Por otro lado, la tenencia también puede diferir según el género, la etnia y otros factores sociales [@herrera_manejo_2006].
+
+Cada sistema puede tener ventajas y desventajas. Así, los sistemas consuetudinarios basados en normas tradicionales fomentan la cohesión social, pero pueden ser débiles ante la presión externa; la propiedad privada puede ser eficiente pero excluyente, mientras que la pública facilita el acceso equitativo, aunque puede sufrir problemas burocráticos [@fao_land_2022]. En muchos países existen leyes y políticas que regulan la tenencia de la tierra según sus contextos específicos; sin embargo, persisten problemas como la inequidad, porque algunos grupos sociales tienen menos derechos de propiedad que otros, o la informalidad, especialmente en América Latina. En esta región, cientos de miles de predios rurales carecen de títulos de propiedad seguros, lo que es común en países como Chile, Colombia, Costa Rica, República Dominicana y Bolivia, donde muchos pequeños agricultores no cuentan con esos títulos [@alvarado_tenencia_2011].
+
+A pesar de ello, en la mayoría de los países se identifican cuatro tipos principales de tenencia de la tierra, que en rigor se refieren realmente a formas de propiedad: la tenencia privada, la tenencia estatal, la tenencia comunal y el acceso libre. La tenencia privada otorga derechos de propiedad a individuos, familias, grupos o entidades; por ejemplo, en ciertas comunidades algunas familias pueden disponer de parcelas de tierra y árboles de manera exclusiva, impidiendo el acceso a terceros sin su consentimiento [@fao_gobernanza_2008].
+
+En contraste, la tenencia comunal permite que todos los miembros de una comunidad hagan uso de recursos compartidos, como los pastizales comunes. Por otro lado, el acceso libre se caracteriza por la ausencia de derechos exclusivos, de modo que cualquier persona puede utilizar los recursos disponibles, como ocurre con ciertos terrenos de pastoreo. Finalmente, en la tenencia estatal, los derechos sobre la tierra corresponden al gobierno, ya sea en su forma central o descentralizada, como sucede en algunas tierras forestales de determinados países [@fao_gobernanza_2008]. Además de estas modalidades, existen otras formas de acceder a la tierra. En áreas rurales y en comunidades indígenas se reconoce la tenencia consuetudinaria, que se basa en prácticas y costumbres locales en lugar de en leyes formales o títulos de propiedad.
+
+Asimismo, la tenencia puede consolidarse por prescripción, que se configura cuando una persona ocupa la tierra de manera abierta y sin permiso del dueño durante un largo periodo (generalmente entre 15 y 30 años), actuando como si fuera el propietario [@irazola_acerca_2011]. Por otro lado, las hipotecas son contratos en los que se consigna la tierra para garantizar el pago de un préstamo; en general, la tierra permanece bajo control del hipotecante, aunque en algunos casos el prestamista puede tomar posesión desde la formalización de la hipoteca hasta la cancelación total de la deuda [@bruce_no_2000].
+
+La herencia, por su parte, es el proceso legal mediante el cual la tierra de un propietario fallecido se transfiere a sus herederos. Si el difunto dejó un testamento en el que se especifican los herederos, se denomina sucesión testada; en ausencia de testamento, se configura la sucesión intestada, en la que la ley determina el orden de prioridad y puede dar lugar a la división o partición de la propiedad [@dirven_practicas_2002].
+
+A partir de lo expuesto, se presenta a continuación un análisis comparativo de los sistemas de tenencia de la tierra en distintas regiones del mundo. Este ejercicio permitirá comprender las dinámicas históricas, sociales y políticas que han condicionado el acceso, uso y distribución de este recurso fundamental. Pese a la diversidad de contextos, es posible identificar patrones y desafíos comunes que han marcado la evolución contemporánea de los regímenes de tenencia.
+
+En Europa, los sistemas de tenencia de la tierra presentan una notable heterogeneidad, influenciada por factores históricos y normativos. Según @thomson_scottish_2014, la proporción de tierras agrícolas trabajadas bajo régimen de arrendamiento varía significativamente entre países: menos del 20 % en Irlanda y Rumanía, donde predomina la propiedad, y más del 80 % en Eslovaquia y la República Checa. Esta diversidad convive con ciertas tendencias comunes, como la preferencia por la agricultura familiar y la implementación de políticas que refuerzan la seguridad jurídica de los arrendatarios. En este sentido, varios países promueven arrendamientos a largo plazo con derecho a renovación, compensación por mejoras y opción preferente de compra. Además, se observan mecanismos de intervención estatal en el mercado de tierras, como las juntas locales en Austria y Polonia, o el sistema SAFER en Francia, cuyo objetivo es evitar la concentración de tierras y facilitar el acceso de jóvenes agricultores. En Bélgica, el 67 % de la tierra agrícola está arrendada y existen leyes que protegen a los arrendatarios frente a aumentos abusivos en los alquileres. Por otro lado, Dinamarca limita el tamaño de las explotaciones y restringe la propiedad de la tierra por parte de empresas. En Hungría, tras la redistribución agraria poscomunista, el mercado de tierras ha sido liberalizado, aunque aún se mantienen restricciones parciales a la propiedad extranjera.
+
+En Asia, los sistemas de tenencia son igualmente diversos y reflejan tradiciones jurídicas mixtas, procesos de reforma y tensiones entre costumbre y legislación estatal. En China, la tierra rural no es propiedad privada; los agricultores acceden a ella mediante contratos bajo el Sistema de Responsabilidad Familiar. No obstante, persiste una sensación de inseguridad debido a reasignaciones arbitrarias, expropiaciones estatales y ambigüedad legal, incluso en presencia de certificados formales de tenencia [@rao_perceived_2020]. La fragmentación de las parcelas representa otro obstáculo importante para la eficiencia productiva. En India, la desigualdad en la propiedad de la tierra es un problema estructural que se manifiesta en la inseguridad de tenencia, especialmente entre pequeños agricultores sin títulos formales [@agarwal_field_1994]. Indonesia enfrenta una compleja coexistencia entre sistemas estatales, islámicos y consuetudinarios (adat), reconocidos en la Constitución, lo cual plantea desafíos para la armonización de derechos [@gold_indonesian_2014]. En Filipinas, a pesar de una prolongada trayectoria de reformas agrarias, persisten conflictos sobre derechos de tenencia y una distribución desigual del recurso [@mitchell_land_2016]. En Bangladesh, las organizaciones de la sociedad civil han sido clave en la defensa de los derechos de pequeños agricultores, promoviendo iniciativas de gobernanza responsable frente a la presión demográfica y climática [@naznin_womens_2020]. En Camboya, el crecimiento urbano acelerado y la falta de planificación agraria han agravado los conflictos por la tierra, afectando la seguridad jurídica de numerosos hogares rurales. Laos enfrenta retos similares, especialmente en áreas de tierras forestales, donde la falta de títulos formales limita las inversiones a largo plazo [@sayaraj_role_2025].
+
+En África, los sistemas de tenencia combinan formas tradicionales comunales con procesos crecientes de individualización. En muchas regiones, las tierras continúan siendo gestionadas por jefes o autoridades tradicionales, pero el aumento de la presión demográfica ha favorecido una transición hacia derechos más individualizados, especialmente a través de la herencia o la compra [@otsuka_changes_2014]. En Ghana, las estructuras matrilineales han evolucionado hacia sistemas más bilaterales, donde las mujeres también pueden heredar tierras si contribuyen al desarrollo agrícola familiar. En Malawi central, las normas matrilocales otorgan a las esposas y sus familias derechos sobre los árboles naturales, mientras que los árboles plantados por los maridos son considerados propiedad masculina, lo que evidencia una compleja interacción entre género y tenencia. En Etiopía, los programas de certificación de tierras han incentivado la inversión agrícola y mejorado la productividad [@holden_impacts_2009], mientras que en Kenia no se ha encontrado una relación significativa entre titulación y mayores niveles de inversión [@place_economic_1998]. En Uganda y Burkina Faso, estudios demuestran que las inversiones en árboles tienden a fortalecer los derechos de uso, promoviendo una mayor seguridad de tenencia [@place_economic_1998; @brasselle_land_2002].
+
+América Latina y el Caribe constituyen una de las regiones más desiguales del mundo en cuanto a estructura agraria. A comienzos de la década de 1960, el 5 % de las explotaciones agrícolas (los latifundios) concentraban el 80 % de la tierra cultivable [@deere_empowering_2001]. Aunque diversas reformas agrarias intentaron corregir esta concentración, la desigualdad persiste y se expresa en elevados índices de Gini agrario en varios países [@fao_land_2022]. La concentración de tierras ha sido impulsada por el auge de las agroindustrias alimentarias, la expansión de los agrocombustibles, la extracción de recursos y la silvicultura. Estas actividades han atraído inversión de grandes corporaciones nacionales y extranjeras, lo que ha intensificado los conflictos sociales en zonas rurales [@escobar_estructura_2016]. En México, la coexistencia de sistemas ejidales y privados ha dado lugar a disputas y corrupción en los procesos de modernización y regularización [@salamon_cultural_1995]. En el Caribe, predomina la propiedad estatal de la tierra como legado de los procesos coloniales o de reformas agrarias parciales, aunque los gobiernos han impulsado programas de regularización y seguridad jurídica [@fao_land_2022]. En Brasil, la resistencia de los grandes terratenientes ha limitado el impacto redistributivo de la reforma agraria [@sunderlin_historical_2022]. En Colombia, la inseguridad de la tenencia ha sido agravada por el conflicto armado interno; los procesos de restitución y formalización han generado algunos avances, pero persisten importantes desafíos institucionales [@holland_land_2022]. En Chile, las reformas agrarias de las décadas de 1960 y 1970 fueron en gran parte revertidas durante la dictadura militar, lo que reinstaló una estructura concentrada de la propiedad. En Perú, las tensiones entre tenencia comunal e individual persisten, dificultando una integración efectiva entre ambos regímenes. Finalmente, países como Bolivia y Guatemala enfrentan grandes obstáculos en cuanto a la seguridad jurídica de la tierra, particularmente en comunidades indígenas que carecen de sistemas de registro eficientes [@sauls_indigenous_2022].
+
+En conjunto, el análisis comparado de los sistemas de tenencia permite observar que, a pesar de las diferencias regionales, la seguridad de los derechos sobre la tierra y su distribución equitativa son desafíos compartidos. Las políticas públicas, la regulación estatal y la inclusión de derechos consuetudinarios aparecen como dimensiones clave para avanzar hacia modelos más justos y sostenibles de acceso a la tierra.
+
+## Tenencia de la tierra en el Ecuador
+
+La tenencia de la tierra en Ecuador constituye un eje fundamental para el desarrollo rural, la soberanía alimentaria y la equidad social; no obstante, presenta diversos matices. La estructura de acceso a la tierra refleja históricamente patrones de desigualdad, exclusión y concentración que afectan directamente las condiciones de vida de la población rural, especialmente de pueblos indígenas, afrodescendientes, montubios y pequeños productores campesinos. Frente a este panorama, el Estado ecuatoriano ha implementado un marco jurídico liderado por la Constitución de 2008 y la Ley Orgánica de Tierras Rurales y Territorios Ancestrales (LOTRTA) de 2016, con el objetivo de democratizar el acceso a la tierra y garantizar su uso en función de la justicia social y ambiental.
+
+La Constitución de la República del Ecuador, aprobada en Montecristi en 2008, redefinió los principios de gobernanza sobre el territorio y los recursos naturales, reconociendo a la tierra como parte del patrimonio nacional y vinculando su propiedad al cumplimiento de una función social y ambiental. El artículo 282 establece con claridad que el Estado regulará el uso y acceso a la tierra para evitar su concentración y garantizar que cumpla con principios de equidad, sostenibilidad y eficiencia productiva [@asamblea_constituyente_del_ecuador_constitucion_2008]. Esta visión constitucional rompe con el paradigma privatista tradicional al establecer que el derecho a la propiedad no puede prevalecer sobre el interés colectivo ni sobre los derechos de la naturaleza, también reconocidos por la misma carta magna.
+
+Sobre esta base constitucional se promulgó la Ley Orgánica de Tierras Rurales y Territorios Ancestrales (LOTRTA) en 2016, la cual desarrolla principios clave en torno a la redistribución, regulación y gestión de la tierra rural. Uno de sus pilares es la prohibición del latifundio y la acumulación improductiva de tierras, fijando un techo máximo de 2.500 hectáreas para la propiedad privada rural. Esta medida busca combatir la histórica concentración de tierras que, según datos del último censo agropecuario, afecta gravemente la equidad territorial y limita las oportunidades de desarrollo para amplios sectores rurales [@asamblea_nacional_del_ecuador_ley_2016].
+
+La ley establece además mecanismos para recuperar tierras subutilizadas o adquiridas de forma irregular, así como para garantizar el acceso de pequeños y medianos productores mediante procesos de redistribución. Cobra particular relevancia el reconocimiento de los territorios ancestrales, definidos como aquellos espacios ocupados históricamente por pueblos indígenas, afroecuatorianos y montubios. Estos territorios gozan de un régimen especial: son inalienables, imprescriptibles e inembargables, y su posesión colectiva está protegida frente a cualquier amenaza de enajenación, fragmentación o apropiación indebida. Este reconocimiento se alinea con el principio de plurinacionalidad y busca reparar, en parte, los efectos históricos del despojo territorial.
+
+No obstante, la implementación efectiva de la LOTRTA enfrenta numerosos desafíos. A pesar de la creación de la Autoridad Agraria Nacional como órgano responsable de aplicar la política pública agraria, su operatividad ha sido limitada por la falta de recursos técnicos, institucionales y financieros. Además, persiste una débil articulación entre los niveles de gobierno, lo cual afecta la planificación territorial y la administración del catastro rural. De igual forma, sectores económicos con alto poder de influencia han ejercido presión para mantener el statu quo, dificultando los procesos de redistribución y la implementación de reformas estructurales [@ospina2020territorio].
+
+Otro obstáculo crítico es la informalidad. Amplios segmentos de productores trabajan en tierras sin títulos formales, lo que limita su acceso a créditos, asistencia técnica y programas estatales. Este fenómeno se agudiza en zonas donde el catastro no ha sido actualizado o donde existen conflictos entre títulos individuales y derechos colectivos. La persistencia de estas condiciones evidencia la necesidad de fortalecer los sistemas de regularización, catastro y adjudicación, como parte de una estrategia integral de reforma agraria.
+
+Por ende, a pesar de que el marco legal ecuatoriano ha avanzado significativamente en la incorporación de principios de justicia social, equidad y sostenibilidad en la gestión de la tierra, persiste la brecha entre la normativa y su aplicación concreta, lo que se constituye en un reto. Superar esta brecha exige voluntad política, fortalecimiento institucional y una participación activa de los sectores rurales, en especial de aquellos históricamente marginados, para consolidar un modelo de desarrollo territorial más inclusivo y resiliente.
+
+En este contexto, resulta esencial contar con información estadística que permita comprender la situación real de la tenencia de la tierra. Los datos recopilados a través de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC), elaborada por el Instituto Nacional de Estadística y Censos (INEC) del Ecuador, ofrecen una base sólida para examinar las características y dinámicas de la tenencia y su posible relación con la productividad agrícola en las distintas unidades de producción del país.
+
+Según la ESPAC (2022), las formas de tenencia consideradas son las recogidas en la @tbl-resumen-tenencia. Las definiciones establecidas en esta estadística, aunque no siempre totalmente precisas, son las siguientes [@INEC_ESPAC_2022, pp. 14-15].
+
+-   *Dueño (Título de Propiedad):* Es el propietario de la tierra, y tiene el derecho a determinar la naturaleza, forma de aprovechamiento y transferencia de la misma. Se registran en esta categoría las personas que tienen títulos de propiedad o escritura, o un documento legal equivalente que acredita la propiedad del terreno.
+
+-   *Arrendatario:* Son las personas que toman las tierras en arrendamiento, sean estas particulares, sociedades, el Estado u otras entidades públicas y privadas, generalmente por un corto periodo de tiempo y mediante un contrato verbal o escrito, con pago de dinero en efectivo, o anticresis.
+
+-   *Aparcero:* Es la persona que toma las tierras al partir o aparcería; de su usufructo, entrega al propietario una parte del producto cosechado o su equivalencia en dinero o bienes. La responsabilidad de las labores agropecuarias puede ser exclusiva del aparcero o puede compartirla en grado limitado con el propietario de la tierra.
+
+-   *Comunero:* Es la persona a quien la comuna le ha asignado la tierra para que ejerza los derechos de usufructo sobre ella, a excepción de la venta.
+
+-   *Invasión:* Ocupación o utilización de propiedades de tierra ajenas (de otra persona o institución).
+
+-   *Litigio:* Es un conflicto de intereses calificado y elevado a una autoridad jurisdiccional, por parte de un sujeto de derecho, con una intención o pretensión contra otro que manifiesta una resistencia o que se opone al planteamiento del primero.
+
+-   *Herencia:* Derecho a transferir la propiedad a los herederos.
+
+-   *Usufructo:* El usufructo es un derecho real que ofrece la posibilidad de disfrutar de los bienes ajenos a una persona. El usufructuario, aunque no tenga la propiedad, tiene derecho a disfrutar del bien y obtener sus frutos, sean tanto en especie como económicos, sin tener el derecho a vender la propiedad.
+
+-   *Posesión:* Derechos provenientes de la ocupación física de la parcela de tierra. La persona que posee la tierra puede tener un derecho legal o no a tenerla.
+
+-   *Otra:* Tenencia de la tierra que no consta en ninguna de las categorías anteriores.
+
+Desde el punto de vista metodológico, la clasificación de las unidades de producción agropecuaria (UPA) según régimen de tenencia se realizó utilizando la información del módulo de uso del suelo de la ESPAC 2022. Debido a que este módulo se encuentra estructurado a nivel de terrenos, la superficie total de cada UPA se obtuvo mediante la suma de la variable supertotal correspondiente a todos los terrenos asociados a la unidad productiva. Posteriormente se identificó la categoría de tenencia que concentra la mayor superficie dentro de cada UPA, la cual se definió como régimen predominante. Finalmente, la estimación de la superficie nacional se obtuvo aplicando el factor de expansión de la encuesta.
+
+Los resultados de la @tbl-resumen-tenencia muestran que el régimen de dueño concentra aproximadamente 10,18 millones de hectáreas, lo que representa el 83,46 % de la superficie agropecuaria expandida del país. Este valor indica que la mayor parte de la superficie productiva se encuentra asociada a unidades en las que el productor mantiene control directo sobre la tierra. Las categorías de herencia y comunero registran alrededor de 602 mil hectáreas (4,94 %) y 592 mil hectáreas (4,85 %) respectivamente. Estas modalidades corresponden a formas de acceso o transmisión de la tierra vinculadas a procesos familiares o a esquemas de gestión colectiva.
+
+El régimen de arrendamiento agrupa aproximadamente 365 mil hectáreas, equivalentes al 2,99 % de la superficie total estimada. Esta categoría corresponde a unidades productivas en las que la utilización de la tierra se realiza mediante acuerdos de uso temporal. Las demás modalidades de tenencia presentan participaciones menores dentro de la superficie total. La categoría otro registra cerca de 164 mil hectáreas (1,35 %), mientras que usufructo alcanza alrededor de 128 mil hectáreas (1,05 %). Por su parte, las categorías de aparcería o al partir, litigio, posesión e invasión representan conjuntamente una fracción reducida de la superficie agropecuaria, con participaciones individuales inferiores al uno por ciento.
+
+```{r}
+#| label: tbl-resumen-tenencia
+#| tbl-cap: "Superficie expandida de las UPA según régimen predominante de tenencia, ESPAC 2022"
+#| echo: false
+#| message: false
+#| warning: false
+
+base_terr <- sunac2022 |>
+  dplyr::mutate(
+    identificador = as.character(Identificador),
+    tenencia = stringr::str_to_sentence(
+      tolower(
+        as.character(
+          haven::as_factor(su_tenencia, levels = "labels")
+        )
+      )
+    ),
+    supertotal = as.numeric(supertotal),
+    peso = as.numeric(fact_exp_fin)
+  ) |>
+  dplyr::mutate(
+    tenencia = dplyr::if_else(
+      tenencia == "Poseción",
+      "Posesión",
+      tenencia
+    )
+  ) |>
+  dplyr::filter(
+    !is.na(identificador),
+    identificador != "",
+    !is.na(tenencia),
+    tenencia != "",
+    is.finite(supertotal),
+    supertotal > 0,
+    is.finite(peso),
+    peso > 0
+  )
+
+upa_ten_sup <- base_terr |>
+  dplyr::group_by(
+    identificador,
+    tenencia
+  ) |>
+  dplyr::summarise(
+    sup_ten_upa = sum(supertotal, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ten_may <- upa_ten_sup |>
+  dplyr::arrange(
+    identificador,
+    dplyr::desc(sup_ten_upa),
+    tenencia
+  ) |>
+  dplyr::group_by(identificador) |>
+  dplyr::slice(1) |>
+  dplyr::ungroup() |>
+  dplyr::transmute(
+    identificador,
+    tenencia_mayoritaria = tenencia
+  )
+
+upa_sup <- base_terr |>
+  dplyr::group_by(identificador) |>
+  dplyr::summarise(
+    sup_upa = sum(supertotal, na.rm = TRUE),
+    peso = dplyr::first(peso),
+    .groups = "drop"
+  )
+
+upa_final <- upa_sup |>
+  dplyr::left_join(
+    ten_may,
+    by = "identificador"
+  ) |>
+  dplyr::filter(
+    !is.na(tenencia_mayoritaria)
+  )
+
+upa_tenencia_sup <- upa_final |>
+  dplyr::group_by(tenencia_mayoritaria) |>
+  dplyr::summarise(
+    `Superficie (ha)` = sum(sup_upa * peso, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    `Porcentaje (%)` =
+      100 *
+      `Superficie (ha)` /
+      sum(`Superficie (ha)`, na.rm = TRUE)
+  ) |>
+  dplyr::arrange(
+    dplyr::desc(`Porcentaje (%)`)
+  ) |>
+  dplyr::rename(
+    Categoría = tenencia_mayoritaria
+  )
+
+fila_total <- upa_tenencia_sup |>
+  dplyr::summarise(
+    Categoría = "Total",
+    `Superficie (ha)` = sum(`Superficie (ha)`, na.rm = TRUE),
+    `Porcentaje (%)` = 100
+  )
+
+resumen_tenencia <- dplyr::bind_rows(
+  upa_tenencia_sup,
+  fila_total
+)
+
+tabla_usc(
+  resumen_tenencia,
+  align = c("l", "r", "r"),
+  digits = 2,
+  font_size = 9
+) |>
+  nota_tabla(
+    nota = "La tenencia predominante corresponde al tipo de tenencia que concentra la mayor superficie de la UPA, calculada con la superficie total y el factor de expansión de la ESPAC 2022.",
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```
+
+Por otro lado, @tbl-sunac-tabla-mediana-tenencia se construyó a partir del módulo de uso y tenencia de la tierra de la ESPAC 2022. En primer lugar, se identificó la tenencia predominante dentro de cada unidad de producción agropecuaria (UPA), definida como aquella que concentra la mayor superficie acumulada de terrenos en la unidad. Posteriormente, se consolidó la superficie total de cada UPA mediante la suma de la variable supertotal correspondiente a todos sus terrenos. 
+
+Los resultados muestran que el régimen de propiedad constituye la forma de tenencia predominante en el país, con 36.065 UPA dentro de la muestra analizada. En este grupo, la mediana de superficie alcanza 1,15 hectáreas, mientras que la media asciende a 19,54 hectáreas. La diferencia entre ambas medidas evidencia una fuerte asimetría en la distribución de la tierra, donde un conjunto reducido de explotaciones de gran tamaño incrementa significativamente el promedio, mientras que la mayoría de unidades productivas se concentra en superficies relativamente pequeñas.
+
+El régimen de arrendamiento registra 1.678 UPA, con una mediana de 1,35 hectáreas y una media de 7,47 hectáreas. Aunque las unidades arrendadas presentan una mediana ligeramente superior a las unidades en propiedad, su superficie promedio resulta menor, lo que sugiere una menor presencia de explotaciones extensivas dentro de esta modalidad.
+
+En el caso de la aparcería o al partir, se contabilizan 357 UPA, con una mediana de 0,77 hectáreas y una media de 69,11 hectáreas. Esta elevada diferencia entre media y mediana revela una distribución extremadamente concentrada, influida por un número reducido de explotaciones de gran tamaño. Una situación similar se observa en las categorías de litigio y otras formas de tenencia, cuyas medias alcanzan 92,68 y 95,59 hectáreas, respectivamente, pese a registrar medianas inferiores a dos hectáreas.
+
+Las formas de tenencia especiales presentan una menor participación dentro de la muestra. El régimen comunero registra 442 UPA y destaca por presentar una mediana relativamente más alta (3,20 hectáreas) y una media de 38,13 hectáreas. Por su parte, las categorías de herencia, usufructo y posesión muestran medianas inferiores a 1,10 hectáreas y medias relativamente reducidas. 
+
+```{r}
+#| label: tbl-sunac-tabla-mediana-tenencia
+#| tbl-cap: "Resumen muestral de UPA, mediana y media de superficie según régimen predominante de tenencia, ESPAC 2022"
+#| echo: false
+#| message: false
+#| warning: false
+
+sunac_limpio <- sunac2022 |>
+  dplyr::transmute(
+    identificador = as.character(Identificador),
+    tenencia_raw = stringr::str_squish(
+      as.character(
+        haven::as_factor(su_tenencia, levels = "labels")
+      )
+    ),
+    supertotal = as.numeric(supertotal)
+  ) |>
+  dplyr::mutate(
+    tenencia = stringr::str_to_sentence(
+      tolower(tenencia_raw)
+    ),
+    tenencia = dplyr::case_when(
+      tenencia == "Poseción" ~ "Posesión",
+      TRUE ~ tenencia
+    )
+  ) |>
+  dplyr::filter(
+    !is.na(identificador),
+    identificador != "",
+    !is.na(tenencia),
+    tenencia != "",
+    is.finite(supertotal),
+    supertotal > 0
+  )
+
+upa_tenencia_sup_muestral <- sunac_limpio |>
+  dplyr::group_by(
+    identificador,
+    tenencia
+  ) |>
+  dplyr::summarise(
+    area_ten_upa = sum(supertotal, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+tenencia_predominante_muestral <- upa_tenencia_sup_muestral |>
+  dplyr::arrange(
+    identificador,
+    dplyr::desc(area_ten_upa),
+    tenencia
+  ) |>
+  dplyr::group_by(identificador) |>
+  dplyr::slice(1) |>
+  dplyr::ungroup()
+
+upa_total_muestral <- sunac_limpio |>
+  dplyr::group_by(identificador) |>
+  dplyr::summarise(
+    area_upa = sum(supertotal, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+upa_final_muestral <- upa_total_muestral |>
+  dplyr::left_join(
+    tenencia_predominante_muestral |>
+      dplyr::select(
+        identificador,
+        tenencia
+      ),
+    by = "identificador"
+  ) |>
+  dplyr::filter(
+    !is.na(tenencia)
+  )
+
+orden_tenencia <- c(
+  "Dueño",
+  "Arrendatario",
+  "Aparcería o al partir",
+  "Comunero",
+  "Invasión",
+  "Litigio",
+  "Herencia",
+  "Usufructo",
+  "Posesión",
+  "Otro"
+)
+
+upa_final_muestral <- upa_final_muestral |>
+  dplyr::mutate(
+    tenencia = factor(
+      tenencia,
+      levels = orden_tenencia
+    )
+  )
+
+tabla_mediana_tenencia <- upa_final_muestral |>
+  dplyr::group_by(tenencia) |>
+  dplyr::summarise(
+    UPA = dplyr::n(),
+    `Mediana (ha)` = median(area_upa, na.rm = TRUE),
+    `Media (ha)` = mean(area_upa, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::arrange(tenencia)
+
+fila_total_muestral <- upa_final_muestral |>
+  dplyr::summarise(
+    tenencia = "Total",
+    UPA = dplyr::n(),
+    `Mediana (ha)` = median(area_upa, na.rm = TRUE),
+    `Media (ha)` = mean(area_upa, na.rm = TRUE)
+  )
+
+tabla_mediana_tenencia <- tabla_mediana_tenencia |>
+  dplyr::bind_rows(fila_total_muestral) |>
+  dplyr::mutate(
+    tenencia = factor(
+      tenencia,
+      levels = c(orden_tenencia, "Total")
+    )
+  ) |>
+  dplyr::rename(
+    `Régimen de tenencia` = tenencia
+  )
+
+tabla_usc(
+  tabla_mediana_tenencia,
+  align = c("l", "r", "r", "r"),
+  digits = 2,
+  font_size = 9
+) |>
+  nota_tabla(
+    nota = "La tenencia predominante corresponde a la categoría con mayor superficie acumulada dentro de cada UPA, calculada a partir de la variable supertotal.",
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```
+
+Cada una de las categorías hasta aquí descritas implica diferentes niveles de seguridad y control de los agricultores sobre las tierras que trabajan, lo que puede influir en aspectos como la productividad. No obstante, es posible agregar esas formas de tenencia en tres grupos principales para simplificar el análisis.
+
+Propiedad o tenencia directa. Agrupamos aquí las categorías: dueño (quienes cuentan con un título de propiedad o documento legal equivalente para las tierras que trabajan), herencia (tierras en proceso de sucesión), usufructo y posesión (tenencia sin título formal, pero con reconocimiento pacífico del uso de las tierras).
+
+Arrendamiento y otros contratos de cesión. Incluye las categorías: arrendatario (alquilan la tierra, bajo contratos formales o informales, a cambio de una renta) y aparcero (trabajan la tierra a cambio de compartir una parte de la cosecha o su equivalente monetario con el propietario).
+
+Otros regímenes de tenencia. Incluyen las tierras gestionadas de manera colectiva por comunidades bajo la figura del comunero, donde los derechos de usufructo son asignados por la comunidad sin derecho a venta; las situaciones de invasión, en las que se ocupan tierras sin permiso legal; las tierras en litigio, sujetas a disputas legales sin resolución definitiva; y otras formas de tenencia @tbl-tenencia-tipo.
+
+```{r}
+#| label: tbl-tenencia-tipo
+#| tbl-cap: "Clasificación de tipos de tenencia de la tierra"
+#| echo: false
+#| message: false
+#| warning: false
+
+tabla_tenencia <- tibble::tribble(
+  ~`Tipos de tenencia`,                         ~Categorías,       ~Descripción,
+  "Tierras en propiedad o tenencia directa",    "Dueño",           "Propietario con título legal registrado de la tierra",
+  "Tierras en propiedad o tenencia directa",    "Herencia",        "Tierra adquirida a través de la sucesión hereditaria",
+  "Tierras en propiedad o tenencia directa",    "Usufructo",       "Derecho a usar y disfrutar la tierra sin ser propietario",
+  "Tierras en propiedad o tenencia directa",    "Posesión",        "Tenencia sin título legal, con aprovechamiento pacífico",
+  "Arrendamiento y otros contratos de cesión",  "Arrendatario",    "Arrienda la tierra mediante contrato",
+  "Arrendamiento y otros contratos de cesión",  "Aparcero",        "Trabaja en aparcería y comparte la producción con el dueño",
+  "Otros regímenes de tenencia",                "Comunero",        "Miembro de comunidad con acceso a tierra colectiva",
+  "Otros regímenes de tenencia",                "Invasión",        "Ocupación sin permiso ni derechos legales",
+  "Otros regímenes de tenencia",                "Litigio",         "Tierra en disputa legal",
+  "Otros regímenes de tenencia",                "Otra",            "Otras formas no clasificadas"
+)
+
+tabla_usc(
+  tabla_tenencia,
+  align = c("l", "l", "l"),
+  digits = 0,
+  font_size = 8
+) |>
+  nota_tabla(
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```
+
+Para precisar los conceptos, hay que señalar que en algunos documentos se utiliza el término “tipos de tenencia” para referirse, en realidad, a distintos tipos de propiedad. Un ejemplo de ello se encuentra en el siguiente texto:
+
+> La Constitución ecuatoriana reconoce los siguientes tipos de tenencia: pública, privada, comunal, estatal, asociativa, cooperativa y mixta. La diferencia entre la tierra pública y la estatal es que en la primera el derecho de uso de la tierra pertenece a los ciudadanos, mientras que en la segunda pertenece a las instituciones gubernamentales. Hasta la fecha, los últimos datos disponibles sobre la distribución del tipo de tenencia de la tierra son los del último censo agrícola de 2000, según los cuales la mayor parte de la tierra (94 %) es de propiedad privada, el 4,9 % es comunal y solo el 0,6 % es estatal [@foundation_land_2025].
+
+Con el fin de evitar equívocos, en esta investigación reservamos la expresión tipos o formas de tenencia para designar la relación existente entre el usuario de las tierras y su propietario; es decir, los derechos que el agricultor, titular de la explotación agropecuaria, tiene sobre las tierras que trabaja. Es importante diferenciar esta noción de los tipos de propiedad, que aluden al régimen jurídico de dominio sobre la tierra. Esta distinción resulta crucial para el análisis, dado que la tenencia puede variar dentro de cada tipo de propiedad.
+
+De conformidad con la Constitución de la República del Ecuador de 2008 y la Ley Orgánica de Tierras Rurales y Territorios Ancestrales (LOTRTA), el ordenamiento jurídico ecuatoriano reconoce diversas formas de propiedad que estructuran y condicionan los esquemas de tenencia de la tierra rural. Estas formas de propiedad, identificadas a partir de la normativa vigente y de la literatura especializada, constituyen el marco legal dentro del cual se definen los derechos y obligaciones asociados al acceso, uso y control de la tierra.
+
+En particular, el artículo 85 de la LOTRTA define la propiedad rural como la titularidad de dominio que confiere el derecho a usar, gozar y disponer de la tierra, de conformidad con la Constitución y la ley, siempre que esta posea aptitud agrícola, pecuaria, forestal, silvícola o acuícola, así como para fines de conservación agraria, recreación y ecoturismo. Esta definición legal establece el fundamento normativo sobre el cual se articulan las distintas modalidades de propiedad observadas en el ámbito rural ecuatoriano, conforme se presentan a continuación:
+
+*Propiedad estatal*. Constituida por las tierras de propiedad de las entidades del sector público, incluyendo las tierras rurales que formando parte del territorio nacional, carecen de dueño.
+
+*Propiedad privada*. La adquirida por los particulares, personas naturales o jurídicas provenientes de adjudicaciones realizadas por el Estado o adquiridas en la forma prevista en la legislación civil.
+
+*Propiedad asociativa*. La adquirida para uso y aprovechamiento por las distintas formas de organización social reconocidas legalmente bajo el principio de solidaridad.
+
+*Propiedad cooperativa*. La obtenida por las organizaciones del sistema cooperativo nacional, contempladas en el régimen de la economía popular y solidaria.
+
+*Propiedad mixta*. La adquirida en copropiedad por el Estado y una persona natural o jurídica, nacional o extranjera, de conformidad con la Ley.
+
+*Propiedad comunitaria*. La que ha sido adjudicada y titulada en favor de comunas, comunidades, pueblos y nacionalidades [@asamblea_nacional_del_ecuador_ley_2016].
+
+## Productividad agrícola
+
+### Concepto
+
+A nivel general, la productividad se refiere a la relación entre los resultados obtenidos y los recursos utilizados, midiendo la eficiencia de una unidad productiva. Un incremento de la productividad puede lograrse a través de la optimización de procesos, lo que implica mejorar el rendimiento con los mismos recursos mediante la reducción de costos, la mejora en la eficiencia y la implementación de tecnologías más avanzadas. Asimismo, el desarrollo de nuevos productos con mayor valor agregado puede aumentar el rendimiento, generando mejores resultados sin incrementar los insumos empleados [@coll_evaluacion_2000].
+
+En el ámbito agrícola, según @villota_medicion_2020, la productividad se define como la relación entre la producción obtenida y los insumos utilizados: tierra, mano de obra, capital fijo e insumos corrientes, como fertilizantes o energía. Esta métrica es fundamental, ya que influye en la disponibilidad de alimentos, los precios y el bienestar de la población. Diversos factores determinan la productividad agrícola, entre ellos el acceso a tecnologías modernas, la disponibilidad de recursos naturales, la calidad del suelo, las condiciones climáticas y la infraestructura rural. La interacción entre estos factores resulta crucial; en concreto, la adopción de nuevas tecnologías y el nivel educativo de la población son elementos clave en el incremento de la productividad del sector agrícola [@perez-fernandez_alisis_2018].
+
+La literatura sobre la productividad agrícola abarca diversas perspectivas, principalmente la productividad de la tierra, la productividad del trabajo y la productividad total de los factores (PTF). La productividad de la tierra se refiere a la producción obtenida por unidad de superficie. Algunos estudios han identificado que factores como las características del suelo, el gasto público en infraestructuras y la adopción de tecnologías modernas son determinantes clave [@vera_productividad_2022], presentando además grandes diferencias según territorios y zonas agroecológicas [@valderrama_agricultura_2019]. Las aportaciones de Hayami y Ruttan sobre la productividad de la tierra se centran en la hipótesis de la innovación inducida, según la cual el progreso técnico en la agricultura está influenciado por la dotación de factores de cada país. Es decir, los países tienden a desarrollar o adoptar tecnologías que les permitan economizar el recurso más escaso, ya sea este la tierra o la mano de obra [@hayami_agricultural_1971].
+
+La productividad del trabajo mide el rendimiento por trabajador. Su nivel y evolución en el sector agrario están condicionados por la interacción entre los factores productivos tierra, trabajo y capital. Además, la tecnología y el nivel educativo de la población constituyen elementos clave para su desempeño [@perez-fernandez_alisis_2018].
+
+La productividad total de los factores (PTF) evalúa la eficiencia con la que se utilizan conjuntamente los insumos en la producción. El crecimiento de la productividad agrícola, medido a través de la PTF, permite aumentar la producción de alimentos sin utilizar más recursos [@galarza_productividad_2015].
+
+Para Ecuador, la literatura coincide en que existe una baja productividad agrícola, vinculada al limitado acceso a tecnologías modernas, apoyo financiero y capacitación. Además, factores como la calidad del suelo en la Sierra influyen de manera significativa [@ulloa_suelo_2014]. Con todo, la productividad ha mostrado mejoras en algunos productos (INEC, 2018), aunque persisten importantes desafíos [@calderon_no_2021].
+
+### Productividad agrícola en los países en vías de desarrollo
+
+La productividad agrícola constituye un eje central en esta investigación, especialmente en el contexto de los países en desarrollo como Ecuador, donde está estrechamente vinculada con el crecimiento económico, la seguridad alimentaria y el bienestar de la población rural. @gollin_chapter_2010 sostiene que los incrementos en la productividad agrícola en países en desarrollo se deben, en gran medida, a la adopción de innovaciones tecnológicas y a una mejor organización de los factores productivos. Estos avances se reflejan en el crecimiento de la productividad total de los factores (PTF), un indicador ampliamente utilizado para medir el progreso estructural del sector. No obstante, el ritmo de mejora ha sido desigual: mientras regiones como América Latina y Asia han mostrado importantes avances, África Subsahariana enfrenta un rezago considerable.
+
+Desde una óptica más teórica, @matsuyama_agricultural_1992 argumenta que la relación entre productividad agrícola y desarrollo económico depende en gran medida del grado de apertura de la economía. En países con economías cerradas, el aumento de la productividad agrícola tiende a impulsar el crecimiento; en cambio, en economías abiertas donde el sector agrícola es poco competitivo, esta relación puede debilitarse o incluso tornarse negativa. Esta afirmación subraya la importancia del contexto macroeconómico en el diseño de estrategias de desarrollo agrícola.
+
+Un estudio clásico de @johnston1961role refuerza esta visión al señalar que el crecimiento económico sostenido requiere una transformación profunda del sector agrícola. Basándose en el análisis de países del sur de Asia, los autores destacan el papel de las innovaciones tecnológicas y los cambios institucionales como motores fundamentales del incremento productivo a largo plazo.
+
+En cuanto a los factores que determinan la productividad, diversos estudios los han abordado desde distintas ópticas. Por ejemplo, @sahoo_subjective_2017 enfatizan que no se trata únicamente de incrementar la cantidad de recursos empleados, sino de mejorar su eficiencia. Su investigación, basada en percepciones de agricultores y comunidades rurales, revela que las políticas públicas desempeñan un papel decisivo en los resultados del sector.
+
+En la misma línea, @nin-pratt_agricultural_2008 realizan un análisis detallado sobre los motores del crecimiento agrícola en países en desarrollo. Concluyen que los incrementos en la eficiencia técnica y el progreso tecnológico son más determinantes que el simple aumento de insumos. Además, destacan la importancia de invertir en educación rural, infraestructura productiva y servicios de extensión agraria como estrategias clave para potenciar la productividad.
+
+Por otra parte, @fulginiti_agricultural_1998 analizan por qué ciertos países experimentan mejoras más rápidas en su productividad agrícola. Sus hallazgos indican que variables como las políticas de precios, el nivel de inversión pública en el agro y la cercanía económica con países desarrollados tienen una influencia significativa. Esto refuerza la idea de que tanto los factores internos como las dinámicas internacionales inciden en el desempeño agrícola. Por ello advierten que en varios países en desarrollo la productividad agrícola ha experimentado retrocesos en las últimas décadas, principalmente por la limitada adopción de tecnologías modernas y la persistencia de ineficiencias estructurales. Su estudio demuestra que, sin transformaciones significativas en los métodos de producción, resulta difícil lograr un progreso sostenible en el ámbito rural.
+
+En suma, la productividad agrícola debe entenderse como un fenómeno multifactorial que va más allá del rendimiento por hectárea o por trabajador. Está condicionada por variables como el acceso a tecnología, la calidad del capital humano, las políticas públicas, las condiciones institucionales y el contexto económico general. En el caso de Ecuador, donde persisten desafíos como la desigualdad en el acceso a la tierra, la escasa asistencia técnica y la débil inversión en innovación, se vuelve imperativo promover reformas estructurales que mejoren la eficiencia productiva. El fortalecimiento de la educación rural, la ampliación del acceso a tecnologías apropiadas y el impulso a políticas públicas integrales pueden contribuir a consolidar un sector agrícola más eficiente, inclusivo y sostenible.
+
+### Productividad agrícola y factores condicionantes; modelos teóricos y métodos cuantitativos para su estimación
+
+#### Función de producción Cobb-Douglas
+
+El modelo de producción Cobb-Douglas, aplicado al sector agrario, es un método de estimación económica que se basa en la hipótesis de que los ingresos totales de un agricultor se obtienen como resultado de la optimización de la producción, a través de la combinación óptima de los factores de producción: trabajo, capital, tierra y otros insumos. Durante décadas, su aplicación ha brindado información valiosa a agricultores, empresas y gobiernos sobre la eficiencia en la producción agrícola [@douglas_cobb-douglas_1976].
+
+Una de las fortalezas del modelo Cobb-Douglas radica en su flexibilidad, que permite adaptarlo a las diversas variables que influyen en la producción agrícola, como la fertilización, la irrigación, el uso de agroquímicos, las condiciones climáticas y los niveles de tecnología. Este modelo presenta la producción como una función de la combinación del trabajo y el capital empleados [@douglas_cobb-douglas_1976]. Estudios recientes han destacado que el modelo Cobb-Douglas es particularmente útil para evaluar los efectos de la tecnología y las políticas agrícolas, incluyendo subsidios, regulación de precios de los insumos y otras medidas de apoyo gubernamental [@chakraborty_determinants_2016].
+
+A pesar de sus ventajas, el modelo Cobb-Douglas presenta limitaciones. Por ejemplo, no captura adecuadamente la heterogeneidad entre agricultores ni los efectos a medio y largo plazo de los cambios en los factores de producción. Además, las elasticidades de producción se asumen constantes, lo que puede no ser realista [@solow_technical_1957]. No obstante, estas limitaciones pueden abordarse mediante modelos extendidos que incorporen factores adicionales, como los impactos del cambio climático y las políticas de conservación de los recursos naturales. Asimismo, la literatura resalta que factores como las infraestructuras rurales, el acceso al crédito y la capacitación técnica son determinantes cruciales para mejorar la eficiencia agrícola [@chakraborty_determinants_2016]. En este sentido, el modelo Cobb-Douglas permite cuantificar estos impactos, proporcionando una base sólida para la toma de decisiones.
+
+#### Frontera de producción de Farrell
+
+La frontera de producción de Farrell es un concepto fundamental en la economía de la producción, introducido por John Farrell en 1957. La frontera se describe como una curva que delimita la máxima cantidad de bienes o servicios que se pueden producir con una combinación dada de insumos. Se trata de una herramienta para evaluar la eficiencia técnica, definida como la capacidad de producir el máximo nivel posible de output con una cantidad fija de inputs [@farrell_measurement_1957]. Uno de los usos principales de la frontera de producción de Farrell es el análisis de los costos de producción, ya que este enfoque permite calcular el costo marginal (el costo de producir una unidad adicional de un bien) y el costo de oportunidad, que mide los beneficios perdidos al elegir una opción de producción en lugar de otra. Asimismo, el modelo de Farrell sirve de base a los métodos de Análisis Envolvente de Datos (DEA), ampliamente utilizados para evaluar la eficiencia relativa de distintas unidades de producción [@coelli_total_2005].
+
+En el contexto agrícola, la frontera de producción se basa en varios factores determinantes, como la calidad del suelo, la disponibilidad de agua, el nivel de tecnología y la cantidad de trabajo empleada. Estudios recientes han utilizado este modelo para evaluar la eficiencia de la producción agrícola en diferentes regiones. Por ejemplo, en América Latina, investigadores han encontrado que factores como la inversión en tecnología y la capacitación de los agricultores son esenciales para acercarse a la frontera de producción [@joshi_impacts_2022].
+
+#### Eficiencia técnica en la producción agrícola
+
+La eficiencia técnica se refiere a la cantidad de recursos que una unidad productiva necesita para obtener un determinado volumen de producción. La forma habitual de medirla es mediante la relación entre los costos y la cantidad de bienes o servicios producidos; cuanto menores sean los costos por unidad producida, mayor será la eficiencia técnica [@cachanosky_eficiencia_2012]. Las vías para aumentar la eficiencia técnica incluyen el uso de tecnologías más eficientes, la mejora de los procesos de producción, el aumento de la calidad de los productos y un uso más eficiente de los recursos. En este sentido, la tecnología desempeña un papel central, ya que la incorporación de máquinas automatizadas, robots y herramientas informáticas puede reducir costos y elevar la calidad de los productos [@galue_alisis_2013].
+
+La eficiencia técnica en la producción agrícola es el resultado de la aplicación de técnicas innovadoras que mejoran la productividad por unidad de superficie y/o por trabajador [@barajas_productivity_2023]. Algunas de estas técnicas incluyen la adecuada selección de cultivos, el uso eficiente de fertilizantes, la irrigación y el control de plagas [@perdomo_factores_2007].
+
+#### Modelos de frontera estocástica
+
+Los modelos de frontera estocástica (Stochastic Frontier Analysis, SFA) constituyen una herramienta para el análisis de la eficiencia técnica de la producción, basada en la teoría de la frontera de producción desarrollada inicialmente por Farrell en 1957. La idea central de esta teoría es que todas las unidades económicas se sitúan en relación con una frontera de producción, definida como una curva que representa la máxima cantidad de producción posible con los insumos empleados [@aigner_formulation_1977].
+
+La producción es modelada como una función de la cantidad de los diversos factores productivos (tierra, trabajo, capital, entre otros) y de un término de error compuesto por dos elementos: uno que captura las ineficiencias técnicas y otro que representa choques aleatorios fuera del control de las empresas. Este enfoque es particularmente útil en la agricultura, donde los resultados pueden variar significativamente debido a factores externos como las lluvias, las plagas o las políticas públicas [@kumbhakar_stochastic_2003]. En el contexto agrícola, los modelos SFA se utilizan para medir la eficiencia relativa de los agricultores y para identificar los determinantes de la ineficiencia. Por ejemplo, un estudio de @battese_model_1995 evaluó la eficiencia técnica de los productores de arroz en la India, destacando la importancia de la educación y el acceso al crédito como factores clave. Asimismo, investigaciones recientes en América Latina han mostrado cómo el acceso limitado a la tecnología y la fragmentación de la tierra afectan negativamente a la eficiencia técnica en países como Ecuador y Perú [@battese_model_1995; @bravo-ureta_technical_2012].
+
+### Productividad y tamaño de las unidades productivas
+
+#### La relación inversa entre productividad de la tierra y dimensión de las explotaciones
+
+Durante la segunda mitad del siglo XX, la literatura económica y agraria consolidó la existencia de una relación inversa entre productividad de la tierra y superficie de las unidades productivas como una regularidad empírica ampliamente aceptada. Este planteamiento no surgió como una abstracción teórica, sino a partir de observaciones realizadas en economías rurales caracterizadas por alta presión demográfica, escasez de tierra y abundancia de trabajo familiar. Los primeros estudios sistemáticos, desarrollados en contextos como India y Bangladesh, mostraban que las pequeñas explotaciones agrícolas tendían a registrar mayores niveles de producción por hectárea que las grandes propiedades, sentando así las bases empíricas de esta relación [@saini1971holding].
+
+La explicación de este fenómeno se apoyaba en la forma particular de organización productiva de las unidades campesinas. En ellas, el trabajo familiar desempeñaba un rol central, acompañado por un control directo del proceso productivo y una asignación cuidadosa de los insumos disponibles. La pequeña parcela se concebía como un espacio donde las decisiones productivas se tomaban a partir de un conocimiento detallado del terreno y de incentivos que reducían los costos de supervisión. Bajo estas condiciones, la relación inversa dejó de interpretarse como un simple resultado estadístico y pasó a entenderse como la expresión de una lógica productiva propia de las economías rurales tradicionales [@saini1971holding].
+
+Con el tiempo, esta evidencia fue elevada al estatus de regularidad económica y utilizada como fundamento para políticas de reforma agraria, programas de redistribución de la tierra y estrategias de desarrollo rural orientadas al fortalecimiento de la pequeña agricultura. La relación inversa se consolidó así no solo como un hallazgo empírico, sino como un punto de partida teórico y normativo que influyó de manera decisiva en el análisis de la eficiencia productiva del sector agrícola en los países en desarrollo [@hossain1977farm].
+
+El sustento teórico de esta interpretación se encontraba en la persistencia de estructuras productivas precapitalistas, caracterizadas por mercados laborales incompletos o poco desarrollados. En estos contextos, las familias rurales no disponían de alternativas estables para emplear su fuerza de trabajo fuera de la agricultura, por lo que la parcela se convertía en el principal espacio de absorción del trabajo familiar. Aun cuando la tierra era limitada, debía integrar una cantidad de trabajo superior a la que resultaría eficiente bajo criterios estrictamente capitalistas [@hossain1977farm].
+
+Esta intensificación del uso de la mano de obra familiar respondía tanto a restricciones estructurales como a estrategias de supervivencia. El bajo costo de oportunidad del trabajo incentivaba una dedicación intensiva a las labores agrícolas y una atención constante a cada etapa del proceso productivo. En este marco, la eficiencia no se medía en términos de rentabilidad del trabajo, sino a partir de la maximización del producto por unidad de superficie, lo que hacía coherente la mayor productividad de la tierra observada en las explotaciones pequeñas [@hossain1977farm].
+
+Desde esta perspectiva, la relación inversa encontraba su coherencia interna en la articulación entre estructura agraria, funcionamiento imperfecto de los mercados y decisiones productivas de los hogares rurales. La pequeña unidad productiva emergía no solo como resultado de la fragmentación de la tierra, sino como una respuesta racional a un entorno económico en el que el trabajo constituía el factor relativamente más abundante [@hossain1977farm]. Este patrón productivo se reforzaba mediante un uso intensivo de insumos tradicionales, como el abono orgánico, la selección y reutilización de semillas y una supervisión permanente de los cultivos. La elevada productividad por hectárea no era consecuencia de un acceso privilegiado a capital o tecnología, sino del esfuerzo concentrado sobre una superficie reducida, donde cada decisión tenía un impacto directo en el resultado final [@hossain1977farm].
+
+Como resultado, las pequeñas explotaciones alcanzaban rendimientos brutos por hectárea superiores a las de mayor tamaño. Esta ventaja, sin embargo, no derivaba de la existencia de deseconomías de escala, sino de una mayor densidad de trabajo y de un control más estrecho del proceso productivo, que permitía reducir pérdidas y realizar ajustes continuos frente a condiciones cambiantes. En estos contextos, la productividad de la tierra se convirtió en el principal indicador de desempeño, reforzando empíricamente la validez de la relación inversa mientras se mantuvieron estos supuestos estructurales [@hossain1977farm].
+
+No obstante, este aparente éxito productivo ocultaba una dimensión menos visible del proceso agrícola. La intensificación del trabajo familiar, si bien elevaba el producto por hectárea, se traducía en niveles reducidos de productividad laboral. El valor generado por trabajador tendía a ser bajo, no por falta de esfuerzo o conocimiento, sino porque el trabajo se distribuía sobre parcelas demasiado pequeñas para absorberlo de manera eficiente [@gollin2018farm].
+
+De este modo, la lógica que maximizaba la productividad de la tierra implicaba, al mismo tiempo, rendimientos decrecientes del trabajo. Cada hora adicional aportaba incrementos cada vez menores al producto total, configurando un equilibrio funcional para la reproducción del hogar campesino, pero limitado desde una perspectiva económica más amplia [@gollin2018farm]. Esta tensión permaneció durante largo tiempo en un segundo plano del debate académico, hasta que el análisis comenzó a incorporar con mayor énfasis la productividad del trabajo como criterio central para evaluar el desempeño del sector agrícola [@gollin2018farm].
+
+#### Matices y precisiones a esa relación
+
+La sofisticación progresiva de las herramientas de captura de datos ha inaugurado un debate crítico sobre la naturaleza de la Relación Inversa (RI) entre el tamaño de la explotación y la productividad de la tierra. No obstante, lejos de quedar relegada a un artefacto estadístico del pasado, la evidencia científica más reciente confirma que la RI es una realidad empírica presente en diversas latitudes del mundo agrícola contemporáneo [@helfand2021inverse].
+
+A pesar de las predicciones que sugerían que la modernización y la adopción tecnológica diluirían la ventaja productiva de las pequeñas explotaciones, los datos del inicio del siglo XXI desmienten esta hipótesis. En el caso de India, el análisis de las encuestas nacionales muestra que las pequeñas unidades siguen exhibiendo una productividad por hectárea superior a la de las grandes explotaciones [@chand2011farm]. Este fenómeno no se limita a economías de subsistencia; incluso en potencias agrícolas como Brasil, la relación inversa entre el tamaño y la productividad de la tierra se ha mantenido constante y robusta en todas sus macro-regiones durante las últimas décadas [@helfand2021inverse].
+
+Es imperativo precisar que el uso de tecnologías de alta precisión, como el GPS, no ha invalidado sistemáticamente la existencia de la RI. Si bien se han identificado sesgos de reporte (donde los pequeños productores tienden a sobreestimar su superficie), en múltiples contextos el control mediante mediciones objetivas ha confirmado o incluso reforzado la intensidad de la relación inversa observada en los indicadores de producción bruta [@savastano2017farm; @garzon2020farm]. Por tanto, la RI debe entenderse como un fenómeno que sobrevive al rigor metodológico, sugiriendo que existen mecanismos económicos subyacentes, como las imperfecciones en los mercados de factores, que mantienen la superioridad del rendimiento por hectárea en unidades pequeñas [@helfand2021inverse; @borrero2025land].
+
+La distinción fundamental que el debate exige no es si la relación existe, sino bajo qué métrica se manifiesta. La literatura técnica subraya que la RI es el patrón dominante cuando se utilizan indicadores de Producción Bruta (Gross Output), tales como rendimientos físicos o valor bruto por hectárea [@garzon2020farm]. En Nigeria, se constata una relación en forma de "U", donde la RI impera de manera absoluta en el rango de 0 a 22 hectáreas antes de encontrar un punto de inflexión [@helfand2021inverse]. En Perú, estudios agregados a nivel distrital ratifican que una reducción en el tamaño promedio de la UPA se asocia directamente con incrementos en la Productividad Total de los Factores (PTF) [@borrero2025land].
+
+En síntesis, la relación inversa entre productividad de la tierra y superficie no es una simple consecuencia de deficiencias en los datos. Sigue constatándose hoy como un hecho estilizado fundamental en el desarrollo rural [@gollin2018farm; @garzon2020farm]. La verdadera "precisión" que aporta la literatura moderna es la identificación de una no-monotonicidad (se refiere a detectar que la relación entre dos variables no sigue siempre una sola dirección a lo largo de todo su rango), la productividad tiende a caer conforme la UPA crece (RI), pero puede volver a ascender en escalas muy superiores gracias a economías de escala mecánicas y gestión profesionalizada, describiendo curvas en forma de "U" o modelos "Directo-Inverso-Directo" [@savastano2017farm]. Sin embargo, para el espectro de la pequeña y mediana agricultura que domina el mundo en desarrollo, la ventaja del rendimiento por área de la pequeña explotación permanece como una constante documentada y vigente [@garzon2020farm].
+
+#### De la productividad de la tierra a la productividad total de los factores
+
+Este proceso de revisión empírica y metodológica dio paso a un cambio de paradigma aún más profundo, marcado por el desplazamiento progresivo de los indicadores parciales de desempeño hacia medidas integrales de eficiencia productiva. En lugar de centrarse exclusivamente en el rendimiento por hectárea, la atención comenzó a trasladarse hacia la productividad total de los factores, entendida como la capacidad de una unidad productiva para transformar de manera conjunta tierra, trabajo, capital e insumos intermedios en producto. Este giro analítico, consolidado en la literatura más reciente, implicó una redefinición sustantiva de lo que se entiende por eficiencia agrícola [@omotilewa2021revisit].
+
+Desde esta perspectiva, se volvió evidente que la persistencia de la relación inversa dependía en gran medida del indicador utilizado. Mientras dicha relación continuaba apareciendo con relativa fuerza cuando se analizaban medidas de producción bruta, su comportamiento se modificaba de manera significativa al incorporar indicadores que descontaban los costos asociados al uso de insumos, capital y tecnología. Al pasar de rendimientos físicos a valores netos o a medidas de eficiencia global, la supuesta superioridad productiva de las pequeñas explotaciones tendía a debilitarse e incluso a invertirse, revelando una estructura de costos menos favorable y limitaciones en la capacidad de generar valor agregado [@borrero2025land].
+
+Este cambio de enfoque permitió visibilizar con mayor claridad las diferencias estructurales entre sistemas productivos tradicionales y modernos. En contextos agrícolas altamente capitalizados, la eficiencia dejó de depender de la intensidad del trabajo familiar y pasó a estar asociada a la capacidad de adoptar tecnologías, mecanización y prácticas de gestión avanzadas. En este sentido, la evidencia proveniente de regiones agrícolas modernas, como las observadas en Brasil, resulta particularmente ilustrativa. Allí se identifica una relación directa entre el tamaño de la unidad productiva y la productividad total de los factores, donde las explotaciones de mayor escala muestran una ventaja sistemática en términos de eficiencia global [@garzon2020farm].
+
+Las unidades productivas grandes destacan por su capacidad para incorporar tecnologías intensivas en capital, optimizar el uso de maquinaria, acceder a financiamiento y beneficiarse de economías de escala en la gestión de insumos y la comercialización. En contraste, las unidades pequeñas, fuertemente dependientes del trabajo familiar, enfrentan restricciones estructurales que limitan su desempeño cuando la eficiencia se evalúa de manera integral. Así, el énfasis en la productividad total de los factores no solo reconfigura la lectura empírica de la relación entre tamaño y productividad, sino que también redefine el marco conceptual desde el cual se analizan los procesos de modernización agrícola y transformación estructural del sector [@borrero2025land].
+
+#### La compleja relación entre productividad y tamaño de las explotaciones:
+
+La literatura reciente ha ido abandonando la búsqueda de relaciones simples y lineales para reconocer la complejidad inherente a los sistemas productivos agrícolas. En lugar de asumir una relación monótona entre tamaño y productividad, la evidencia más reciente sugiere que el desempeño productivo responde a dinámicas no lineales, donde los efectos del tamaño varían según el contexto, el nivel tecnológico y, de manera crucial, la capacidad de gestión del productor [@omotilewa2021revisit].
+
+En este marco, diversos estudios han documentado la existencia de trayectorias productivas con forma de curva en U. La evidencia empírica proveniente de países como Nigeria y Kenia muestra que, en una primera etapa, la productividad por hectárea tiende a disminuir a medida que aumenta el tamaño de la unidad productiva, reproduciendo el patrón clásico de la relación inversa; sin embargo, una vez superado un punto de inflexión, situado en umbrales que oscilan aproximadamente entre 11 y 22 hectáreas, la productividad vuelve a incrementarse, impulsada por la aparición de economías de escala, una mejor organización del trabajo y una mayor adopción de tecnologías [@savastano2017farm].
+
+Sobre esta base, se ha propuesto el modelo denominado directo–inverso–directo, que introduce una lectura más sofisticada de la heterogeneidad productiva. Este enfoque sugiere que la forma de la relación entre tamaño y productividad no es única, sino que depende de la eficiencia y la capacidad administrativa del agricultor. Para productores con baja capacidad de gestión, la relación adopta la forma de una U invertida, donde el crecimiento del tamaño conduce rápidamente a pérdidas de eficiencia. En contraste, para productores altamente eficientes, la relación se asemeja a una U, en la que el aumento del tamaño, tras una fase inicial de ajuste, permite aprovechar ventajas organizativas, tecnológicas y financieras. Bajo esta perspectiva, el factor decisivo deja de ser la superficie en sí misma y pasa a ser la habilidad del productor para coordinar recursos, tomar decisiones y adaptarse a entornos productivos más complejos [@savastano2017farm].
+
+La revisión de la literatura se refuerza al considerar las distintas trayectorias de entrada y expansión en la agricultura. Esta distingue entre agricultores que escalan progresivamente desde la pequeña producción y aquellos inversionistas, con frecuencia de origen urbano, que ingresan directamente a la actividad agrícola en escalas mayores. Los productores que escalan logran alcanzar niveles de eficiencia elevados en tamaños relativamente menores, cercanos a las 11 hectáreas, gracias al conocimiento acumulado del ecosistema productivo, los cultivos y las dinámicas locales. En cambio, quienes entran directamente en escalas superiores enfrentan mayores desafíos de aprendizaje y coordinación, lo que retrasa la obtención de ganancias de eficiencia [@omotilewa2021revisit].
+
+A manera de síntesis, estas aportaciones redefinen el debate sobre tamaño y productividad, desplazándolo desde una comparación estática hacia un análisis dinámico y heterogéneo. La productividad emerge, así, como el resultado de interacciones entre escala, capacidades de gestión y trayectorias productivas, un enfoque que resulta especialmente relevante para comprender realidades agrarias diversas y procesos de transición estructural [@omotilewa2021revisit].
+
+#### La dimensión estructural: desigualdad en la distribución de la tierra y productividad
+
+La literatura actual se proyecta hacia una lectura estructural del desarrollo, en la que la distribución de la tierra deja de ser un asunto meramente sectorial para convertirse en un determinante de la eficiencia económica agregada. Desde esta perspectiva, la desigualdad en el acceso a la tierra no solo configura relaciones sociales asimétricas, sino que también introduce distorsiones persistentes en la asignación de los factores productivos, afectando el desempeño global de la economía rural [@vollrath2007land].
+
+En este sentido, se ha documentado una correlación negativa robusta entre niveles extremos de desigualdad en la distribución de la tierra y la productividad total de los factores a escala distrital o nacional. Cuando la estructura agraria adopta una forma bimodal, caracterizada por la coexistencia de grandes latifundios con amplios contingentes de minifundios, los recursos tienden a asignarse de manera ineficiente. Las grandes propiedades no siempre utilizan la tierra con la intensidad óptima, mientras que las pequeñas unidades enfrentan severas restricciones de capital, tecnología y acceso a mercados, lo que limita su capacidad de escalar y mejorar su eficiencia. El resultado es una sub asignación sistémica que reduce la productividad agregada, incluso cuando existen avances tecnológicos disponibles [@borrero2025land].
+
+Desde este enfoque, la desigualdad en la distribución de la tierra actúa como un freno estructural al desarrollo, al impedir que los factores productivos fluyan hacia las unidades con mayor potencial de eficiencia. La baja movilidad de la tierra, combinada con fallas en los mercados de crédito y de seguros, refuerza equilibrios de bajo desempeño que se reproducen en el tiempo. Así, la ineficiencia no es atribuible únicamente a decisiones individuales de los productores, sino a una arquitectura institucional que condiciona las trayectorias productivas posibles [@omotilewa2021revisit].
+
+Las implicaciones de política que se desprenden de este análisis son sustantivas. La redistribución de la tierra no puede entenderse exclusivamente como un acto de justicia social, sino también como una intervención orientada a mejorar la eficiencia técnica y el desempeño agregado del sector agrícola. No obstante, esta estrategia solo resulta efectiva si va acompañada de políticas complementarias que aseguren al nuevo propietario acceso al crédito, a la tecnología, a la asistencia técnica y a los mercados. En ausencia de estos mecanismos, la redistribución corre el riesgo de reproducir la denominada trampa de la pequeña escala, en la que las unidades redistribuidas permanecen atrapadas en niveles bajos de productividad [@omotilewa2021revisit].
+
+De este modo, la dimensión estructural del debate conecta la microeconomía de la unidad productiva con la macroeconomía del desarrollo, mostrando que la eficiencia agrícola, la equidad en la distribución de la tierra y el crecimiento económico no son objetivos contradictorios, sino procesos profundamente interdependientes. Esta lectura resulta clave para comprender por qué las políticas agrarias deben ser evaluadas no solo por sus efectos distributivos inmediatos, sino por su capacidad de transformar de manera sostenida la estructura productiva y el potencial de desarrollo de las economías rurales [@borrero2025land].
+
+
+
+
+

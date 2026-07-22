@@ -1,0 +1,237 @@
+# Capítulo V: Metodología y fuentes
+
+```{r}
+#| label: setup-capitulo-V
+#| include: false
+
+source(file.path("R", "paths.R"))
+source(project_path("R", "00-setup.R"))
+source(project_path("R", "01-functions.R"))
+```
+
+## Diseño metodológico
+
+La investigación adopta un enfoque cuantitativo, aplicado y no experimental para examinar la asociación entre el régimen predominante de tenencia de la tierra, la productividad agropecuaria y la eficiencia técnica de las UPA del Ecuador continental. El diseño combina un componente descriptivo con tres familias de modelos econométricos: mínimos cuadrados ordinarios (OLS), modelos lineales multinivel y análisis de frontera estocástica (SFA). Esta combinación permite estudiar asociaciones promedio, heterogeneidad provincial y eficiencia técnica bajo supuestos paramétricos complementarios [@coelli_total_2005; @aigner_formulation_1977; @battese_model_1995].
+
+El estudio es transversal porque utiliza observaciones correspondientes a 2022. Las variables no fueron asignadas ni manipuladas y la ESPAC no sigue a las mismas UPA a través del tiempo. Por esta razón, los coeficientes se interpretan como asociaciones condicionadas y no como efectos causales de la tenencia o de las prácticas tecnológicas. El término *efecto* se reserva para los componentes definidos por la especificación estadística —por ejemplo, el intercepto aleatorio provincial— y no implica identificación causal [@wooldridge_introductory_2020].
+
+La unidad de análisis es la UPA, definida como el conjunto de terrenos y medios de producción agropecuaria administrados bajo una misma dirección técnica y económica. El análisis se desarrolla en cuatro etapas: integración y validación de los módulos de la encuesta; construcción de la producción económica, la tenencia predominante y las covariables; caracterización descriptiva; y estimación comparativa de los modelos de productividad y eficiencia.
+
+## Fuente de información
+
+La fuente principal es la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, elaborada por el Instituto Nacional de Estadística y Censos (INEC). La encuesta reúne información sobre personas productoras, superficie y uso de la tierra, cultivos, producción pecuaria, empleo, tecnologías y localización. Su estructura modular permite integrar características institucionales, productivas, sociodemográficas y territoriales a nivel de UPA [@espac_encuesta_2013].
+
+La investigación se circunscribe al Ecuador continental. Galápagos se excluye por sus condiciones ecológicas, normativas y productivas particulares. Para la construcción de la base se utilizaron los módulos necesarios para obtener el identificador de la UPA, superficie, regímenes de tenencia, producción física y su valorización, trabajo, edad y educación de la persona productora, acceso a internet, provincia y uso de riego, fertilizantes y plaguicidas.
+
+La ESPAC presenta ventajas importantes: cobertura nacional, levantamiento oficial y disponibilidad simultánea de variables de tenencia y producción. También impone restricciones. La información es transversal y parcialmente declarativa; no contiene con igual detalle la calidad del suelo, las condiciones microclimáticas, las cláusulas contractuales de cada forma de acceso, la inversión acumulada ni toda la composición tecnológica de las UPA. Estas limitaciones se incorporan a la interpretación y descartan afirmaciones causales.
+
+## Construcción y control de la base analítica
+
+La base utilizada por los modelos es `base_final_v1.1.csv`, producto del pipeline reproducible de integración de la ESPAC 2022. Los módulos se articularon mediante `Identificador`, clave de la UPA. El proceso verificó la validez de los identificadores, la unicidad de los registros en el nivel requerido, los dominios de las variables y la consistencia de las unidades antes de agregar la información.
+
+La ausencia de información no se recodificó automáticamente como cero. Cada modelo aplica criterios de completitud acordes con sus variables. En particular, los indicadores tecnológicos distinguen `SI`, `NO`, `NO_APLICA` y ausencia real. Las muestras econométricas se restringen a UPA clasificadas `SI` o `NO` en riego, fertilizantes y plaguicidas; `NO_APLICA` y los valores faltantes quedan fuera del universo comparable de esas estimaciones.
+
+El pipeline completo utilizado para la importación, depuración, homologación, integración y construcción de la base analítica se presenta en el Anexo [2]. Este incluye la secuencia de procesamiento, los criterios de selección de observaciones, la construcción de las variables y los controles aplicados antes de la estimación de los modelos.
+
+### Régimen predominante de tenencia
+
+Una UPA puede contener terrenos sujetos a regímenes diferentes. Para obtener una variable analítica única se agregaron las superficies de cada modalidad dentro de la UPA y se calculó su participación en el área total registrada por tenencia. Luego se asignó como predominante la categoría con mayor proporción de superficie. Las modalidades originales se consolidaron en tres grupos:
+
+- **Propiedad:** conjunto operacional de modalidades agrupadas en la base bajo la variable `dueño`.
+- **Arrendamiento o aparcería:** superficies obtenidas mediante estas modalidades de acceso; constituye la categoría de referencia de los modelos.
+- **Tenencias especiales:** formas comunales y otras situaciones especiales, incluidas posesiones sin título o tierras en conflicto según la clasificación consolidada.
+
+La variable resultante, `clase.mayoria`, simplifica arreglos múltiples y permite estimar contrastes homogéneos. No debe interpretarse como una descripción exhaustiva de la seguridad jurídica ni de las condiciones contractuales de cada UPA [@deininger_tenure_2006; @fenske_land_2011].
+
+### Valor económico de la producción
+
+Antes de iniciar el análisis estadístico, fue necesario construir la variable de producción en términos monetarios, debido a que la ESPAC reporta la información productiva principalmente en unidades físicas. Para ello, se desarrolló un procedimiento sistemático y reproducible de identificación, recopilación, depuración y homologación de precios agropecuarios correspondientes a 2022, con el propósito de garantizar la coherencia y comparabilidad de los valores utilizados en la construcción de las bases analíticas.
+
+En primer lugar, se realizó una extracción automatizada de información oficial del Sistema de Información Pública Agropecuaria (SIPA) del Ministerio de Agricultura y Ganadería del Ecuador. Mediante técnicas de extracción web y descarga masiva de archivos en formato Excel, se recopilaron series históricas procedentes de diferentes fuentes institucionales, entre ellas precios al productor, precios agroindustriales, precios pecuarios, mercados mayoristas, bodegas comerciales y precios internacionales de referencia. En total, se procesaron más de veinticinco bases de datos con estructuras, formatos y unidades de medida heterogéneos.
+
+Posteriormente, las bases fueron importadas y sometidas a un proceso de homologación estructural. Este procedimiento comprendió la estandarización de los nombres de las variables y los productos, la eliminación de caracteres no numéricos, la conversión de formatos y la normalización de las unidades físicas. Cuando los precios se encontraban expresados por presentaciones comerciales, como sacos, quintales, cajas o libras, se aplicaron los factores de conversión correspondientes para expresarlos de manera consistente en dólares por kilogramo. Las transformaciones se realizaron de forma diferenciada según las características de cada producto y mercado.
+
+Una vez homologada la información, se seleccionaron exclusivamente los registros correspondientes a 2022 y se calcularon precios promedio anuales por producto mediante promedios simples, excluyendo las observaciones faltantes o inconsistentes. Como resultado, se obtuvo una base consolidada de precios promedio que sirvió como insumo para la valorización monetaria de la producción física registrada en la ESPAC.
+
+En los casos en que no se encontró información completa en las fuentes oficiales, se efectuó una búsqueda complementaria y sistemática en fuentes secundarias especializadas, como reportes sectoriales, boletines de mercado, publicaciones técnicas y registros de comercio agropecuario. Los valores obtenidos fueron contrastados y documentados, y se utilizaron únicamente cuando no existía una referencia oficial disponible, manteniendo criterios de consistencia respecto del producto, el periodo, la unidad de medida y la presentación comercial.
+
+La relación completa de los precios utilizados, sus fuentes, las unidades originales, los factores de conversión y los criterios de selección se presenta en el Anexo [1]. A partir de esta información, las cantidades físicas reportadas por la ESPAC se multiplicaron por sus respectivos precios de referencia. Posteriormente, los valores de los diferentes componentes agrícolas y pecuarios se agregaron a nivel de UPA para construir la variable `produccion_ec`.
+
+Esta variable representa el valor bruto estimado de la producción, no el ingreso neto ni el beneficio obtenido por cada UPA. Por tanto, no descuenta costos de producción, transporte o comercialización. Su construcción permite expresar productos heterogéneos en una unidad monetaria común y utilizarla posteriormente en el cálculo de los indicadores de productividad de la tierra y del trabajo.
+.
+
+### Indicadores de productividad
+
+La productividad de la tierra se calculó cuando la superficie declarada (`cg_superficie`) fue estrictamente positiva:
+
+$$
+PT_i=\frac{produccion\_ec_i}{cg\_superficie_i}.
+$$
+
+La productividad del trabajo se calculó cuando el número de trabajadores registrados (`eu_k1301`) fue estrictamente positivo:
+
+$$
+PL_i=\frac{produccion\_ec_i}{eu\_k1301_i}.
+$$
+
+Los dos indicadores son complementarios. El primero expresa valor de producción por hectárea; el segundo, valor por trabajador. No son medidas de productividad total de los factores y pueden responder de manera diferente a la escala y a la intensidad de los sistemas productivos.
+
+En OLS y multinivel, ambas respuestas se transformaron mediante $\ln(1+x)$, lo que conserva los ceros válidos y reduce la asimetría. La SFA utiliza la misma transformación funcional, pero se restringe adicionalmente a UPA con ambas productividades estrictamente positivas. Aunque la transformación $\ln(1+x)$ admite valores iguales a cero, esta restricción se aplicó para estimar la eficiencia únicamente entre unidades con producción y productividad observadas positivas, de modo que la distancia respecto de la frontera tenga una interpretación económica adecuada. En consecuencia, las fronteras estimadas corresponden a los indicadores de productividad dentro de esa submuestra y no a una función física de producción con cantidades separadas de todos los insumos.
+
+## Operacionalización de variables
+
+Las covariables continuas se estandarizaron mediante puntuaciones $z=(x-\bar{x})/s$. Esta transformación facilita la estabilidad numérica y permite interpretar cada coeficiente continuo como el cambio asociado con una desviación estándar de la covariable, manteniendo constantes las demás variables. La tenencia y la provincia se trataron como factores; internet, riego, fertilizantes y plaguicidas, como indicadores dicotómicos. La educación se incorporó en la especificación final como variable ordinal estandarizada, en coherencia con los modelos ejecutados en el Capítulo VII.
+
+\clearpage
+
+\begingroup
+\small
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{6pt}
+\begin{longtable}{@{}p{3.2cm}p{3.8cm}p{7.0cm}@{}}
+\caption{Operacionalización de las variables de resultado y estructurales}\label{tbl-operacionalizacion-resultados-cap5}\\
+\textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
+\hline
+\endfirsthead
+\multicolumn{3}{l}{\textit{Continuación de la tabla \ref{tbl-operacionalizacion-resultados-cap5}}}\\
+\textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
+\hline
+\endhead
+Producción económica & \texttt{produccion\_ec} & Valor bruto agregado de los componentes agropecuarios valorizados a nivel de UPA. \\
+Productividad de la tierra & \texttt{productividad\_superficie}; \texttt{ln\_prod\_sup} & Producción económica por hectárea de \texttt{cg\_superficie}; en modelos, $\ln(1+x)$. \\
+Productividad del trabajo & \texttt{productividad\_trabajo}; \texttt{ln\_prod\_trab} & Producción económica por trabajador de \texttt{eu\_k1301}; en modelos, $\ln(1+x)$. \\
+Tenencia predominante & \texttt{clase.mayoria} & Categoría con la mayor proporción de superficie: arrendamiento/aparcería, propiedad o tenencia especial. \\
+Superficie total & \texttt{superficie\_total\_z} & Área total utilizada por la especificación, estandarizada mediante puntuación z. \\
+Provincia & \texttt{territorio} & Provincia de ubicación; nivel de agrupación del intercepto aleatorio. \\
+\hline
+\multicolumn{3}{p{14cm}}{\footnotesize Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
+\end{longtable}
+\endgroup
+
+\begingroup
+\small
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{6pt}
+\begin{longtable}{@{}p{3.2cm}p{3.8cm}p{7.0cm}@{}}
+\caption{Operacionalización de las covariables sociodemográficas y tecnológicas}\label{tbl-operacionalizacion-controles-cap5}\\
+\textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
+\hline
+\endfirsthead
+\multicolumn{3}{l}{\textit{Continuación de la tabla \ref{tbl-operacionalizacion-controles-cap5}}}\\
+\textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
+\hline
+\endhead
+Edad & \texttt{edad\_z} & Edad de la persona productora o responsable, estandarizada. \\
+Educación & \texttt{educacion\_z} & Nivel educativo ordinal, estandarizado. \\
+Internet & \texttt{internet} & Indicador de acceso a internet. \\
+Riego & \texttt{riego} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
+Fertilizantes & \texttt{fertilizante} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
+Plaguicidas & \texttt{plaguicida} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
+Factor de expansión & \texttt{fact\_exp\_fin} & Peso final utilizado en los análisis descriptivos ponderados; no integra la especificación econométrica final reportada. \\
+\hline
+\multicolumn{3}{p{14cm}}{\footnotesize Nota: \texttt{NO\_APLICA} y los valores faltantes de los tres indicadores tecnológicos se excluyen de las muestras econométricas. Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
+\end{longtable}
+\endgroup
+
+La división en dos tablas evita un escalado que reduzca la legibilidad y permite que cada tabla continúe automáticamente si alcanza el final de la página. Los nombres presentados coinciden con la especificación ejecutada y distinguen las variables utilizadas en la construcción de aquellas incorporadas finalmente en los modelos.
+
+## Muestras analíticas
+
+La base analítica inicial estuvo conformada por 42.444 unidades de producción agropecuaria del Ecuador continental. A partir de esta base se construyeron muestras específicas para la estimación econométrica, de acuerdo con la disponibilidad y validez de las variables requeridas por cada familia de modelos.
+
+Los modelos OLS y multinivel se estimaron con una muestra común de 22.075 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
+
+La reducción de 42.444 a 22.075 UPA responde, por tanto, a la aplicación conjunta de los criterios de completitud y comparabilidad de las variables. No representa una selección discrecional de casos, aunque implica que los resultados econométricos corresponden a las UPA que disponen de información completa en todas las variables incluidas y no necesariamente a la totalidad de la muestra original de la ESPAC.
+
+Para los modelos de frontera estocástica se aplicó un criterio adicional de positividad. La muestra SFA quedó conformada por 21.430 UPA que, además de cumplir los criterios anteriores, presentaron valores estrictamente positivos en ambos indicadores de productividad. Esta restricción excluyó 645 observaciones adicionales y responde a las condiciones requeridas para la estimación de las fronteras y el cálculo de la eficiencia técnica.
+
+En consecuencia, la muestra utilizada en los modelos SFA constituye una submuestra de la empleada en OLS y multinivel. Las comparaciones entre familias de modelos se realizan en términos de dirección, consistencia y relevancia de las asociaciones estimadas, y no mediante una comparación directa de sus coeficientes, criterios de información o medidas de ajuste.
+
+Estos tamaños corresponden a observaciones muestrales y no deben confundirse con estimaciones expandidas del número nacional de UPA. La exclusión de categorías `NO_APLICA`, valores faltantes y productividades no positivas delimita el universo analítico y puede generar selección. Por ello, los resultados se interpretan exclusivamente para las muestras indicadas.
+
+## Estrategia empírica
+
+### Análisis descriptivo
+
+La primera etapa caracteriza la distribución de las UPA según tenencia, superficie, orientación productiva, tecnología, características de la persona productora y provincia. Para variables con distribuciones asimétricas se priorizan medianas y cuantiles, sin omitir medidas de dispersión. Cuando corresponde describir magnitudes poblacionales se emplea el factor de expansión de la ESPAC; las estimaciones econométricas reportadas se ajustan a la muestra analítica definida en el Capítulo VII.
+
+### Modelos OLS
+
+Para cada productividad se estima la siguiente especificación:
+
+$$
+\begin{aligned}
+\ln(1+Y_i)={}&\beta_0+\beta_1 Tenencia_i+\beta_2 Superficie_{zi}
++\beta_3 Edad_{zi}\\
+&+\beta_4 Internet_i+\beta_5 Educacion_{zi}+\beta_6 Riego_i\\
+&+\beta_7 Fertilizante_i+\beta_8 Plaguicida_i+\varepsilon_i.
+\end{aligned}
+$$
+
+$Y_i$ representa alternativamente productividad de la tierra o del trabajo. Arrendamiento/aparcería es la referencia de tenencia. El diagnóstico de Breusch-Pagan documentado en el Capítulo VII rechaza la homocedasticidad; por ello, la inferencia OLS utiliza errores estándar robustos HC1. Los coeficientes de las variables dicotómicas y de tenencia son diferencias condicionadas respecto de sus categorías de referencia, no efectos causales.
+
+### Modelos multinivel
+
+Las UPA están agrupadas en provincias y pueden compartir infraestructura, mercados, instituciones y condiciones agroecológicas. Para representar esta dependencia se estiman modelos con intercepto aleatorio provincial:
+
+$$
+\ln(1+Y_{ij})=\beta_0+\sum_{k=1}^{K}\beta_kX_{kij}+u_j+\varepsilon_{ij},
+$$
+
+donde $u_j\sim N(0,\sigma_u^2)$ es la desviación del intercepto de la provincia $j$ y $\varepsilon_{ij}\sim N(0,\sigma_e^2)$ es el residuo a nivel de UPA. El coeficiente de correlación intraclase se calcula como
+
+$$
+ICC=\frac{\sigma_u^2}{\sigma_u^2+\sigma_e^2}.
+$$
+
+El ICC del modelo nulo cuantifica la proporción de variabilidad asociada a diferencias entre provincias antes de incluir covariables; el ICC del modelo completo representa la heterogeneidad territorial residual. La mejora de ajuste frente a OLS se evalúa únicamente para la misma respuesta y muestra mediante AIC, BIC y log-verosimilitud.
+
+### Fronteras estocásticas y eficiencia técnica
+
+La tercera familia aplica una frontera estocástica separada a cada indicador transformado:
+
+$$
+\ln(1+Y_i)=\beta_0+\sum_{k=1}^{K}\beta_kX_{ki}+v_i-u_i,
+$$
+
+donde $v_i$ es un término simétrico de ruido y $u_i\geq0$ representa ineficiencia técnica. La especificación mantiene las mismas covariables centrales empleadas en los modelos comparativos y se estima sobre 21.430 UPA con ambas productividades positivas. Su forma es análoga a una frontera Cobb-Douglas log-lineal por la linealidad en los regresores transformados, pero la respuesta empírica es un indicador de productividad monetaria; por ello, sus coeficientes no se presentan como elasticidades de una función física de producción completa.
+
+La eficiencia técnica individual se obtiene como
+
+$$
+ET_i=\exp(-u_i),\qquad 0<ET_i\leq1.
+$$
+
+El parámetro
+
+$$
+\gamma=\frac{\sigma_u^2}{\sigma_u^2+\sigma_v^2}
+$$
+
+expresa la proporción de la varianza compuesta atribuida al componente de ineficiencia bajo los supuestos de la frontera. Un valor alto no demuestra que toda brecha observada sea controlable por la UPA; su interpretación depende de la forma funcional, las distribuciones adoptadas y las variables incluidas [@kumbhakar_stochastic_2003].
+
+## Diagnóstico, comparación e interpretación
+
+Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad y heterocedasticidad. El Capítulo VII reporta VIF, prueba de Breusch-Pagan y evaluación gráfica de residuos. La significancia se acompaña de magnitud y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
+
+Las comparaciones de AIC, BIC y log-verosimilitud se realizan solo entre modelos estimados sobre la misma respuesta, muestra y función de verosimilitud. No se comparan directamente los criterios de ajuste de OLS, multinivel y SFA cuando sus universos o supuestos difieren. Del mismo modo, las eficiencias técnicas de las fronteras de tierra y trabajo son medidas específicas de cada respuesta y no indicadores intercambiables.
+
+## Consideraciones éticas y reproducibilidad
+
+La investigación utiliza una fuente estadística secundaria. El análisis se realiza a nivel de UPA mediante los identificadores y variables disponibles en los archivos de trabajo, sin pretender identificar personas. La construcción de la base y de los resultados se organiza mediante un pipeline reproducible que separa importación, transformación, consolidación y análisis. En el texto se documentan las definiciones, restricciones muestrales y transformaciones necesarias para reproducir la especificación final.
+
+## Limitaciones metodológicas
+
+La primera limitación es la naturaleza transversal y observacional de la ESPAC 2022. La tenencia puede estar relacionada con decisiones previas de selección, tipo de cultivo, localización o capacidad productiva; por tanto, los modelos no identifican qué ocurriría si una misma UPA cambiara de régimen.
+
+La segunda limitación corresponde a variables omitidas o medidas de forma incompleta. Calidad del suelo, clima local, distancia a mercados, precios efectivamente recibidos, costos, mecanización, crédito, asistencia técnica, duración de contratos e inversión acumulada podrían relacionarse simultáneamente con tenencia y productividad. Los interceptos provinciales capturan heterogeneidad territorial compartida, pero no sustituyen estas mediciones.
+
+La tercera se relaciona con la producción valorizada. `produccion_ec` integra bienes heterogéneos mediante precios de referencia y expresa valor bruto, no valor agregado neto ni beneficios. Diferencias de composición productiva y precios pueden influir en las productividades monetarias.
+
+La cuarta deriva de la clasificación predominante de tenencia, que reduce combinaciones internas a una categoría. Esta regla es transparente y operativa, pero puede ocultar arreglos mixtos y no mide directamente seguridad percibida, formalidad registral ni calidad contractual.
+
+Finalmente, la restricción a estados tecnológicos `SI/NO` y a productividades positivas en SFA produce muestras seleccionadas. Las eficiencias estimadas dependen de la especificación paramétrica y se interpretan únicamente para esas UPA. Estas limitaciones no invalidan el análisis, pero definen con precisión el alcance de sus conclusiones.
+
+## Síntesis del capítulo
+
+El diseño articula una fuente oficial, una unidad de análisis definida, dos indicadores complementarios y tres enfoques econométricos. La separación explícita entre las muestras de 22.075 y 21.430 UPA, el tratamiento de los estados tecnológicos, la definición de la tenencia predominante y la interpretación no causal aseguran la correspondencia entre la metodología y los resultados del Capítulo VII. El capítulo siguiente caracteriza la estructura y productividad de las UPA; posteriormente se presentan los diagnósticos, estimaciones y medidas de eficiencia.

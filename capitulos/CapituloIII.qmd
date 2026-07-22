@@ -1,0 +1,1208 @@
+# Capítulo III. Contexto histórico de la propiedad y tenencia de la tierra en Ecuador
+
+```{r}
+#| label: setup-capitulo-iii
+#| include: false
+
+# 1. Cargamos el resolvedor central de rutas del proyecto
+source(file.path("R", "paths.R"))
+
+# 2. Cargamos configuración y paquetes 
+source(project_path("R", "00-setup.R"))
+
+# 3. Cargamos tus funciones personalizadas 
+source(project_path("R", "01-functions.R"))
+```
+
+
+```{r}
+#| label: cargar-datos-espac-capitulo-iii
+#| include: false
+
+sunac2022 <- readRDS(path_raw("sunac2022.rds"))
+```
+
+
+A lo largo de la historia del Ecuador, la propiedad y tenencia de la tierra ha constituido un eje central en las dinámicas sociales, económicas y políticas del país. Desde la época precolombina, la tierra ha representado una fuente fundamental de riqueza, poder y organización territorial, siendo objeto de disputa entre distintos grupos humanos y, posteriormente, entre estructuras estatales. En este capítulo se examina la evolución histórica del régimen de tenencia de la tierra en el Ecuador, desde las formas comunitarias ancestrales hasta los sistemas contemporáneos, con el propósito de comprender los cambios estructurales que han marcado este proceso y su impacto en la configuración de la sociedad ecuatoriana.
+
+## Época precolombina
+
+Durante la época precolombina, la tenencia de la tierra en lo que hoy es Ecuador se fundamentaba en sistemas de propiedad comunal gestionados por las comunidades indígenas. La tierra no era concebida como un bien individual, sino como un recurso colectivo cuya distribución se realizaba conforme a las necesidades de cada familia o grupo dentro de la comunidad [@valle_agricultura_nodate]. Esta organización se remonta a las primeras formas de subsistencia, cuando las sociedades recolectoras dependían de la tierra como fuente primaria de alimentación, y evolucionó hacia formas más estructuradas con el establecimiento de asentamientos agrícolas sedentarios, lo que marcó el inicio de la historia social y económica del territorio ecuatoriano.
+
+Con la expansión del Imperio Inca hacia el norte andino, la estructura de tenencia sufrió una transformación significativa. La tierra pasó a ser administrada por el Estado Inca, bajo el principio de propiedad imperial. Si bien se mantenía la explotación colectiva, su uso quedaba supeditado a la entrega de una porción de la producción al Inca, lo que consolidó una forma centralizada de redistribución [@francescutti_regularizacion_2002].
+
+La diversidad geográfica y étnica del actual Ecuador dio lugar a distintas formas de organización territorial. En términos generales, la tenencia precolombina se estructuraba en torno a la pertenencia comunal y al deber colectivo de trabajar y proteger el territorio compartido [@gligo_dimension_2001]. Los pueblos originarios utilizaban la tierra no solo con fines agrícolas, sino también para la crianza de animales y el aprovechamiento de recursos naturales. Las decisiones sobre el uso y control de la tierra estaban en manos de las autoridades tradicionales, que actuaban en nombre de las comunidades [@van_kessel_senas_2002].
+
+En la región interandina, pueblos como los Quitus y Caras organizaban la tenencia a través del ayllu, una unidad social basada en lazos familiares y de parentesco, en la que los derechos de uso de la tierra eran colectivos. Los miembros del ayllu no solo tenían acceso a parcelas agrícolas, sino que asumían deberes recíprocos de defensa, trabajo comunal y tributo en especie [@baez_ecuador_1995; @fernandez_construyendo_2005].
+
+En la región costera, pueblos como los Manteños y Chorreros practicaban una agricultura intensiva en zonas ocupadas colectivamente, sustentando su acceso a la tierra en el uso prolongado y la ocupación efectiva [@alvarez_etnicidades_2002]. Por su parte, en la Amazonía ecuatoriana, los grupos indígenas como los Shuar y Achuar utilizaban extensiones de tierra comunal para la caza, recolección y cultivo itinerante, en un modelo adaptado al ecosistema tropical [@flora_modos_2011].
+
+Por tanto, la tenencia de la tierra en la época precolombina en Ecuador se caracterizaba por su base colectiva, su vínculo con la identidad comunitaria y la funcionalidad productiva y ritual del territorio. Los líderes indígenas tenían autoridad sobre la asignación del uso de tierras y la gestión de los recursos naturales, siempre dentro del marco de responsabilidad compartida por el bienestar colectivo [@madrid_politica_2018].
+
+## Colonia
+
+Con la llegada de los colonizadores españoles en el siglo XVI, el sistema de propiedad colectiva indígena fue progresivamente desmantelado y reemplazado por un modelo de latifundios. A través de mercedes reales y concesiones de tierras, grandes extensiones pasaron a manos de una élite de terratenientes, quienes no solo explotaban los recursos naturales, sino también a los trabajadores indígenas encargados de cultivarlas [@ibarra_haciendas_1988]. Durante el período colonial, la tenencia de la tierra en el actual territorio ecuatoriano se caracterizó por una profunda concentración de la propiedad, quedando la mayor parte de la población indígena y mestiza excluida del acceso formal a la tierra [@paz_ilegalidad_2020].
+
+Según @alvarado_tenencia_2011, hacia comienzos del siglo XVIII, solo un número reducido de familias eran propietarias de tierras, ubicadas generalmente en las cercanías de los pueblos o en las vegas fluviales. Estas propiedades estaban destinadas principalmente a la producción de alimentos y la crianza de animales menores. Paralelamente, en la región interior guayaquileña se consolidaron grandes latifundios, frecuentemente asentados sobre tierras indígenas ocupadas de facto, a pesar de que la Corona había declarado su ilegitimidad mediante la Cédula Real del 15 de octubre de 1754.
+
+A partir de 1774, algunas autoridades vinculadas al poder terrateniente idearon mecanismos para despojar a indígenas, afrodescendientes y mestizos de sus tierras en la costa húmeda, a través de un sistema conocido como “reducciones”. Esta práctica consistía en reubicar a las poblaciones dispersas en las orillas de los ríos hacia asentamientos más concentrados. Se recomendó entonces la creación de pueblos con autoridades civiles y eclesiásticas, bajo el argumento de facilitar la administración y evangelización.
+
+La producción agrícola permaneció estancada hasta el último cuarto del siglo XVIII, debido a la escasez de mano de obra e incentivos. No obstante, una serie de transformaciones políticas y económicas impulsó la expansión de la frontera agrícola en la cuenca baja del río Guayas, a partir del aprovechamiento de las vegas ribereñas, acompañada por una creciente migración de trabajadores serranos hacia la Costa.
+
+En ese contexto, surgió una nueva modalidad de sujeción laboral: el concertaje. Esta figura fue introducida cuando la Corona dispuso el reemplazo de la mita[^1] por un sistema en el cual los trabajadores indígenas podían “concertar” libremente su fuerza de trabajo con empleadores particulares. Sin embargo, en la práctica, los hacendados convirtieron esta supuesta libertad en un nuevo mecanismo de coacción, caracterizado por formas de servidumbre encubierta [@cisneros_poblacion_1988].
+
+[^1]: Mita: sistema de trabajo forzado utilizado durante el imperio Inca y posteriormente adoptado por la administración colonial española en América del Sur, que consistía en repartir por sorteo para sacar el número correspondiente de vecinos que debían emplearse en los trabajos públicos especialmente en las minas.
+
+Los trabajadores indígenas y mestizos, frecuentemente analfabetos, eran "concertados" verbalmente y obligados a integrarse al régimen de hacienda en condiciones de semiesclavitud. En ocasiones, los hacendados acudían a las cárceles locales, pagaban las multas de personas detenidas por deudas o faltas menores, y las trasladaban a sus haciendas, donde quedaban convertidas en deudores. En esos espacios operaba un sistema detallado de endeudamiento, en el cual el trabajador debía recurrir a constantes adelantos en dinero o especie (conocidos como “suplidos” o “socorros”), registrados en el “Libro de cuentas” de la hacienda. Este libro también anotaba los jornales percibidos: un día completo de trabajo equivalía a un jornal, medio día a medio jornal; si llovía en la tarde, se abonaba solo medio día. Los domingos no eran remunerados, pues se consideraban días de descanso y misa obligatoria [@zambrano_monstruos_2011].
+
+En este entramado, la encomienda jugó un papel crucial como institución de explotación laboral. Los encomenderos, designados por la Corona, recibían el derecho de usufructuar una determinada región y a su población indígena, con la obligación formal de evangelizarla. Sin embargo, en la práctica, este sistema significó la imposición de trabajos forzados sin remuneración, negando a los indígenas el derecho a poseer tierras o bienes propios [@alvarado_tenencia_2011].
+
+## República desde 1830 hasta 1900
+
+Tras tres siglos de dominación colonial, Ecuador se constituyó como República independiente en el año 1830. No obstante, la independencia política no implicó una ruptura sustancial con el modelo económico y social heredado del régimen colonial. Los sectores latifundistas, que habían consolidado su poder durante la Colonia, supieron conservar su influencia en la naciente estructura republicana. A través de su participación en el poder legislativo y en las nuevas instituciones estatales, lograron evitar la promulgación de leyes que pudieran afectar sus intereses, asegurando que la apropiación de tierras comunales y fiscales continuara legalmente amparada. Así, la independencia no significó un cambio estructural en la distribución de la tierra; por el contrario, se mantuvo y profundizó el régimen latifundista, caracterizado por la concentración de grandes extensiones territoriales en manos de una minoría [@brassel__2008].
+
+A pesar de algunos intentos tempranos por reformar el régimen de propiedad, especialmente en las primeras décadas republicanas, no se logró una transformación sustancial en la tenencia de la tierra. Se promovieron debates sobre la necesidad de limitar la acumulación de tierras en manos de un solo propietario o entidad, con el objetivo de democratizar el acceso a la tierra y fomentar una estructura agraria más equitativa. Sin embargo, estas ideas no se tradujeron en políticas efectivas. La propiedad territorial siguió dominada por una élite económica y social que resistió cualquier intento de redistribución [@paez_cachipuendo_regimen_2018].
+
+Durante el siglo XIX e inicios del XX, se impulsaron algunas políticas agrarias orientadas a fomentar la agricultura familiar y a facilitar el acceso a la tierra a sectores campesinos e indígenas. No obstante, estas iniciativas enfrentaron múltiples obstáculos, entre ellos la fragilidad institucional del Estado, la inestabilidad política, la resistencia de los grandes propietarios, y la irrupción de gobiernos autoritarios que interrumpieron los procesos de reforma. A esto se sumó, en el transcurso del siglo XX, la aparición de empresas agrícolas de gran escala, que contribuyeron a una nueva ola de concentración de la tierra. En consecuencia, los esfuerzos por alcanzar una justicia agraria real y efectiva se vieron frustrados, y la tenencia de la tierra continuó siendo un privilegio de unos pocos [@coloma_romero_como_2002].
+
+En suma, pues, la transición del Ecuador de colonia a república no significó una transformación profunda del régimen de tenencia de la tierra. La continuidad del latifundismo, la exclusión estructural de los sectores rurales, y el fracaso de las reformas agrarias consolidaron un modelo de concentración que se prolongaría durante gran parte de la historia republicana del país.
+
+## Desde 1901 hasta 1950
+
+A comienzos del siglo XX, el Ecuador inició un proceso de modernización económica y social, impulsado por la construcción de infraestructuras como los ferrocarriles, así como por la inserción del país en los circuitos del comercio internacional. Este proceso tuvo efectos directos sobre la estructura de la tenencia de la tierra, ya que numerosos terratenientes comenzaron a orientar sus tierras hacia cultivos de exportación (particularmente cacao, banano y café) en lugar de destinarlas exclusivamente al abastecimiento del mercado interno.
+
+El auge del modelo agroexportador contribuyó a la consolidación de grupos económicos en la región costera, los cuales acapararon grandes extensiones de tierra fértil para la producción intensiva de bienes primarios. Como consecuencia, surgieron nuevos asentamientos poblacionales en torno a las zonas productivas. Muchos de estos asentamientos, al margen de planificación urbana y sin provisión de servicios básicos, evolucionaron hacia contextos de precariedad y riesgo ambiental. En este marco, uno de los primeros intentos estatales por intervenir en la estructura agraria se concretó en 1908, durante el gobierno liberal de Eloy Alfaro. La promulgación de la Ley de Beneficencia (conocida como la Ley de "Manos Muertas") tuvo como objetivo principal afectar las propiedades improductivas de las órdenes religiosas y redistribuir sus tierras [@brassel__2008].
+
+A pesar de este hito, la mayoría de campesinos continuó sin acceso efectivo a la tierra, marginados del sistema económico y político. Paralelamente, la expansión de la frontera agrícola y ganadera provocó procesos de degradación ambiental, pérdida de biodiversidad y presión sobre los ecosistemas naturales. La ausencia de políticas agrarias integrales favoreció el surgimiento de movimientos campesinos y conflictos territoriales de creciente intensidad [@espinosa_mogrovejo_violencia_2018].
+
+Durante la década de 1920, el país atravesó un período de aguda inestabilidad política y social que también se reflejó en la estructura agraria. Se intentaron aplicar políticas orientadas a redistribuir la tierra entre campesinos y pequeños propietarios, pero estos esfuerzos no lograron alterar significativamente el régimen de concentración de la tierra. Las reformas quedaron en gran parte neutralizadas por la resistencia de los sectores terratenientes y la falta de voluntad política sostenida [@balseca_narvaez_titulo_2014].
+
+En contraste, la década de 1930 ofreció un breve periodo de estabilidad institucional bajo el gobierno de Isidro Ayora, quien impulsó un nuevo paquete de medidas agrarias. Estas políticas intentaron fomentar la redistribución de tierras y la creación de cooperativas agrícolas como mecanismos de democratización del acceso a los recursos productivos. Sin embargo, su impacto fue limitado debido a la oposición de los grandes propietarios, la insuficiencia de recursos estatales y la falta de continuidad en el apoyo político posterior [@paz_y_mino_cepeda_revolucion_2013].
+
+En la década de 1940, el Ecuador volvió a experimentar inestabilidad política, lo que condicionó la eficacia de las nuevas iniciativas agrarias. No obstante, en 1945 se promulgó una ley que establecía límites máximos para la concentración de la propiedad rural y creaba un fondo destinado a la compra y redistribución de tierras a favor de campesinos y pequeños agricultores. Aunque esta normativa representó un avance relativo, su implementación fue desigual. Muchos terratenientes lograron evadir las restricciones mediante mecanismos legales y administrativos, preservando el control sobre vastas extensiones territoriales [@ullauri_uasb-digital_2020].
+
+En suma, entre 1900 y 1950 el Ecuador atravesó una serie de intentos parciales y fragmentarios de reforma agraria, en los que la continuidad del poder de los terratenientes y las limitaciones estructurales del Estado impidieron una transformación sustantiva del régimen de tenencia de la tierra.
+
+## Desde 1951 hasta 2000
+
+En 1954 se llevó a cabo el primer censo agropecuario de la historia del Ecuador, constituyéndose en una herramienta clave para diagnosticar la estructura de la tenencia de la tierra en el país. Los resultados revelaron una marcada concentración de la propiedad rural, evidenciando las profundas desigualdades heredadas del régimen colonial y mantenidas durante la época republicana.
+
+En la región Sierra, el censo registró aproximadamente 260.000 unidades de producción agropecuaria. De ellas, el 81,7 % correspondía a unidades productivas con menos de cinco hectáreas (ha), las cuales en conjunto controlaban únicamente el 10,8 % del área agrícola total. En el otro extremo, apenas el 0,3 % de las unidades de producción agropecuaria (unas 780 mayores de 100 ha) concentraban el 48,3 % de la superficie cultivable. La región Costa reflejaba una estructura similar: el 71,3 % de las unidades de producción agropecuaria, con menos de cinco hectáreas, abarcaba tan solo el 3 % del área total, mientras que el 2,2 % de las mayores a 100 ha acaparaban el 64,4 % de la tierra disponible [@francescutti_regularizacion_2002] (@fig-distribucion-sup).
+
+Estos datos ofrecieron la primera evidencia empírica sistematizada del patrón estructural de desigualdad agraria, y pusieron de manifiesto la urgencia de implementar reformas agrarias integrales que permitieran una redistribución más equitativa de los recursos productivos del país.
+
+```{r}
+#| label: fig-distribucion-sup
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Distribución de la superficie agraria y número de unidades de producción agropecuaria por tamaño en Sierra y Costa, 1954. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 1954."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.8
+
+datos_distribucion_sup <- tibble::tibble(
+  region = rep(c("Sierra", "Costa"), each = 3),
+  categoria = rep(c("< 5 ha", "5-100 ha", "> 100 ha"), 2),
+  superficie = c(10.8, 40.9, 48.3, 3.0, 32.6, 64.4),
+  upa = c(81.7, 18.0, 0.3, 71.3, 26.5, 2.2)
+) |>
+  dplyr::mutate(
+    categoria = factor(
+      categoria,
+      levels = c("< 5 ha", "5-100 ha", "> 100 ha")
+    ),
+    region = factor(
+      region,
+      levels = c("Sierra", "Costa")
+    )
+  )
+
+ggplot2::ggplot(
+  datos_distribucion_sup,
+  ggplot2::aes(x = categoria)
+) +
+  ggplot2::geom_col(
+    ggplot2::aes(y = superficie),
+    fill = paleta_tesis[4],
+    color = color_borde_tesis,
+    linewidth = 0.25,
+    width = 0.60
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = superficie,
+      label = formato_pct(superficie)
+    ),
+    vjust = -0.5,
+    size = 2.8,
+    family = "serif"
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(
+      y = upa,
+      group = 1
+    ),
+    color = paleta_tesis[1],
+    linewidth = 0.9
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes(y = upa),
+    color = paleta_tesis[1],
+    fill = "white",
+    shape = 21,
+    size = 3,
+    stroke = 0.8
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = upa,
+      label = formato_pct(upa)
+    ),
+    vjust = 1.8,
+    size = 2.8,
+    family = "serif"
+  ) +
+  ggplot2::facet_wrap(
+    ~ region,
+    ncol = 1
+  ) +
+  ggplot2::scale_y_continuous(
+    name = "Porcentaje de superficie (%)",
+    sec.axis = ggplot2::dup_axis(
+      name = "Porcentaje de UPA (%)"
+    ),
+    limits = c(0, 100),
+    breaks = seq(0, 100, 20),
+    expand = ggplot2::expansion(mult = c(0, 0.08))
+  ) +
+  ggplot2::labs(
+    x = "Tamaño de UPA"
+  ) +
+  ggplot2::coord_cartesian(
+    clip = "off"
+  ) +
+  tema_tesis +
+  ggplot2::theme(
+    strip.text = ggplot2::element_text(
+      face = "bold",
+      size = 10
+    ),
+    axis.text.x = ggplot2::element_text(
+      face = "bold"
+    ),
+    axis.title.y.right = ggplot2::element_text(
+      face = "bold"
+    ),
+    plot.margin = ggplot2::margin(
+      5, 10, 5, 5
+    )
+  )
+```
+
+A inicios de la década de 1960, convergieron en Ecuador diversos procesos históricos, sociales y políticos que impulsaron una transformación estructural del régimen agrario. Por un lado, emergía con fuerza el movimiento campesino e indígena, que articulaba demandas históricas de acceso a la tierra y justicia social. Por otro, ciertos sectores de la clase terrateniente promovían iniciativas de modernización productiva, con el objetivo de consolidar un modelo capitalista agroexportador. A estos factores internos se sumó la influencia regional de la revolución cubana, cuyo impacto político catalizó la discusión sobre reformas agrarias en América Latina [@brassel__2008].
+
+La tenencia de la tierra en esa época seguía constituyendo el fundamento de una estructura institucional profundamente desigual, que generaba distorsiones en la distribución del ingreso y en el acceso a los medios de producción. El latifundio, expresión más visible de esa estructura, concentraba el control del mercado laboral rural y del mercado de tierras, reproduciendo condiciones de pobreza, dependencia y explotación [@brassel__2008].
+
+En ese contexto, el gobierno militar promulgó la Primera Ley de Reforma Agraria y Colonización mediante el Decreto Ejecutivo No. 1480, del 11 de julio de 1964. Esta legislación reconocía abiertamente la necesidad de una reforma estructural como requisito para avanzar hacia la industrialización del país. En ese entonces, el 0,4 % de los propietarios concentraba el 45 % de las tierras agrícolas, mientras que el 90 % de los predios (ocupados por cerca de la mitad de la población) eran tan reducidos que resultaban insuficientes incluso para sostener a una sola familia [@wasserstrom_deforestation_2013].
+
+La ley se sustentaba en cuatro pilares fundamentales: 1. *Expropiación de latifundios improductivos*, con el objetivo de entregar la tierra a los campesinos que la trabajaban y eliminar formas precarias de tenencia como el huasipungo[^2], el arrimazgo[^3] y otras modalidades semifeudales. 2. *Fomento de empresas cooperativas campesinas*, organizadas sobre tierras estatales para promover el trabajo colectivo y la producción a escala. 3. *Colonización dirigida*, mediante la adjudicación de tierras baldías a grupos campesinos, como mecanismo de desconcentración poblacional y productiva. 4. *Creación del Instituto Ecuatoriano de Reforma Agraria y Colonización (IERAC)*, entidad responsable de planificar, ejecutar y supervisar el proceso de redistribución de tierras.
+
+[^2]: El huasipungo fue un sistema de tenencia de la tierra en la Sierra ecuatoriana, mediante el cual los hacendados cedían pequeñas parcelas a campesinos indígenas para su subsistencia, a cambio de trabajo obligatorio y no remunerado en la hacienda [@cordero1980huasipungo].
+
+[^3]: El arrimazgo era una forma de tenencia en el campo ecuatoriano, consistente en la cesión de una parcela por el hacendado a campesinos sin tierra, a cambio de trabajo o servicios personales, sin que implicara derechos de propiedad [@guerrero1991concertaje].
+
+Según @francescutti_regularizacion_2002, la Ley estableció que serían sujetas a expropiación las tierras ociosas (no cultivadas en tres años o explotadas sin contrato), las deficientemente explotadas (con rendimiento inferior al promedio regional), aquellas ubicadas en zonas de alta presión demográfica, y las propiedades donde se incumplían normativas laborales o de tenencia. Se excluían de la expropiación las tierras con planes de inversión rechazados por el Banco Nacional de Fomento.
+
+Asimismo, la ley fijó límites máximos de extensión para las propiedades: 2.500 hectáreas en la Costa (más 1.000 ha de sabanas y pastos), y 800 hectáreas en la Sierra (más 1.000 ha de páramos o terrenos sin riego superficial). Quedaban exceptuadas las tierras de empresas promovidas por el IERAC, aquellas “eficientemente explotadas”, las dedicadas a abastecer industrias propias, y las tierras tropicales o subtropicales utilizadas en ganadería extensiva.
+
+De acuerdo con @barsky_politicas_1982, durante el período 1964–1973, el Estado adjudicó más superficie bajo la modalidad de colonización de tierras baldías (682.265 hectáreas) que por reforma agraria (220.098 hectáreas). Sin embargo, el número de beneficiarios fue significativamente mayor en el caso de la reforma agraria, lo que evidencia que la superficie promedio por adjudicatario fue considerablemente menor: 3 hectáreas en promedio bajo reforma agraria, frente a predios de entre 20 y 50 hectáreas mediante colonización (@fig-adjudicacion-ley).
+
+En conjunto, la Ley de 1964 constituyó un hito en la historia agraria del país, al establecer por primera vez una política pública sistemática de redistribución de la tierra. No obstante, su implementación encontró obstáculos estructurales, como la resistencia de los sectores terratenientes, la débil capacidad institucional del Estado y las contradicciones internas del propio modelo de desarrollo.
+
+```{r}
+#| label: fig-adjudicacion-ley
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Adjudicación de tierras con la primera Ley de Reforma Agraria. Fuente: Elaboración propia a partir de Barsky et al. (1982)."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.2
+
+datos_adjudicacion_ley <- tibble::tibble(
+  programa = c("Reforma Agraria", "Colonización"),
+  hectareas = c(220098, 682265),
+  promedio = c(3, 35)
+) |>
+  dplyr::mutate(
+    programa = factor(
+      programa,
+      levels = c("Reforma Agraria", "Colonización")
+    )
+  )
+
+factor_escala <- 20000
+
+datos_adjudicacion_ley <- datos_adjudicacion_ley |>
+  dplyr::mutate(
+    promedio_escalado = promedio * factor_escala
+  )
+
+ggplot2::ggplot(
+  datos_adjudicacion_ley,
+  ggplot2::aes(x = programa)
+) +
+  ggplot2::geom_col(
+    ggplot2::aes(y = hectareas),
+    fill = paleta_tesis[4],
+    color = color_borde_tesis,
+    linewidth = 0.25,
+    width = 0.55
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(y = promedio_escalado, group = 1),
+    color = paleta_tesis[1],
+    linewidth = 0.9
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes(y = promedio_escalado),
+    color = paleta_tesis[1],
+    fill = "white",
+    shape = 21,
+    size = 3,
+    stroke = 0.8
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = hectareas,
+      label = paste0(formato_num(hectareas, digits = 0), " ha")
+    ),
+    vjust = -0.7,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = promedio_escalado,
+      label = paste0(promedio, " ha/UPA")
+    ),
+    vjust = 1.8,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::scale_y_continuous(
+    name = "Hectáreas adjudicadas",
+    labels = function(x) formato_num(x, digits = 0),
+    expand = ggplot2::expansion(mult = c(0.02, 0.12)),
+    sec.axis = ggplot2::sec_axis(
+      ~ . / factor_escala,
+      name = "Promedio (ha/UPA)"
+    )
+  ) +
+  ggplot2::labs(x = NULL) +
+  ggplot2::coord_cartesian(clip = "off") +
+  tema_tesis +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(face = "bold"),
+    axis.title.y.right = ggplot2::element_text(face = "bold"),
+    plot.margin = ggplot2::margin(5, 12, 5, 5)
+  )
+```
+
+El primer proceso de Reforma Agraria y Colonización (1964–1973) tuvo un impacto territorialmente desigual. La región Sierra fue la más afectada, concentrando el 50 % de los predios intervenidos, equivalente a 450.902 hectáreas. De estas, el 39 % correspondía a adjudicaciones por la vía de la reforma agraria, mientras que el 61 % restante se realizó bajo el esquema de colonización. Este patrón reveló que la aplicación del componente redistributivo de la ley fue marcadamente serrano: el 81 % de las tierras adjudicadas por reforma agraria se localizaron en la Sierra, mientras que la colonización se distribuyó de manera más equilibrada entre las tres regiones del país. En contraste, el efecto sobre la región Costa fue marginal: apenas el 19 % de la tierra afectada por la reforma agraria se encontraba en esta región, donde aún persistían formas precarias de tenencia de la tierra, especialmente en las cuencas de los afluentes del sistema fluvial del río Guayas [@brassel__2008].
+
+Lejos de apaciguar las tensiones sociales, la Ley de Reforma Agraria de 1964 dio lugar a una intensificación de las demandas campesinas por acceso a la tierra. En este contexto, surgieron nuevas organizaciones sociales, como la Federación Nacional de Organizaciones Campesinas (FENOC) y la Ecuador Runacunapac Riccharimui (ECUARUNARI), impulsando la consigna "tierra para quien la trabaja". Incluso la Iglesia Católica inició su propio proceso de redistribución de tierras, lo cual derivó en la creación de la Central Ecuatoriana de Servicios Agrícolas (CESA) como brazo operativo de sus programas agrarios [@brassel__2008].
+
+Diversos análisis coinciden en que esta primera etapa de reforma tuvo un impacto simbólico significativo: eliminó figuras de servidumbre rural como el huasipungo y otras formas precapitalistas de trabajo, e introdujo una institucionalidad agraria moderna. Sin embargo, en términos estrictamente redistributivos, su alcance fue limitado. La colonización resultó más amplia en extensión, pero menos equitativa, y la transformación más relevante fue el proceso de “achicamiento” y modernización de las grandes haciendas tradicionales [@magap_politica_2016].
+
+A inicios de la década de 1970, las presiones por una transformación más profunda del régimen agrario se intensificaron. En el campo ecuatoriano se difundió la consigna: “con ley o sin ley, haremos la reforma agraria”. Frente a este clima de movilización creciente, el entonces presidente José María Velasco Ibarra se vio forzado a actuar. En septiembre de 1970, mediante el Decreto No. 373, se expidió la Ley de Abolición del Trabajo Precario en la Agricultura, la cual prohibía todas las formas de trabajo no remunerado o vinculado a relaciones de dependencia, liberando a los campesinos de obligaciones en dinero, especie o trabajo hacia los hacendados [@torres_comunicacion_2017]. En diciembre del mismo año se expidió el Decreto No. 1001, que prohibía cualquier forma de tenencia precaria en predios dedicados a la producción arrocera, habilitando su expropiación por parte del IERAC. La medida buscaba garantizar el abastecimiento de arroz en el mercado interno, pero también constituyó una herramienta para redistribuir tierras a los campesinos [@francescutti_regularizacion_2002].
+
+Durante este periodo, la tesis de la Comisión Económica para América Latina y el Caribe (CEPAL) ganaba relevancia regional. Bajo esta visión, la reforma agraria no era solo una cuestión de justicia social, sino una condición estructural para impulsar el modelo de industrialización por sustitución de importaciones (ISI). Desde esta perspectiva, la transformación de la estructura agraria debía fortalecer la capacidad productiva del agro, obligando a los grandes propietarios a modernizarse y convertirse en empresarios agrícolas, en lo que se concebía como el “desarrollo de las fuerzas productivas” [@brassel__2008].
+
+En este contexto, el gobierno militar nacionalista de Guillermo Rodríguez Lara promulgó el 9 de octubre de 1973 la Segunda Ley de Reforma Agraria, conocida como la Reforma Agraria Integral, acompañada de la realización del Segundo Censo Agropecuario Nacional en 1974. Esta reforma fue concebida como un proceso que debía combinar la redistribución de la propiedad y del ingreso con la integración del minifundio, la eliminación del latifundio, y la incorporación de los sectores campesinos marginados al proceso nacional de desarrollo [@barsky_politicas_1982].
+
+La nueva legislación amplió el enfoque anterior al considerar no solo a los campesinos que trabajaban dentro de las haciendas, sino también a las comunidades aledañas. Se introdujo como causal de expropiación la presión demográfica externa sobre los predios, lo que permitió beneficiar a grupos campesinos organizados cercanos a grandes extensiones de tierra. Asimismo, se fortalecieron los incentivos a la producción agropecuaria mediante políticas de crédito financiadas con rentas petroleras, liberalización de importación de maquinaria agrícola, difusión tecnológica y apoyo técnico especializado [@wasserstrom_deforestation_2013].
+
+En términos cuantitativos, los resultados de esta segunda reforma superaron ampliamente los de la primera. Según datos del IERAC, entre 1973 y 1979 se adjudicaron 449.115 hectáreas por concepto de reforma agraria y 998.391 hectáreas por colonización, lo que representa un incremento del 104 % y 46 % respectivamente respecto al periodo anterior (@fig-comparacion-modalidad). Además, el número de familias beneficiadas aumentó en un 50 %, y el promedio de tierra asignada por familia pasó de 6,42 hectáreas en la primera reforma a 8,63 hectáreas en la segunda, según estimaciones de @chiriboga1988reforma.
+
+```{r}
+#| label: fig-comparacion-modalidad
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Comparación de adjudicación de tierras entre leyes por modalidad. Fuente: Elaboración propia a partir de datos del IERAC."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.2
+
+datos_comparacion_modalidad <- tibble::tibble(
+  categoria = rep(
+    c("Asignación por reforma", "Asignación por colonización"),
+    each = 2
+  ),
+  ley = rep(
+    c("Primera Ley", "Segunda Ley"),
+    times = 2
+  ),
+  hectareas = c(220098, 449115, 682265, 998391)
+) |>
+  dplyr::mutate(
+    categoria = factor(
+      categoria,
+      levels = c("Asignación por reforma", "Asignación por colonización")
+    ),
+    ley = factor(
+      ley,
+      levels = c("Primera Ley", "Segunda Ley")
+    )
+  )
+
+ggplot2::ggplot(
+  datos_comparacion_modalidad,
+  ggplot2::aes(x = categoria, y = hectareas, fill = ley)
+) +
+  ggplot2::geom_col(
+    position = ggplot2::position_dodge(width = 0.72),
+    width = 0.62,
+    color = color_borde_tesis,
+    linewidth = 0.25
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      label = paste0(formato_num(hectareas, digits = 0), " ha"),
+      group = ley
+    ),
+    position = ggplot2::position_dodge(width = 0.72),
+    vjust = -0.35,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::scale_fill_manual(
+    values = paleta_tesis[c(1, 6)],
+    name = NULL
+  ) +
+  ggplot2::scale_y_continuous(
+    limits = c(0, 1200000),
+    expand = ggplot2::expansion(mult = c(0, 0.08)),
+    labels = function(x) formato_num(x, digits = 0)
+  ) +
+  ggplot2::labs(
+    x = "Modalidad de adjudicación",
+    y = "Hectáreas"
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  tema_tesis +
+  ggplot2::theme(
+    legend.position = "top",
+    axis.text.x = ggplot2::element_text(face = "bold"),
+    plot.margin = ggplot2::margin(5, 10, 5, 5)
+  )
+```
+
+Durante el primer período de aplicación de la reforma agraria (1964–1974), la principal modalidad de afectación fue la abolición del trabajo precario (huasipungo, arrimazgo), que representó el 61 % del total de tierras redistribuidas. En contraste, en el período posterior (1974–1979), predominaron las negociaciones, reversiones y expropiaciones, las cuales concentraron el 68,5 % de las afectaciones, mientras que la abolición del precarismo se redujo al 16,3 % [@francescutti_regularizacion_2002].
+
+En cuanto a la distribución regional, hasta 1970 la reforma agraria se concentró principalmente en la Sierra, región históricamente afectada por la concentración de la tierra y la presencia de formas serviles de trabajo. Entre 1964 y 1974, solo el 25,5 % de las tierras afectadas se ubicaban en la Costa, mientras que para el siguiente período (1974–1979) esta proporción ascendió al 33,8 %. Asimismo, en el primer periodo, el 87,36 % de las familias beneficiadas residían en la Sierra, reduciéndose esta cifra al 71,6 % en el segundo periodo, lo cual evidencia un intento de regionalización más equitativa [@francescutti_regularizacion_2002].
+
+La creciente presión de los sectores terratenientes, representados por las Cámaras de Agricultura y Ganadería, se tradujo en un rechazo frontal a las leyes de reforma agraria, acusándolas de tener un “carácter confiscatorio”. Durante la década de 1970, estos grupos presionaron de forma persistente para su modificación o derogación. Su influencia política se reflejó en el uso de conceptos jurídicamente vagos, como “explotación eficiente” o “deficiente”, lo que permitió a los grandes propietarios evadir causalidades de expropiación [@larrea_politicas_1998].
+
+El 6 de marzo de 1979, bajo el gobierno de la Junta Militar, se promulgó la Ley de Fomento y Desarrollo Agropecuario, a pocos meses del retorno a la democracia. Esta ley introdujo reformas sustanciales: modificó el Artículo 82 de la Ley de Reforma Agraria de 1973, reduciendo los requisitos mínimos de explotación para que un predio fuera considerado eficiente. Además, estipuló que toda expropiación debía ser pagada en efectivo por parte del Estado, lo cual desincentivó las afectaciones [@igm_transformaciones_1998].
+
+Como resultado, se redujeron significativamente las posibilidades legales de expropiación. En respuesta, se intensificaron las invasiones campesinas sobre grandes predios, seguidas por negociaciones con el IERAC para su regularización. Así, el rol del IERAC transitó de entidad redistributiva a defensora de los intereses de la gran propiedad, generando tensiones con el espíritu de la reforma agraria original [@francescutti_regularizacion_2002].
+
+Durante la década de 1980, el Estado desplegó diversos mecanismos para fortalecer la producción campesina: continuaron las adjudicaciones de tierra, se promovieron créditos a través del Banco Nacional de Fomento, se desarrollaron tecnologías apropiadas mediante el Instituto Nacional de Investigaciones Agropecuarias (INIAP), y se fomentó la organización de movimientos indígenas. Sin embargo, estos esfuerzos fueron insuficientes para resolver el problema estructural de la inseguridad jurídica sobre la tenencia de la tierra, debido a contradicciones legales, la falta de un sistema eficiente de catastro y los frecuentes conflictos sobre predios adjudicados por el propio IERAC [@gondard_mazurek_2001].
+
+Frente a un contexto de crisis rural, migración campo-ciudad, baja productividad y fragmentación parcelaria, en 1992 el Instituto de Estrategias Agropecuarias (IDEA) y la Cámara de Agricultura de la I Zona presentaron un proyecto de reforma legal. Tras dos años de debate, en 1994 se promulgó la Ley de Desarrollo Agropecuario, la cual marcó un giro liberal en el tratamiento de la tierra [@francescutti_regularizacion_2002].
+
+Los cambios clave de esta ley fueron:
+
+-   Creación del Instituto Nacional de Desarrollo Agrario (INDA), reemplazando al IERAC como responsable de adjudicación y resolución de conflictos.
+-   Vinculación del uso del agua con la propiedad de la tierra, limitando su acceso independiente.
+-   Reducción de causales de expropiación a: (i) tierra ociosa, (ii) trabajo precario, (iii) presión demográfica, y (iv) deterioro ambiental [@brassel__2008].
+
+Adicionalmente, se establecieron sanciones para las invasiones de tierras privadas, y se promovió la parcelación de predios, la venta activa de tierras y la disolución de cooperativas ineficientes. La ley priorizó la seguridad de la propiedad privada y la “eficiencia económica” sobre los principios redistributivos, sin llegar a configurar una reforma agraria integral.
+
+## La política agraria durante la Revolución Ciudadana (2007–2017)
+
+El siglo XXI inició con la aplicación del Tercer Censo Agropecuario (2000). Según @carrion_byron_2008, los resultados confirmaron el escaso impacto redistributivo de las reformas agrarias del siglo XX, lo cual reactivó la discusión sobre la necesidad de políticas de redistribución de la tierra.
+
+El 68,5 % de las unidades de producción agropecuaria (UPA) se registraron como “propias con título”, aunque solo concentraban el 4,1 % de la superficie agrícola. Mientras tanto, el minifundio siguió creciendo, especialmente en la Sierra, afectando negativamente las condiciones de vida rural.
+
+Los datos evidenciaron que:
+
+-   El 85,4 % de las UPA eran menores o iguales a 20 ha y ocupaban solo el 21,3 % de la superficie total agropecuaria. 
+-   Las UPA grandes (20,01 a 100 ha) representaban el 12,6 % del total, con el 38,1 % de la superficie.  
+-   Solo el 2 % de las UPA eran “muy grandes” (mayores a 100 ha), pero concentraban el 40,6 % de la superficie agropecuaria [@hidalgo_atlas_2011] (@fig-superficie-upa).
+
+Estos resultados mostraban la persistencia de una estructura agraria polarizada, donde convivían el minifundio atomizado con grandes extensiones improductivas o ineficientemente explotadas, en un contexto de escasa intervención estatal efectiva.
+
+```{r}
+#| label: fig-superficie-upa
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Superficie agraria controlada y porcentaje de unidades de producción agropecuaria según tamaño de UPA. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 2000."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.2
+
+datos_superficie_upa <- tibble::tibble(
+  categoria = c("< 20 ha", "20-100 ha", "> 100 ha"),
+  superficie = c(21.3, 38.1, 40.6),
+  upa = c(85.4, 12.6, 2.0)
+) |>
+  dplyr::mutate(
+    categoria = factor(
+      categoria,
+      levels = categoria
+    )
+  )
+
+ggplot2::ggplot(
+  datos_superficie_upa,
+  ggplot2::aes(x = categoria)
+) +
+  ggplot2::geom_col(
+    ggplot2::aes(y = superficie),
+    fill = paleta_tesis[4],
+    color = color_borde_tesis,
+    linewidth = 0.25,
+    width = 0.60
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = superficie,
+      label = formato_pct(superficie)
+    ),
+    vjust = -0.55,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(
+      y = upa,
+      group = 1
+    ),
+    color = paleta_tesis[1],
+    linewidth = 0.9
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes(y = upa),
+    color = paleta_tesis[1],
+    fill = "white",
+    shape = 21,
+    size = 3,
+    stroke = 0.8
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = upa,
+      label = formato_pct(upa)
+    ),
+    vjust = 1.8,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::scale_y_continuous(
+    name = "Porcentaje (%)",
+    labels = function(x) formato_pct(x, digits = 0),
+    limits = c(0, 100),
+    breaks = seq(0, 100, 20),
+    expand = ggplot2::expansion(mult = c(0, 0.08))
+  ) +
+  ggplot2::labs(
+    x = "Tamaño de UPA"
+  ) +
+  ggplot2::coord_cartesian(
+    clip = "off"
+  ) +
+  tema_tesis +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      face = "bold"
+    ),
+    plot.margin = ggplot2::margin(
+      5, 10, 5, 5
+    )
+  )
+```
+
+Con la llegada de Alianza Pais al poder en 2007, el gobierno ecuatoriano reintrodujo el tema de la tierra en la agenda pública bajo el lema de la “revolución agraria”. Este impulso se enmarcó en una reconfiguración más amplia del modelo de desarrollo nacional, promovido a través de la Constitución de Montecristi de 2008, la cual incorporó principios como la soberanía alimentaria, el Buen Vivir (Sumak Kawsay) y el desarrollo endógeno como ejes estructurales del nuevo orden constitucional [@hidalgo_atlas_2011].
+
+Reconociendo las limitaciones estructurales de la distribución de tierras y la persistencia del minifundio improductivo y del latifundio concentrador, el gobierno planteó la necesidad de una política agraria que promoviera una redistribución más justa. Se enfatizó la importancia de fortalecer la pequeña y mediana propiedad parcelaria como vía para garantizar la seguridad alimentaria y la justicia social en el campo. En este marco, se propuso discutir la limitación del tamaño de la propiedad privada, no desde perspectivas ideológicas, sino a partir de criterios técnicos verificables, con miras a una futura Ley de Tierras que estableciera superficies máximas de propiedad [@laforge__2011].
+
+Como primer paso institucional, el Ministerio de Agricultura, Ganadería, Acuacultura y Pesca (MAGAP) implementó el “Plan Tierras”, un programa orientado a facilitar la redistribución planificada de tierras rurales. Para su ejecución, en julio de 2010 se creó la Subsecretaría de Tierras, adscrita al MAGAP, con el encargo específico de llevar a cabo los procesos de adjudicación y regularización de predios rurales [@laforge__2011].
+
+Durante la primera etapa del gobierno (2008–2013), el Plan Tierras adjudicó 38.331 hectáreas a 7.068 familias campesinas, una cifra considerablemente menor frente a la demanda potencial estimada en 500.000 familias rurales pobres. En la segunda etapa del régimen, se planteó una nueva agenda para el agro, orientada hacia la modernización capitalista y el cambio de matriz productiva. Esta estrategia priorizó la dinamización del mercado nacional a través del fomento de cultivos industriales como soya, canola, palma africana, maíz duro y caña de azúcar, considerados estratégicos para la diversificación productiva del país [@salgado_tamayo_estado_2022]. A pesar del discurso de transformación agraria promovido por el gobierno de Rafael Correa, los datos revelan una continuidad e incluso profundización del modelo de desigualdad estructural en el acceso a la tierra.
+
+Según el informe del Centro de Derechos Económicos y Sociales (CDES), para el cierre de dicho período, el 94,5 % de la superficie agrícola del Ecuador (11.680.469 hectáreas) estaba bajo propiedad privada. Las tierras de propiedad comunal representaban apenas el 4,9 % (602.862 ha), y las de instituciones públicas, un marginal 0,6 % (73.261 ha) (CDES, 2017). Esta composición refleja una estructura agraria fuertemente orientada hacia la apropiación individual del recurso tierra.
+
+En este contexto, Ecuador siguió ubicándose entre los países con mayores niveles de desigualdad en la distribución de la tierra en América Latina. Según @salgado_tamayo_estado_2022, quien cita una entrevista concedida al periódico Le Monde Diplomatique el 3 de enero de 2010, en donde el entonces presidente reconoció: “La tenencia de la tierra no ha cambiado sustancialmente y es una de las distribuciones más inequitativas del mundo; el coeficiente de Gini supera el 0,9 en cuanto a tenencia de la tierra”, en referencia a la concentración de la propiedad según el tamaño de las unidades de producción.
+
+La desagregación de la distribución por tamaño evidencia la persistencia de una polarización extrema. Así, según las cifras aportadas por @salgado_tamayo_estado_2022 a partir de diferentes fuentes, sobre la situación al final del período de la Revolución Ciudadana (@fig-distribucion-prop):
+
+-   El 0,68 % de la población controlaba el 46,3 % de la superficie agrícola.
+-   Las UPA de menos de 5 hectáreas representaban el 63,96 % del total de explotaciones, con un promedio de solo 1,4 ha, por lo que concentraban únicamente el 6,53 % de la superficie agrícola total.
+-   Las explotaciones entre 5 y 50 hectáreas abarcaban el 32,9 % de las UPA, controlando el 34,5 % de la tierra.
+-   Las UPA entre 50 y 100 hectáreas constituían el 3,97 % del total, pero poseían el 18,33 % de la superficie agrícola.
+-   Las explotaciones mayores a 100 hectáreas representaban apenas el 0,16 % de las UPA, pero controlaban el 16 % de la tierra cultivable, con un promedio superior a 1.400 hectáreas por unidad.
+
+Esta diferencia extrema implica una proporción de 1.000 a 1 entre las grandes y las pequeñas propiedades. Además, se contabilizaban aproximadamente 165.000 minifundios de menos de 0,5 hectáreas, lo que representa la mitad de todas las unidades productivas pequeñas del país.
+
+```{r}
+#| label: fig-distribucion-prop
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Distribución de la superficie agraria y de las unidades de producción agropecuaria según tamaño de explotación en Ecuador. Fuente: Elaboración propia a partir de Salgado (2022)."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 4.2
+
+datos_distribucion_prop <- tibble::tibble(
+  categoria = c("< 5 ha", "5-50 ha", "50-100 ha", "> 100 ha"),
+  superficie = c(6.53, 34.5, 18.3, 40.6),
+  upa = c(63.96, 32.9, 3.0, 0.16)
+) |>
+  dplyr::mutate(
+    categoria = factor(
+      categoria,
+      levels = categoria
+    )
+  )
+
+ggplot2::ggplot(
+  datos_distribucion_prop,
+  ggplot2::aes(x = categoria)
+) +
+  ggplot2::geom_col(
+    ggplot2::aes(y = superficie),
+    fill = paleta_tesis[4],
+    color = color_borde_tesis,
+    linewidth = 0.25,
+    width = 0.60
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = superficie,
+      label = formato_pct(superficie)
+    ),
+    vjust = -0.55,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(
+      y = upa,
+      group = 1
+    ),
+    color = paleta_tesis[1],
+    linewidth = 0.9
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes(y = upa),
+    color = paleta_tesis[1],
+    fill = "white",
+    shape = 21,
+    size = 3,
+    stroke = 0.8
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      y = upa,
+      label = formato_pct(upa)
+    ),
+    vjust = 1.8,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::scale_y_continuous(
+    name = "Superficie (%)",
+    labels = function(x) formato_pct(x, digits = 0),
+    limits = c(0, 100),
+    breaks = seq(0, 100, 20),
+    expand = ggplot2::expansion(mult = c(0, 0.10)),
+    sec.axis = ggplot2::dup_axis(
+      name = "UPA (%)"
+    )
+  ) +
+  ggplot2::labs(
+    x = "Tamaño de las UPA"
+  ) +
+  ggplot2::coord_cartesian(
+    clip = "off"
+  ) +
+  tema_tesis +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      face = "bold"
+    ),
+    axis.title.y.right = ggplot2::element_text(
+      face = "bold"
+    ),
+    plot.margin = ggplot2::margin(
+      5, 10, 5, 5
+    )
+  )
+```
+
+## Datos sobre la evolución de la distribución de la tierra desde mediados del siglo XX
+
+### Cifras de los censos agropecuarios para el período 1954-2000
+
+De acuerdo con el análisis del @magap_politica_2016, una comparación longitudinal de los datos sobre distribución de la tierra recogidos en los tres censos agropecuarios nacionales (1954, 1974 y 2000), así como en la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2013, revela importantes transformaciones en el número de UPA registradas y la extensión de la superficie agrícola, aunque no así en la distribución de la tierra entre los productores.
+
+En efecto, entre 1954 y 2000 se registró un incremento de 496.811 nuevas unidades productivas y una expansión neta de 5.358.657 hectáreas de superficie agrícola. No obstante, tales avances en cobertura territorial y acceso formal no se tradujeron en una mejora sustantiva en los niveles de equidad de la distribución de la tierra entre unidades productivas. Por el contrario, la concentración estructural del recurso tierra se ha mantenido como una característica persistente del sistema agrario ecuatoriano.
+
+Esta situación se refleja en la evolución del coeficiente de Gini, indicador que mide el grado de desigualdad en la distribución de un recurso (@fig-gini-tierra):
+
+-   En 1954, el índice de Gini para la distribución de la tierra según el tamaño de las UPA era de 0,87.
+-   En 1974 descendió levemente a 0,82.
+-   Para el año 2000 se situó en 0,81.
+-   Y en 2013 el valor estimado fue de 0,76 [@larrea_lucha_2015].
+
+```{r}
+#| label: fig-gini-tierra
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Evolución del coeficiente de Gini de concentración de tierras en el Ecuador. Fuente: Elaboración propia a partir de Larrea y Greene (2015)."
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.2
+
+datos_gini_tierra <- tibble::tibble(
+  anio = c(1954, 1974, 2000, 2013),
+  valor = c(0.87, 0.82, 0.81, 0.76)
+)
+
+ggplot2::ggplot(
+  datos_gini_tierra,
+  ggplot2::aes(x = anio, y = valor)
+) +
+  ggplot2::geom_line(
+    color = paleta_tesis[1],
+    linewidth = 0.9
+  ) +
+  ggplot2::geom_point(
+    color = paleta_tesis[1],
+    fill = "white",
+    shape = 21,
+    size = 3,
+    stroke = 0.8
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(
+      label = formato_num(valor, digits = 2)
+    ),
+    vjust = -0.8,
+    size = 3,
+    family = "serif"
+  ) +
+  ggplot2::scale_x_continuous(
+    breaks = datos_gini_tierra$anio,
+    limits = c(1950, 2020),
+    expand = ggplot2::expansion(mult = c(0.01, 0.02))
+  ) +
+  ggplot2::scale_y_continuous(
+    name = "Coeficiente de Gini",
+    breaks = seq(0, 1, 0.1),
+    limits = c(0, 1),
+    labels = function(x) formato_num(x, digits = 2),
+    expand = ggplot2::expansion(mult = c(0, 0.10))
+  ) +
+  ggplot2::labs(
+    x = "Año"
+  ) +
+  ggplot2::coord_cartesian(
+    clip = "off"
+  ) +
+  tema_tesis +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      face = "bold"
+    ),
+    plot.margin = ggplot2::margin(
+      5, 10, 5, 5
+    )
+  )
+```
+
+Aunque se observa una disminución progresiva del índice, esta evolución ha sido lenta y marginal, lo que demuestra que la desigualdad estructural en el acceso a la tierra se ha mantenido prácticamente inalterada en las últimas seis décadas. Tal persistencia obedece, en gran medida, a dos fenómenos contradictorios pero simultáneos: por un lado, la fragmentación del minifundio, como resultado de la presión demográfica y herencias sucesivas; y por otro, la reconcentración de la gran propiedad, producto de procesos de acumulación de tierras en manos de grandes empresas agroindustriales y actores corporativos. En consecuencia, el sistema agrario ecuatoriano presenta un modelo dual y polarizado, en el que conviven minifundios crecientemente inviables con latifundios tecnificados que concentran los recursos productivos, perpetuando las brechas sociales y territoriales en el agro ecuatoriano.
+
+Durante las últimas seis décadas, la legislación y las políticas públicas en Ecuador han buscado influir en la estructura de la tenencia y distribución de la tierra mediante diversas formas de intervención estatal. Según el análisis del @magap_politica_2016, si bien la redistribución no logró una transformación radical del régimen agrario, sí es posible identificar ciertas variaciones significativas en la configuración de las unidades de producción agropecuaria (UPA) entre 1954 y 2000.
+
+La @tbl-base-estratos muestra que la evolución de la estructura agraria refleja un crecimiento generalizado del número de unidades productivas, impulsado principalmente por los estratos de menor tamaño. Este aumento responde a procesos de fragmentación de la tierra que no se acompañan de una expansión proporcional de la superficie, lo que evidencia una intensificación del minifundio y una reducción del tamaño efectivo de las explotaciones pequeñas.
+
+Los estratos intermedios muestran una recomposición progresiva, con una mayor presencia relativa tanto en número de unidades como en superficie, lo que sugiere procesos de ajuste y redistribución parcial sin alterar de manera sustantiva la estructura concentrada del sistema agrario. Por su parte, las explotaciones de mayor tamaño mantienen un control significativo sobre la superficie, a pesar de una disminución relativa de su peso, lo que indica que la concentración de la tierra persiste como rasgo estructural [@magap_politica_2016].
+
+```{r}
+#| label: tbl-base-estratos
+#| tbl-cap: "Número de UPA y superficie total por estrato, 1954, 1974 y 2000"
+#| echo: false
+#| message: false
+#| warning: false
+
+base_tbl <- tibble::tribble(
+  ~Tamaño, ~UPA_1954, ~UPA_1974, ~UPA_2000, ~Sup_1954, ~Sup_1974, ~Sup_2000,
+  "< 5 ha", 251686, 346847, 535309, 432200, 538668, 774225,
+  "5-20 ha", 57650, 96360, 176726, 565800, 935291, 1706794,
+  "20-100 ha", 27742, 64813, 111290, 1138700, 1664671, 4614436,
+  ">=100 ha", 7156, 11091, 13557, 4263000, 3810773, 5260375,
+  "Total", 344234, 519111, 836882, 6399700, 6949403, 12355830
+)
+
+base_tbl_print <- base_tbl |>
+  dplyr::rename(
+    `UPA 1954` = UPA_1954,
+    `UPA 1974` = UPA_1974,
+    `UPA 2000` = UPA_2000,
+    `Superficie 1954` = Sup_1954,
+    `Superficie 1974` = Sup_1974,
+    `Superficie 2000` = Sup_2000
+  )
+
+tabla_usc(
+  base_tbl_print,
+  align = c("l", rep("r", 6)),
+  digits = 0,
+  font_size = 8
+) |>
+  nota_tabla(
+    fuente = "Elaboración propia a partir de datos de MAGAP (2016)."
+  )
+```
+
+La @tbl-calculos-estratos se construye a partir de los valores absolutos presentados en la @tbl-base-estratos, mediante el cálculo de la participación relativa de cada estrato en el número total de UPA y en la superficie, así como de la superficie media por unidad productiva. Esta transformación permite analizar con mayor claridad los cambios estructurales de la agricultura entre 1954 y 2000. Los resultados muestran que, aunque las explotaciones pequeñas continúan concentrando la mayor parte de las unidades productivas, su superficie media se reduce de forma progresiva, lo que confirma un proceso sostenido de fragmentación del minifundio. En los estratos intermedios, la superficie media presenta una evolución más inestable, reflejando procesos de recomposición y ajuste en la estructura productiva. Por su parte, las explotaciones de mayor tamaño reducen su superficie media en relación con los primeros censos, sin perder su condición de unidades de gran escala, lo que indica una moderación (más que una ruptura) de la concentración de la tierra.
+
+```{r}
+#| label: tbl-calculos-estratos
+#| tbl-cap: "Estructura agraria por estrato, porcentaje de UPA, porcentaje de superficie y superficie media por UPA"
+#| echo: false
+#| message: false
+#| warning: false
+
+totales_estratos <- base_tbl |>
+  dplyr::filter(Tamaño == "Total")
+
+calc_tbl_print <- base_tbl |>
+  dplyr::mutate(
+    `UPA % 1954` = 100 * UPA_1954 / totales_estratos$UPA_1954,
+    `UPA % 1974` = 100 * UPA_1974 / totales_estratos$UPA_1974,
+    `UPA % 2000` = 100 * UPA_2000 / totales_estratos$UPA_2000,
+    `Sup. % 1954` = 100 * Sup_1954 / totales_estratos$Sup_1954,
+    `Sup. % 1974` = 100 * Sup_1974 / totales_estratos$Sup_1974,
+    `Sup. % 2000` = 100 * Sup_2000 / totales_estratos$Sup_2000,
+    `Media 1954` = Sup_1954 / UPA_1954,
+    `Media 1974` = Sup_1974 / UPA_1974,
+    `Media 2000` = Sup_2000 / UPA_2000
+  ) |>
+  dplyr::select(
+    Tamaño,
+    `UPA % 1954`,
+    `UPA % 1974`,
+    `UPA % 2000`,
+    `Sup. % 1954`,
+    `Sup. % 1974`,
+    `Sup. % 2000`,
+    `Media 1954`,
+    `Media 1974`,
+    `Media 2000`
+  )
+
+tabla_usc(
+  calc_tbl_print,
+  align = c("l", rep("r", 9)),
+  digits = 2,
+  font_size = 7
+) |>
+  nota_tabla(
+    nota = "Las columnas de media corresponden a superficie promedio por UPA, expresada en hectáreas.",
+    fuente = "Elaboración propia a partir de datos de MAGAP (2016)."
+  )
+```
+
+El incremento del número de unidades de producción agropecuaria (UPA) en todos los estratos de tamaño entre 1954 y 2000 plantea una cuestión metodológica relevante respecto a la naturaleza de este crecimiento. En efecto, no puede asumirse de manera automática que dicho aumento refleje exclusivamente cambios estructurales reales en la organización de la producción agraria. Parte de esta variación puede estar asociada a mejoras progresivas en la cobertura, el alcance y la capacidad de registro de los censos agropecuarios, especialmente en los estratos de menor tamaño, históricamente subrepresentados. La ampliación de los mecanismos de levantamiento de información, así como una mayor presencia institucional en el territorio rural, pudieron contribuir a visibilizar unidades productivas que previamente no eran captadas de forma sistemática. En este sentido, las cifras deben interpretarse con cautela, entendiendo que combinan tanto transformaciones efectivas en la estructura agraria como avances en la calidad estadística y en el grado de cobertura censal.
+
+### Cifras mas recientes de la ESPAC para 2013 y 2022
+
+Comparado con el último Censo Agropecuario de 2000, los datos de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) correspondientes
+a 2013 evidencian que, si bien han existido ciertos cambios en la estructura de las explotaciones agrarias, persisten tendencias estructurales de desigualdad que afectan tanto a la concentración como a la atomización de la tierra [@espac_encuesta_2013].
+
+En términos de superficie, las grandes UPA (más de 100 ha) continuaron reduciendo en el período 2000-2013 su peso territorial. En 2000, estas unidades representaban el 42,6 % de la superficie agrícola, cifra que disminuyó al 33,5 % en 2013. No obstante, en los últimos años de ese periodo se observó una reversión parcial de esta tendencia, con un aumento en la importancia relativa de estas grandes UPA [@magap_politica_2016].
+
+Paralelamente, las pequeñas propiedades (menos de 5 ha) vieron reducida su participación en el total de UPA: del 64 % en 2000 al 58,8 % en 2013, manteniendo prácticamente la misma superficie agrícola bajo su control. Este fenómeno señala que la redistribución formal de tierra no se ha traducido en un fortalecimiento sustantivo del pequeño productor.
+
+Con base en estimaciones del Ministerio de Agricultura, derivadas de los microdatos de la ESPAC 2013, la estructura de la distribución de la tierra en Ecuador para ese año mantuvo patrones ampliamente consistentes con los observados en los censos agropecuarios históricos. En particular, el estrato de unidades de producción menores a 5 hectáreas continúa concentrando la mayoría de las UPA, aunque su participación en la superficie agrícola total sigue siendo reducida, situándose en torno a valores similares a los registrados en décadas anteriores.
+
+De manera complementaria, las unidades de entre 5 y 20 hectáreas representan un segmento intermedio, con una participación moderada tanto en número de UPA como en superficie controlada, sin evidenciar incrementos sustanciales que sugieran una recomposición estructural del acceso a la tierra.
+
+Las unidades de mayor tamaño (superiores a 20 y, en particular, a 100 hectáreas), aunque minoritarias en número, continúan concentrando la gran mayoría de la superficie agrícola nacional, reproduciendo un patrón persistente de desigualdad en el control del recurso tierra. En conjunto, la evidencia disponible para 2013 sugiere que los procesos de fragmentación y concentración relativa observados históricamente no se han revertido, sino que se han mantenido con variaciones marginales, lo que refuerza la hipótesis de una elevada inercia estructural en la tenencia de la tierra en Ecuador [@magap_politica_2016].
+
+Complementando lo anterior, en la Sierra ecuatoriana la fragmentación de la tierra no aparece como un fenómeno repentino, sino como el resultado acumulado de una historia larga y persistente. Las herencias sucesivas fueron dividiendo las unidades productivas; al mismo tiempo, el crecimiento demográfico, la migración campo-ciudad y el funcionamiento de un mercado de tierras escasamente regulado terminaron por acentuar este proceso. Así, lo que en un inicio fueron explotaciones viables se transformaron progresivamente en parcelas cada vez más pequeñas, muchas de ellas insuficientes para sostener una producción estable.
+
+Sobre esta fragmentación se superponen otros rasgos estructurales que complejizan aún más el panorama rural. El acaparamiento de tierras en determinados territorios convive con la falta de títulos formales de propiedad, la presencia de esquemas de tenencia mixta y las ocupaciones informales, mientras que un número significativo de productores depende del arrendamiento para acceder a la tierra. Esta combinación de factores configura un escenario de alta vulnerabilidad, en el que la inseguridad jurídica y la precariedad productiva se refuerzan mutuamente.
+
+Durante el período 2012–2014, el Estado impulsó esfuerzos orientados a la regularización de la tenencia, materializados en la entrega de alrededor de 200.000 títulos de propiedad y en la distribución de más de 30.000 hectáreas. Sin embargo, estas intervenciones, aunque relevantes en términos institucionales, no lograron alterar de manera sustantiva las bases estructurales del problema. La magnitud histórica de la fragmentación y la desigualdad en el acceso a la tierra superó ampliamente el alcance de estas medidas, dejando en evidencia los límites de las políticas de regularización cuando no se acompañan de transformaciones más profundas en la estructura agraria.[@brassel__2008].
+
+La @tbl-upa-superficie-espac-2022 que hemos elaborado a partir de los datos de la ESPAC 2022, indica que la muestra de esta estadística registra 42.444 UPA, que en conjunto suman 827.336 hectáreas. Los resultados evidencian una estructura productiva altamente concentrada en unidades de menor tamaño. Las UPA con menos de 5 hectáreas alcanzan 32.120 unidades, equivalentes al 75,7 % del total, aunque cuentan solo con 35.499 hectáreas, es decir, el 4,3 % de la superficie total.
+
+El grupo de 5 a menos de 10 hectáreas reúne 4.600 UPA, equivalentes al 10,8 % del total, y concentra 34.039 hectáreas, que representan el 4,1 % de la superficie. En conjunto, las explotaciones con menos de 10 hectáreas agrupan el 86,5 % de las UPA, pero concentran el 8,4 % de la superficie analizada.
+
+En los grupos intermedios se observa una menor participación en el número de unidades, aunque con mayor peso relativo en superficie. Las UPA de 20 a menos de 50 hectáreas representan el 4,2 % de las unidades y concentran el 6,8 % de la superficie, mientras que el grupo de 100 a menos de 200 hectáreas representa apenas el 1,4 % de las UPA, pero concentra el 9,8 % de la superficie.
+
+Finalmente, las explotaciones de 200 hectáreas y más representan 863 UPA, equivalentes al 2,0 % del total, pero concentran 553.892 hectáreas, es decir, el 66,9 % de la superficie total. Estos resultados muestran una estructura agraria marcadamente desigual: la mayoría de las UPA corresponde a unidades pequeñas, mientras que un número reducido de explotaciones de gran tamaño concentra la mayor parte de la superficie.
+
+```{r}
+#| label: tbl-upa-superficie-espac-2022
+#| tbl-cap: "Distribución muestral de las UPA y de la superficie agrícola por grupos de tamaño. Ecuador, ESPAC 2022"
+#| echo: false
+#| message: false
+#| warning: false
+
+base_upa_2022 <- sunac2022 |>
+  dplyr::transmute(
+    identificador = as.character(Identificador),
+    supertotal = as.numeric(supertotal)
+  ) |>
+  dplyr::filter(
+    !is.na(identificador),
+    identificador != "",
+    is.finite(supertotal),
+    supertotal > 0
+  )
+
+upa_base_2022 <- base_upa_2022 |>
+  dplyr::group_by(identificador) |>
+  dplyr::summarise(
+    superficie_upa = sum(supertotal, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    grupo = dplyr::case_when(
+      superficie_upa < 5 ~ "Menos de 5 ha",
+      superficie_upa >= 5 & superficie_upa < 10 ~ "De 5 a menos de 10 ha",
+      superficie_upa >= 10 & superficie_upa < 20 ~ "De 10 a menos de 20 ha",
+      superficie_upa >= 20 & superficie_upa < 50 ~ "De 20 a menos de 50 ha",
+      superficie_upa >= 50 & superficie_upa < 100 ~ "De 50 a menos de 100 ha",
+      superficie_upa >= 100 & superficie_upa < 200 ~ "De 100 a menos de 200 ha",
+      superficie_upa >= 200 ~ "200 ha y más",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  dplyr::filter(!is.na(grupo))
+
+orden_grupos_2022 <- c(
+  "Menos de 5 ha",
+  "De 5 a menos de 10 ha",
+  "De 10 a menos de 20 ha",
+  "De 20 a menos de 50 ha",
+  "De 50 a menos de 100 ha",
+  "De 100 a menos de 200 ha",
+  "200 ha y más"
+)
+
+tabla_tamano_2022 <- upa_base_2022 |>
+  dplyr::mutate(
+    grupo = factor(grupo, levels = orden_grupos_2022)
+  ) |>
+  dplyr::group_by(grupo) |>
+  dplyr::summarise(
+    UPA = dplyr::n(),
+    `Superficie (ha)` = sum(superficie_upa, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    `Porcentaje UPA (%)` = 100 * UPA / sum(UPA),
+    `Porcentaje superficie (%)` =
+      100 * `Superficie (ha)` / sum(`Superficie (ha)`)
+  )
+
+fila_total_tamano_2022 <- tabla_tamano_2022 |>
+  dplyr::summarise(
+    grupo = "Total",
+    UPA = sum(UPA),
+    `Superficie (ha)` = sum(`Superficie (ha)`),
+    `Porcentaje UPA (%)` = 100,
+    `Porcentaje superficie (%)` = 100
+  )
+
+tabla_tamano_2022 <- tabla_tamano_2022 |>
+  dplyr::bind_rows(fila_total_tamano_2022) |>
+  dplyr::rename(`Grupo de tamaño` = grupo)
+
+tabla_usc(
+  tabla_tamano_2022,
+  align = c("l", "r", "r", "r", "r"),
+  digits = 2,
+  font_size = 8
+) |>
+  nota_tabla(
+    nota = "La superficie total de cada UPA se calculó mediante la suma de la variable supertotal de todos sus terrenos.",
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```
+
+Así, pese a las diferencias metodológicas entre un censo exhaustivo y una encuesta representativa, el contraste entre el último Censo Agropecuario de 2000 (ver @tbl-calculos-estratos) y las cifras más recientes de la ESPAC revela similitudes estructurales relevantes. No obstante, estas coincidencias deben interpretarse con cautela, dado que mientras el Censo constituye un levantamiento exhaustivo de las unidades de producción agropecuaria, la ESPAC se basa en un diseño muestral y, por tanto, sus resultados corresponden a estimaciones estadísticas. Aun así, ambas fuentes narran la misma historia estructural: entre 2000 y 2022 el agro ecuatoriano no transitó hacia una redistribución significativa de la tierra, sino que mantuvo la coexistencia del minifundio fragmentado y la gran propiedad concentrada, configurando un patrón persistente que condiciona la productividad.
+
+## Datos sobre los modos de tenencia de la tierra 2000-2022
+
+```{r}
+#| label: importar-cna-2000-capitulo-iii
+#| include: false
+
+ruta_mdb <- path_raw("CNA_2000.mdb")
+
+driver_access <- "Microsoft Access Driver (*.mdb, *.accdb)"
+
+con_cna_2000 <- DBI::dbConnect(
+  odbc::odbc(),
+  .connection_string = paste0(
+    "Driver={", driver_access, "};",
+    "DBQ=", gsub("/", "\\\\", ruta_mdb, fixed = TRUE),
+    ";"
+  )
+)
+
+tenencia_2000 <- DBI::dbReadTable(
+  con_cna_2000,
+  "CAP 2_TAB1_SUPERFICIE"
+)
+
+DBI::dbDisconnect(con_cna_2000)
+```
+
+La tabla @tbl-cna2000-tenencia muestra la estructura de los modos de tenencia de la tierra en el Ecuador según el Censo Nacional Agropecuario de 2000. Esta aparecía dominada por la propiedad con título (tierras trabajadas en tenencia directa con título de propiedad), que concentraba el 68,5 % de las unidades productivas. Por lo tanto, más de 2/3 de los productores contaban con derechos de propiedad formalizados sobre la totalidad de las superficies que trabajaban, lo que les permitía, al menos en términos institucionales, disponer de un mayor grado de seguridad para la toma de decisiones productivas.
+
+Al lado de ello, las formas de ocupación sin título y otras modalidades informales representaban en conjunto el 11,8 % del total de unidades productivas. Estos casos reflejaban situaciones de alta vulnerabilidad, en las que el vínculo con la tierra era inestable, condicionando la producción dado el riesgo permanente de pérdida del acceso al uso de las superficies.
+
+Los modos de tenencia indirectos más habituales (arrendamiento y aparcería) tenían una presencia casi marginal, limitándose a poco más del 1 % las UPA con todas sus tierras en cada uno de estos regímenes. Y algo similar sucedía para la tenencia comunera o cooperada. No obstante, aunque cuantitativamente muy reducidas, estas formas evidenciaban la coexistencia de arreglos institucionales diversos en el agro ecuatoriano.
+
+Finalmente, alrededor del 16 % de las unidades productivas presentaban modos de tenencia mixtos, combinando tierras bajo diferentes regímenes; en particular, parcelas tituladas con otras sin respaldo legal pleno (@tbl-cna2000-tenencia).
+
+```{r}
+#| label: tbl-cna2000-tenencia
+#| tbl-cap: "Distribución de las UPA según la forma de tenencia de la tierra. Ecuador, Censo Agropecuario 2000"
+#| echo: false
+#| message: false
+#| warning: false
+
+tabla_cna2000_tenencia_base <- tenencia_2000 |>
+  dplyr::mutate(
+    TENENCIA = dplyr::if_else(
+      is.na(TENENCIA) | stringr::str_trim(as.character(TENENCIA)) == "",
+      "No especificado",
+      as.character(TENENCIA)
+    ),
+    FACTORUPA = suppressWarnings(as.numeric(FACTORUPA))
+  ) |>
+  dplyr::group_by(TENENCIA) |>
+  dplyr::summarise(
+    UPA = sum(FACTORUPA, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    `Porcentaje (%)` = 100 * UPA / sum(UPA, na.rm = TRUE)
+  ) |>
+  dplyr::arrange(dplyr::desc(UPA)) |>
+  dplyr::rename(`Tipo de tenencia` = TENENCIA)
+
+fila_total_cna2000 <- tabla_cna2000_tenencia_base |>
+  dplyr::summarise(
+    `Tipo de tenencia` = "Total",
+    UPA = sum(UPA, na.rm = TRUE),
+    `Porcentaje (%)` = 100
+  )
+
+tabla_cna2000_tenencia <- dplyr::bind_rows(
+  tabla_cna2000_tenencia_base,
+  fila_total_cna2000
+)
+
+tabla_usc(
+  tabla_cna2000_tenencia,
+  align = c("l", "r", "r"),
+  digits = 2,
+  font_size = 9
+) |>
+  nota_tabla(
+    fuente = "Elaboración propia a partir del Censo Nacional Agropecuario 2000."
+  )
+```
+
+Una vez analizado el patrón estructural de la distribución de las UPA según la forma de tenencia de la tierra correspondiente al año 2000, y antes de proceder a la comparación con los resultados de la ESPAC 2022, conviene precisar un aspecto metodológico relevante. Si bien los resultados sobre tenencia de la tierra para 2022 ya fueron abordados en el Capítulo II, específicamente en el apartado 2.4, aquellos que se presentan a continuación difieren en su enfoque analítico. En el Capítulo II el análisis se centró en la superficie asociada a cada régimen de tenencia, mientras que en esta sección las cifras se construyen a partir del número de unidades de producción agropecuaria, lo que permite una lectura complementaria sobre la estructura de la tenencia desde la perspectiva de la distribución de las UPA.
+
+Cabe precisar también que, aunque la tabla @tbl-tenencia_tierrafpp presenta un único régimen de tenencia por UPA, ello responde a que se ha considerado exclusivamente el régimen de tenencia predominante en cada predio. En contraste, la tabla @tbl-sunac-tabla-mono-multi complementa este análisis al clasificar las UPA según presenten mono-tenencia o multi-tenencia, a partir de la identificación de regímenes distintos dentro de cada unidad productiva. La clasificación se elaboró identificando, para cada UPA, si los terrenos registrados en la encuesta se encontraban asociados a un único régimen de tenencia o a más de uno. A diferencia de las estimaciones nacionales expandidas, los resultados presentados corresponden a valores muestrales sin expansión, construidos directamente a partir de las 42.444 UPA incluidas en la base de análisis de la ESPAC 2022.
+
+En términos agregados, se observa que 41.148 unidades productivas agropecuarias corresponden a explotaciones con un solo régimen de tenencia, lo que representa el 96,95 por ciento del total de UPA analizadas. Por su parte, 1.296 unidades productivas presentan más de un régimen de tenencia dentro de sus terrenos, equivalentes al 3,05 por ciento del total.
+
+Estos resultados muestran que la estructura de acceso y control de la tierra se encuentra fuertemente concentrada en esquemas de mono-tenencia. En la mayoría de las explotaciones agropecuarias, la gestión de la unidad productiva se desarrolla bajo un único régimen predominante de acceso a la tierra, mientras que la combinación de distintas modalidades de tenencia constituye un fenómeno relativamente reducido dentro de la muestra analizada.
+
+```{r}
+#| label: tbl-sunac-tabla-mono-multi
+#| tbl-cap: "Distribución muestral de las UPA según uno o más modos de tenencia, ESPAC 2022"
+#| echo: false
+#| message: false
+#| warning: false
+
+sunac_limpio_mm <- sunac2022 |>
+  dplyr::transmute(
+    identificador = as.character(Identificador),
+    tenencia_raw = stringr::str_squish(
+      as.character(haven::as_factor(su_tenencia, levels = "labels"))
+    ),
+    superficie_ten = as.numeric(su_k202ha)
+  ) |>
+  dplyr::mutate(
+    tenencia = stringr::str_to_sentence(tolower(tenencia_raw)),
+    tenencia = dplyr::if_else(tenencia == "Poseción", "Posesión", tenencia)
+  ) |>
+  dplyr::filter(
+    !is.na(identificador),
+    identificador != "",
+    !is.na(tenencia),
+    tenencia != "",
+    is.finite(superficie_ten),
+    superficie_ten > 0
+  )
+
+base_consolidada_mm <- sunac_limpio_mm |>
+  dplyr::group_by(identificador, tenencia) |>
+  dplyr::summarise(
+    area_total_ha = sum(superficie_ten, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+tabla_mono_multi_base <- base_consolidada_mm |>
+  dplyr::count(identificador, name = "n_regimenes") |>
+  dplyr::mutate(
+    `Tipo de tenencia` = dplyr::if_else(
+      n_regimenes == 1,
+      "Mono-tenencia",
+      "Multi-tenencia"
+    )
+  ) |>
+  dplyr::group_by(`Tipo de tenencia`) |>
+  dplyr::summarise(
+    UPA = dplyr::n(),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    `Porcentaje (%)` = 100 * UPA / sum(UPA)
+  ) |>
+  dplyr::arrange(
+    match(`Tipo de tenencia`, c("Mono-tenencia", "Multi-tenencia"))
+  )
+
+fila_total_mono_multi <- tabla_mono_multi_base |>
+  dplyr::summarise(
+    `Tipo de tenencia` = "Total",
+    UPA = sum(UPA),
+    `Porcentaje (%)` = 100
+  )
+
+tabla_mono_multi <- dplyr::bind_rows(
+  tabla_mono_multi_base,
+  fila_total_mono_multi
+)
+
+tabla_usc(
+  tabla_mono_multi,
+  align = c("l", "r", "r"),
+  digits = 2,
+  font_size = 9
+) |>
+  nota_tabla(
+    nota = "La clasificación distingue entre UPA con un solo régimen de tenencia y UPA con más de un régimen registrado en sus terrenos.",
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```
+
+Con las precisiones metodológicas señaladas, la @tbl-tenencia_tierrafpp evidencia la persistencia de la tenencia directa como forma dominante de organización de las unidades productivas agropecuarias en el Ecuador. Los resultados obtenidos a partir de la ESPAC 2022 muestran que la propiedad continúa siendo el principal mecanismo de control y gestión de la tierra, consolidando una estructura agraria fuertemente asociada a la titularidad directa de los predios.
+
+Del total de 42.444 UPA identificadas en la muestra, 36.057 corresponden a unidades gestionadas bajo la modalidad de propiedad directa, lo que representa el 84,95 % del total. Este resultado indica que aproximadamente ocho de cada diez unidades productivas operan bajo control directo del propietario, reflejando la continuidad de un patrón estructural históricamente predominante dentro del sector agropecuario ecuatoriano.
+
+Las formas derivadas de acceso a la tierra presentan una participación menor dentro de la estructura de tenencia. La herencia agrupa 2.787 UPA, equivalentes al 6,57 % del total, lo que evidencia la persistencia de mecanismos de transmisión intergeneracional de la tierra como una de las principales formas de continuidad patrimonial en el ámbito rural.
+
+Las modalidades de acceso no propietario mantienen una presencia reducida. El arrendamiento registra 1.680 UPA, correspondientes al 3,96 % del total, mientras que el usufructo representa el 1,13 %. Por su parte, las formas comunales alcanzan el 1,04 % y la aparcería o al partir el 0,86 %. En conjunto, estos resultados sugieren que las modalidades alternativas de acceso a la tierra continúan ocupando un espacio secundario dentro de la estructura agraria nacional.
+
+En forma de síntesis, la distribución observada confirma que la estructura de acceso a la tierra en el sector agropecuario ecuatoriano continúa organizada principalmente en torno a la propiedad directa, mientras que las demás modalidades de tenencia desempeñan un papel complementario dentro del sistema productivo rural
+
+```{r}
+#| label: tbl-tenencia_tierrafpp
+#| tbl-cap: "Distribución muestral de las UPA según la forma de tenencia de la tierra. Ecuador, ESPAC 2022"
+#| echo: false
+#| message: false
+#| warning: false
+
+base_tenencia_predominante_2022 <- sunac2022 |>
+  dplyr::transmute(
+    identificador = as.character(Identificador),
+    tenencia_raw = stringr::str_squish(
+      as.character(haven::as_factor(su_tenencia, levels = "labels"))
+    ),
+    superficie_ha = as.numeric(su_k202ha)
+  ) |>
+  dplyr::mutate(
+    tenencia = stringr::str_to_sentence(tolower(tenencia_raw)),
+    tenencia = dplyr::if_else(tenencia == "Poseción", "Posesión", tenencia)
+  ) |>
+  dplyr::filter(
+    !is.na(identificador),
+    identificador != "",
+    !is.na(tenencia),
+    tenencia != "",
+    is.finite(superficie_ha),
+    superficie_ha > 0
+  )
+
+tenencia_predominante_2022 <- base_tenencia_predominante_2022 |>
+  dplyr::group_by(identificador, tenencia) |>
+  dplyr::summarise(
+    sup_total_tenencia = sum(superficie_ha, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::arrange(
+    identificador,
+    dplyr::desc(sup_total_tenencia),
+    tenencia
+  ) |>
+  dplyr::group_by(identificador) |>
+  dplyr::slice(1) |>
+  dplyr::ungroup()
+
+tabla_tenencia_predominante_2022 <- tenencia_predominante_2022 |>
+  dplyr::group_by(tenencia) |>
+  dplyr::summarise(
+    UPA = dplyr::n(),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    `Porcentaje (%)` = 100 * UPA / sum(UPA)
+  ) |>
+  dplyr::arrange(dplyr::desc(UPA)) |>
+  dplyr::rename(`Forma de tenencia` = tenencia)
+
+fila_total_tenencia_predominante_2022 <- tabla_tenencia_predominante_2022 |>
+  dplyr::summarise(
+    `Forma de tenencia` = "Total",
+    UPA = sum(UPA),
+    `Porcentaje (%)` = 100
+  )
+
+tabla_final_tenencia_predominante_2022 <- dplyr::bind_rows(
+  tabla_tenencia_predominante_2022,
+  fila_total_tenencia_predominante_2022
+)
+
+tabla_usc(
+  tabla_final_tenencia_predominante_2022,
+  align = c("l", "r", "r"),
+  digits = 2,
+  font_size = 8
+) |>
+  nota_tabla(
+    nota = "La tenencia corresponde al régimen predominante de cada UPA, definido por la mayor superficie acumulada.",
+    fuente = "Elaboración propia a partir de la ESPAC 2022."
+  )
+```

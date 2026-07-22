@@ -1,0 +1,25 @@
+```{=latex}
+\begin{titlepage}
+\thispagestyle{empty}%
+\begin{center}
+\vspace*{1cm}
+
+\includegraphics[width=4cm]{usc-logo.png}\\[1.5cm]
+
+{\large \textbf{UNIVERSIDAD DE SANTIAGO DE COMPOSTELA}}\\[0.5cm]
+{\large \textbf{Escuela de Doctorado Internacional (EDIUS)}}\\[2cm]
+
+{\Huge \bfseries Formas de tenencia de la tierra y productividad agropecuaria en Ecuador}\\[3cm]
+
+{\large \textbf{Tesis Doctoral}}\\[0.5cm]
+{\large \textbf{José Vicente Ordóñez Yaguache}}\\[1cm]
+
+{\large Director de tesis: \textbf{Eduardo Jose Corbelle Rico}}\\[0.5cm]
+{\large Codirector de tesis: \textbf{Edelmiro López Iglesias}}\\[2cm]
+
+{\large \textbf{Santiago de Compostela 2026}}\\[0.2cm]
+
+\vfill
+\end{center}
+\end{titlepage}
+```

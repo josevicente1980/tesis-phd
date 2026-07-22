@@ -1,0 +1,3 @@
+"elemento","fuente","estado"
+"archivo_precios","docs/espac_2022/precios/Precio_Junio_25.xlsx","ruta_tecnica_actualizada"
+"formula_produccion_ec","R/pipeline_reproducible/1_Simplificacion.R","formula_metodologica_no_modificada"

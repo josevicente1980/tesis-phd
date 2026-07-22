@@ -1,0 +1,74 @@
+* Encoding: UTF-8.
+* TÍTULO DE LA SINTAXIS:							   
+* TABLAS 10 y 61 OTRAS ESPECIES DE GANADO    
+* OPERACIÓN ESTADÍSTICA:													   
+* Encuesta de Superficie y Producción Agropecuaria Continua ESPAC_2022			   
+* UNIDAD TÉCNICA RESPONSABLE: 												   
+* Dirección de Estadísticas Agropecuarias y Ambientales					   
+* ENTIDAD EJECUTORA:														   
+* Instituto Nacional de Estadística y Censos (INEC)							   
+*==============================================================================*.
+* Fecha de elaboración:          Septiembre - 2014						   
+* Fecha última modificación:   Marzo - 2022					   
+*==============================================================================*.
+* Elaborado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias    						   
+* Aprobado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias  							       
+*==============================================================================*.
+* Revisado por:																   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias     						   
+*==============================================================================*.
+*Indicaciones.
+*1- Descargue la Bases de datos de otras especies de ganado "oenac2022" de la página web: http://www.ecuadorencifras.gob.ec//estadisticas-agropecuarias-2/#
+
+*2- Guarde la base y copie el directorio en:.
+get file = 'C:\....\oenac2022.sav'.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 10                                    *
+*==============================================================================*.
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=oe_tn oe_trs oe_trc oe_tro  ual_prov DISPLAY=NONE  /VLABELS 
+    VARIABLES=oe_k1101 oe_k1102 oe_k1103 oe_k1104 DISPLAY=LABEL
+  /TABLE oe_tn [C] + oe_trs [C] + oe_trc [C] + oe_tro [C]  + ual_prov [C] BY oe_k1101 
+    [S][SUM] + oe_k1102 [S][SUM] + oe_k1103 [S][SUM] + oe_k1104 [S][SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=oe_tn oe_trs oe_trc oe_tro ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE.    
+
+WEIGHT OFF. 
+FILTER OFF. 
+USE ALL. 
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 61                                   *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=oe_tn oe_trs oe_trc oe_tro ual_prov DISPLAY=NONE  /VLABELS VARIABLES=oe_k1101 
+    oe_k1102 oe_k1103 oe_k1104 DISPLAY=LABEL
+  /TABLE oe_tn [C] + oe_trs [C] + oe_trc [C] + oe_tro [C] + ual_prov [C] BY oe_k1101 [SUM] + 
+    oe_k1102 [SUM] + oe_k1103 [SUM] + oe_k1104 [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=oe_tn oe_trs oe_trc oe_tro ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 61. NÚMERO DE CABEZAS DE GANADO DE OTRAS ESPECIES, SEGÚN REGIÓN Y PROVINCIA' 
+    CORNER='REGION Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+
+WEIGHT OFF. 
+FILTER OFF. 
+USE ALL. 
+EXECUTE.
