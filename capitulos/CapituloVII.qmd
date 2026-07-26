@@ -3,7 +3,7 @@
 \raggedbottom
 ```
 
-# Capítulo VII. Productividad agrícola, heterogeneidad territorial y eficiencia técnica: un enfoque econométrico comparativo
+# Capítulo VII. Productividad agropecuaria, heterogeneidad territorial y eficiencia técnica: un enfoque econométrico comparativo
 
 ```{r}
 #| label: setup-cap7
@@ -214,7 +214,7 @@ La productividad constituye uno de los principales indicadores para evaluar el d
 
 La literatura especializada reconoce que la productividad agrícola es un fenómeno multidimensional, asociado simultáneamente con factores estructurales, tecnológicos e institucionales. En este contexto, el análisis de la productividad requiere enfoques que permitan distinguir entre la contribución observada de los recursos productivos disponibles, las condiciones territoriales y los niveles de eficiencia con que dichos recursos son utilizados. Esta necesidad resulta particularmente relevante en economías agrícolas caracterizadas por una elevada heterogeneidad productiva y por importantes diferencias regionales en acceso a infraestructura, mercados y tecnología.
 
-El presente capítulo tiene como objetivo analizar los factores asociados a las diferencias en la productividad agrícola de las unidades de producción agropecuaria del Ecuador, a partir de la información proporcionada por la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, con especial énfasis en el régimen de tenencia de la tierra. Para ello se consideran dos dimensiones complementarias del desempeño productivo: la productividad de la tierra y la productividad del trabajo. Esta diferenciación permite evaluar si las asociaciones observadas para el rendimiento por superficie presentan comportamientos similares o distintos a aquellas relacionadas con el uso del factor trabajo.
+El presente capítulo tiene como objetivo analizar los factores asociados a las diferencias en la productividad agropecuaria de las unidades de producción agropecuaria del Ecuador, a partir de la información proporcionada por la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, con especial énfasis en el régimen de tenencia de la tierra. Para ello se consideran dos dimensiones complementarias del desempeño productivo: la productividad de la tierra y la productividad del trabajo. Esta diferenciación permite evaluar si las asociaciones observadas para el rendimiento por superficie presentan comportamientos similares o distintos a aquellas relacionadas con el uso del factor trabajo.
 
 Con el propósito de obtener una comprensión integral del fenómeno, se adopta una estrategia econométrica comparativa basada en tres enfoques complementarios. En primer lugar, se estiman modelos lineales ordinarios con errores estándar robustos para identificar asociaciones promedio entre productividad y covariables observables. En segundo lugar, se incorporan modelos multinivel con interceptos aleatorios provinciales para evaluar la existencia de heterogeneidad territorial no observada. Finalmente, se emplean modelos de frontera estocástica con el fin de analizar la contribución relativa de la eficiencia técnica dentro de una especificación paramétrica.
 
@@ -232,7 +232,7 @@ Con el propósito de superar esta limitación, los modelos multinivel permiten d
 
 Por otra parte, la teoría de la eficiencia técnica plantea que productores con acceso a recursos similares pueden obtener resultados distintos debido a diferencias en la forma en que dichos recursos son utilizados [@farrell_measurement_1957]. En este marco, la metodología de frontera estocástica permite estimar una frontera de producción potencial y medir la distancia existente entre el desempeño observado y dicho nivel máximo teórico [@aigner_formulation_1977; @battese_model_1995].
 
-En consecuencia, la estrategia analítica desarrollada en este capítulo combina modelos lineales, modelos multinivel y fronteras estocásticas con el propósito de examinar de forma conjunta asociaciones estructurales, tecnológicas, territoriales y de eficiencia técnica. Esta aproximación permite construir una interpretación más robusta de las diferencias observadas en la productividad agrícola y proporciona una base metodológica sólida para el análisis empírico posterior.
+En consecuencia, la estrategia analítica desarrollada en este capítulo combina modelos lineales, modelos multinivel y fronteras estocásticas con el propósito de examinar de forma conjunta asociaciones estructurales, tecnológicas, territoriales y de eficiencia técnica. Esta aproximación permite construir una interpretación más robusta de las diferencias observadas en la productividad agropecuaria y proporciona una base metodológica sólida para el análisis empírico posterior.
 
 ## Construcción de la base analítica
 
@@ -365,7 +365,7 @@ En la estimación de la frontera estocástica, esta formulación se aplicó desp
 
 Donde:
 
-$\ln(1+Y_i)$: Representa el logaritmo natural de uno más la productividad agrícola. Se estimaron dos especificaciones: productividad de la tierra (`produccion_ec / cg_superficie`) y productividad del trabajo (`produccion_ec / eu_k1301`), aplicadas bajo los criterios de inclusión de cada familia de modelos.
+$\ln(1+Y_i)$: Representa el logaritmo natural de uno más la productividad agropecuaria. Se estimaron dos especificaciones: productividad de la tierra (`produccion_ec / cg_superficie`) y productividad del trabajo (`produccion_ec / eu_k1301`), aplicadas bajo los criterios de inclusión de cada familia de modelos.
 
 $\text{Tenencia}_i$: Régimen predominante de tenencia de la tierra de la unidad productiva agropecuaria.
 
@@ -391,7 +391,7 @@ $u_i$: Componente no negativo asociado a ineficiencia técnica en la frontera es
 
 $\beta_0$: Intercepto del modelo.
 
-$\beta_k$: Parámetros que cuantifican la asociación marginal de cada variable explicativa con la productividad agrícola transformada, bajo la especificación estimada.
+$\beta_k$: Parámetros que cuantifican la asociación marginal de cada variable explicativa con la productividad agropecuaria transformada, bajo la especificación estimada.
 
 ## Evaluación de la especificación de la base analítica
 
@@ -513,9 +513,9 @@ ggplot2::ggplot(
     family = "serif"
   ) +
   ggplot2::scale_fill_gradient2(
-    low = paleta_tesis[1],
+    low = paleta_figuras_tesis["principal"],
     mid = "white",
-    high = paleta_tesis[6],
+    high = paleta_figuras_tesis["acento"],
     midpoint = 0,
     limits = c(-1, 1),
     labels = scales::label_number(
@@ -528,7 +528,7 @@ ggplot2::ggplot(
     x = NULL,
     y = NULL
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     axis.text.x = ggplot2::element_text(
       angle = 45,
@@ -721,19 +721,19 @@ ggplot2::ggplot(
   )
 ) +
   ggplot2::stat_qq(
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     alpha = 0.40,
     size = 0.8
   ) +
   ggplot2::stat_qq_line(
-    color = paleta_tesis[6],
+    color = paleta_figuras_tesis["acento"],
     linewidth = 0.8
   ) +
   ggplot2::labs(
     x = "Cuantiles teóricos",
     y = "Cuantiles observados"
   ) +
-  tema_tesis
+  tema_figura_tesis
 ```
 
 ## Resultados de los modelos lineales ordinarios
@@ -1866,7 +1866,7 @@ Una vez estimados los parámetros de varianza de los modelos de frontera estocá
 
 Los resultados de @tbl-eficiencia-sfa-cap7 muestran eficiencias medias de 0,406 para productividad de la tierra y 0,391 para productividad del trabajo. En términos del modelo, una UPA con eficiencia uno se ubica sobre la frontera estimada y valores menores expresan una mayor distancia relativa. Las medias indican una separación considerable dentro de la muestra SFA, pero su complemento no representa producción recuperable de manera automática: acercarse a la frontera puede requerir cambios de gestión, tecnología, recursos e infraestructura que el índice no cuantifica.
 
-La mediana se sitúa en 0,412 para productividad de la tierra y 0,401 para productividad del trabajo. El primer cuartil alcanza 0,296 y 0,307, mientras que el tercero alcanza 0,530 y 0,482, respectivamente.
+La mediana se sitúa en 0,412 para productividad de la tierra y 0,401 para productividad del trabajo. El primer cuartil alcanza 0,295 y 0,307, mientras que el tercero alcanza 0,530 y 0,482, respectivamente.
 
 La distribución revela heterogeneidad dentro de la muestra y evita reducir el diagnóstico a un único promedio. La eficiencia media laboral es algo menor, pero su gamma también es inferior; en consecuencia, esa diferencia no basta para afirmar que el trabajo se administra peor que la tierra. Cada índice depende de su propia frontera, variable dependiente y supuestos, y ambos se estiman únicamente para UPA con productividades positivas y covariables completas.
 

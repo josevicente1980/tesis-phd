@@ -1,5 +1,7 @@
 # Capítulo V: Metodología y fuentes
 
+Este capítulo describe el diseño metodológico de la investigación, la fuente de información utilizada, el proceso de construcción de la base analítica, la definición y operacionalización de las variables, la conformación de las muestras y la estrategia econométrica empleada para analizar la asociación entre la tenencia de la tierra, la productividad agropecuaria y la eficiencia relativa de las UPA. Asimismo, se presentan los criterios de reproducibilidad, las consideraciones éticas y las limitaciones metodológicas que delimitan el alcance de las inferencias obtenidas.
+
 ```{r}
 #| label: setup-capitulo-V
 #| include: false
@@ -31,7 +33,7 @@ La base utilizada por los modelos es `base_final_v1.1.csv`, producto del pipelin
 
 La ausencia de información no se recodificó automáticamente como cero. Cada modelo aplica criterios de completitud acordes con sus variables. En particular, los indicadores tecnológicos distinguen `SI`, `NO`, `NO_APLICA` y ausencia real. Las muestras econométricas se restringen a UPA clasificadas `SI` o `NO` en riego, fertilizantes y plaguicidas; `NO_APLICA` y los valores faltantes quedan fuera del universo comparable de esas estimaciones.
 
-El pipeline completo utilizado para la importación, depuración, homologación, integración y construcción de la base analítica se presenta en el Anexo [2]. Este incluye la secuencia de procesamiento, los criterios de selección de observaciones, la construcción de las variables y los controles aplicados antes de la estimación de los modelos.
+El pipeline completo utilizado para la importación, depuración, homologación, integración y construcción de la base analítica se presenta en el [Anexo II](#sec-anexo-base). Este incluye la secuencia de procesamiento, los criterios de selección de observaciones, la construcción de las variables y los controles aplicados antes de la estimación de los modelos.
 
 ### Régimen predominante de tenencia
 
@@ -55,7 +57,7 @@ Una vez homologada la información, se seleccionaron exclusivamente los registro
 
 En los casos en que no se encontró información completa en las fuentes oficiales, se efectuó una búsqueda complementaria y sistemática en fuentes secundarias especializadas, como reportes sectoriales, boletines de mercado, publicaciones técnicas y registros de comercio agropecuario. Los valores obtenidos fueron contrastados y documentados, y se utilizaron únicamente cuando no existía una referencia oficial disponible, manteniendo criterios de consistencia respecto del producto, el periodo, la unidad de medida y la presentación comercial.
 
-La relación completa de los precios utilizados, sus fuentes, las unidades originales, los factores de conversión y los criterios de selección se presenta en el Anexo [1]. A partir de esta información, las cantidades físicas reportadas por la ESPAC se multiplicaron por sus respectivos precios de referencia. Posteriormente, los valores de los diferentes componentes agrícolas y pecuarios se agregaron a nivel de UPA para construir la variable `produccion_ec`.
+La relación completa de los precios utilizados, sus fuentes, las unidades originales, los factores de conversión y los criterios de selección se presenta en el [Anexo I](#sec-anexo-precios). A partir de esta información, las cantidades físicas reportadas por la ESPAC se multiplicaron por sus respectivos precios de referencia. Posteriormente, los valores de los diferentes componentes agrícolas y pecuarios se agregaron a nivel de UPA para construir la variable `produccion_ec`.
 
 Esta variable representa el valor bruto estimado de la producción, no el ingreso neto ni el beneficio obtenido por cada UPA. Por tanto, no descuenta costos de producción, transporte o comercialización. Su construcción permite expresar productos heterogéneos en una unidad monetaria común y utilizarla posteriormente en el cálculo de los indicadores de productividad de la tierra y del trabajo.
 .

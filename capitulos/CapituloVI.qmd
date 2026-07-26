@@ -4,53 +4,143 @@
 #| label: setup-capitulo-vi
 #| include: false
 
-# 1. Cargamos el resolvedor central de rutas del proyecto
-source(file.path("R", "paths.R"))
+# 1. Localizamos la raíz y cargamos el resolvedor central de rutas
+localizar_raiz_proyecto <- function(inicio = getwd()) {
+  actual <- normalizePath(
+    inicio,
+    winslash = "/",
+    mustWork = TRUE
+  )
 
-# 2. Cargamos configuración y paquetes 
+  repeat {
+    archivo_paths <- file.path(actual, "R", "paths.R")
+
+    if (
+      file.exists(file.path(actual, "_quarto.yml")) &&
+        file.exists(archivo_paths)
+    ) {
+      return(actual)
+    }
+
+    superior <- dirname(actual)
+
+    if (identical(superior, actual)) {
+      stop(
+        "No se pudo localizar la raíz del proyecto TESIS_PhD desde: ",
+        inicio,
+        call. = FALSE
+      )
+    }
+
+    actual <- superior
+  }
+}
+
+raiz_proyecto_capitulo_vi <- localizar_raiz_proyecto()
+source(
+  file.path(
+    raiz_proyecto_capitulo_vi,
+    "R",
+    "paths.R"
+  )
+)
+
+# 2. Cargamos configuración y paquetes
 source(project_path("R", "00-setup.R"))
 
-# 3. Cargamos tus funciones personalizadas 
+# 3. Cargamos las funciones personalizadas
 source(project_path("R", "01-functions.R"))
 
 fuente_espac <- "Elaboración propia a partir de ESPAC 2022."
 
 tmap::tmap_mode("plot")
-```
 
-```{r}
-#| label: cargar-datos-capitulo-vi
-#| include: false
-
-# Usamos el resolvedor central para leer desde la raiz del proyecto
-ruta_base <- path_processed("15_Base_final_diciembre.csv")
+# 4. Construimos y validamos las rutas de los insumos del capítulo
+ruta_base <- project_path(
+  "data",
+  "processed",
+  "base_final_v1.1.csv"
+)
 ruta_shp  <- path_shapes("SHP", "nxprovincias.shp")
 
+if (!file.exists(ruta_base)) {
+  stop(
+    "No se encontró la base procesada del Capítulo VI en: ",
+    ruta_base,
+    call. = FALSE
+  )
+}
+
+if (!file.exists(ruta_shp)) {
+  stop(
+    "No se encontró el archivo cartográfico del Capítulo VI en: ",
+    ruta_shp,
+    call. = FALSE
+  )
+}
+
+# 5. Cargamos la base procesada y los objetos crudos requeridos
 base <- readr::read_csv(
   ruta_base,
-  show_col_types = FALSE # Corregido a MAYÚSCULAS
+  show_col_types = FALSE
 )
 
 provincias <- sf::st_read(
   ruta_shp,
-  quiet = TRUE # Corregido a MAYÚSCULAS
+  quiet = TRUE
 )
 
-# Lectura de archivos .rds mediante el resolvedor central
-cgnac2022 <- readRDS(path_raw("cgnac2022.rds"))
-cpnac2022 <- readRDS(path_raw("cpnac2022.rds"))
-ctnac2022 <- readRDS(path_raw("ctnac2022.rds"))
-adnac2022 <- readRDS(path_raw("adnac2022.rds"))
-pcnac2022 <- readRDS(path_raw("pcnac2022.rds"))
-fpnac2022 <- readRDS(path_raw("fpnac2022.rds"))
-ftnac2022 <- readRDS(path_raw("ftnac2022.rds"))
-acnac2022 <- readRDS(path_raw("acnac2022.rds"))
-apnac2022 <- readRDS(path_raw("apnac2022.rds"))
-glnac2022 <- readRDS(path_raw("glnac2022.rds"))
-gpnac2022 <- readRDS(path_raw("gpnac2022.rds"))
-gvnac2022 <- readRDS(path_raw("gvnac2022.rds"))
-oenac2022 <- readRDS(path_raw("oenac2022.rds"))
-sunac2022 <- readRDS(path_raw("sunac2022.rds"))
+rutas_rds_capitulo_vi <- c(
+  cgnac2022 = path_raw("cgnac2022.rds"),
+  cpnac2022 = path_raw("cpnac2022.rds"),
+  ctnac2022 = path_raw("ctnac2022.rds"),
+  adnac2022 = path_raw("adnac2022.rds"),
+  pcnac2022 = path_raw("pcnac2022.rds"),
+  fpnac2022 = path_raw("fpnac2022.rds"),
+  ftnac2022 = path_raw("ftnac2022.rds"),
+  acnac2022 = path_raw("acnac2022.rds"),
+  apnac2022 = path_raw("apnac2022.rds"),
+  glnac2022 = path_raw("glnac2022.rds"),
+  gpnac2022 = path_raw("gpnac2022.rds"),
+  gvnac2022 = path_raw("gvnac2022.rds"),
+  oenac2022 = path_raw("oenac2022.rds"),
+  sunac2022 = path_raw("sunac2022.rds")
+)
+
+rutas_faltantes_capitulo_vi <- rutas_rds_capitulo_vi[
+  !file.exists(rutas_rds_capitulo_vi)
+]
+
+if (length(rutas_faltantes_capitulo_vi) > 0) {
+  stop(
+    "No se encontraron los siguientes insumos RDS del Capítulo VI: ",
+    paste(
+      rutas_faltantes_capitulo_vi,
+      collapse = ", "
+    ),
+    call. = FALSE
+  )
+}
+
+objetos_rds_capitulo_vi <- lapply(
+  rutas_rds_capitulo_vi,
+  readRDS
+)
+
+cgnac2022 <- objetos_rds_capitulo_vi$cgnac2022
+cpnac2022 <- objetos_rds_capitulo_vi$cpnac2022
+ctnac2022 <- objetos_rds_capitulo_vi$ctnac2022
+adnac2022 <- objetos_rds_capitulo_vi$adnac2022
+pcnac2022 <- objetos_rds_capitulo_vi$pcnac2022
+fpnac2022 <- objetos_rds_capitulo_vi$fpnac2022
+ftnac2022 <- objetos_rds_capitulo_vi$ftnac2022
+acnac2022 <- objetos_rds_capitulo_vi$acnac2022
+apnac2022 <- objetos_rds_capitulo_vi$apnac2022
+glnac2022 <- objetos_rds_capitulo_vi$glnac2022
+gpnac2022 <- objetos_rds_capitulo_vi$gpnac2022
+gvnac2022 <- objetos_rds_capitulo_vi$gvnac2022
+oenac2022 <- objetos_rds_capitulo_vi$oenac2022
+sunac2022 <- objetos_rds_capitulo_vi$sunac2022
 ```
 
 ## Introducción
@@ -87,7 +177,9 @@ cgnac_base <- cgnac2022 |>
 
 if ("al_ncues" %in% names(cgnac_base)) {
   cgnac_base <- cgnac_base |>
-    dplyr::filter(!al_ncues %in% c(9999, 8888, 7777, 6666, 5555))
+    dplyr::filter(
+      !al_ncues %in% c(9999, 8888, 7777, 6666, 5555)
+    )
 }
 
 posibles_inter <- c(
@@ -97,27 +189,44 @@ posibles_inter <- c(
   "cg_intersecciones"
 )
 
-col_inter <- posibles_inter[posibles_inter %in% names(cgnac_base)][1]
+col_inter <- posibles_inter[
+  posibles_inter %in% names(cgnac_base)
+][1]
 
 if (!is.na(col_inter)) {
   cgnac_base <- cgnac_base |>
-    dplyr::filter(as.numeric(haven::zap_labels(.data[[col_inter]])) != 1)
+    dplyr::filter(
+      as.numeric(
+        haven::zap_labels(.data[[col_inter]])
+      ) != 1
+    )
 }
 
 if ("Productor" %in% names(cgnac_base)) {
   cgnac_base <- cgnac_base |>
-    dplyr::filter(as.numeric(haven::zap_labels(Productor)) == 1)
+    dplyr::filter(
+      as.numeric(
+        haven::zap_labels(Productor)
+      ) == 1
+    )
 }
 
 cgnac_fac <- cgnac_base |>
   dplyr::mutate(
     cg_k100 = factor(
-      as.numeric(haven::zap_labels(cg_k100)),
+      as.numeric(
+        haven::zap_labels(cg_k100)
+      ),
       levels = c(1, 2),
-      labels = c("Hombre", "Mujer")
+      labels = c(
+        "Hombre",
+        "Mujer"
+      )
     ),
     cg_k102 = factor(
-      as.numeric(haven::zap_labels(cg_k102)),
+      as.numeric(
+        haven::zap_labels(cg_k102)
+      ),
       levels = c(1, 2, 3, 4, 7, 9),
       labels = c(
         "Ninguna",
@@ -129,7 +238,9 @@ cgnac_fac <- cgnac_base |>
       )
     ),
     edad_rango = factor(
-      as.numeric(haven::zap_labels(edad_rango)),
+      as.numeric(
+        haven::zap_labels(edad_rango)
+      ),
       levels = c(1, 2, 3, 4, 5, 6),
       labels = c(
         "Entre 15 y 24 años",
@@ -143,7 +254,11 @@ cgnac_fac <- cgnac_base |>
   )
 
 resumen_caracteristicas <- cgnac_fac |>
-  dplyr::select(cg_k100, edad_rango, cg_k102) |>
+  dplyr::select(
+    cg_k100,
+    edad_rango,
+    cg_k102
+  ) |>
   tidyr::pivot_longer(
     cols = dplyr::everything(),
     names_to = "variable",
@@ -158,15 +273,71 @@ resumen_caracteristicas <- cgnac_fac |>
     ),
     variable = factor(
       variable,
-      levels = c("Sexo", "Edad (rango)", "Instrucción formal")
+      levels = c(
+        "Sexo",
+        "Edad (rango)",
+        "Instrucción formal"
+      )
     ),
     categoria = dplyr::if_else(
       is.na(categoria),
       "No informa",
       as.character(categoria)
+    ),
+    orden_categoria = dplyr::case_when(
+      variable == "Sexo" &
+        categoria == "Hombre" ~ 1,
+
+      variable == "Sexo" &
+        categoria == "Mujer" ~ 2,
+
+      variable == "Sexo" &
+        categoria == "No informa" ~ 3,
+
+      variable == "Edad (rango)" &
+        categoria == "Entre 15 y 24 años" ~ 1,
+
+      variable == "Edad (rango)" &
+        categoria == "Entre 25 y 34 años" ~ 2,
+
+      variable == "Edad (rango)" &
+        categoria == "Entre 35 y 44 años" ~ 3,
+
+      variable == "Edad (rango)" &
+        categoria == "Entre 45 y 64 años" ~ 4,
+
+      variable == "Edad (rango)" &
+        categoria == "65 años y más" ~ 5,
+
+      variable == "Edad (rango)" &
+        categoria == "No informa" ~ 6,
+
+      variable == "Instrucción formal" &
+        categoria == "Ninguna" ~ 1,
+
+      variable == "Instrucción formal" &
+        categoria == "Primaria" ~ 2,
+
+      variable == "Instrucción formal" &
+        categoria == "Secundaria" ~ 3,
+
+      variable == "Instrucción formal" &
+        categoria == "Superior" ~ 4,
+
+      variable == "Instrucción formal" &
+        categoria == "Posgrado" ~ 5,
+
+      variable == "Instrucción formal" &
+        categoria == "No informa" ~ 6,
+
+      TRUE ~ 99
     )
   ) |>
-  dplyr::group_by(variable, categoria) |>
+  dplyr::group_by(
+    variable,
+    categoria,
+    orden_categoria
+  ) |>
   dplyr::summarise(
     `Número de observaciones` = dplyr::n(),
     .groups = "drop"
@@ -174,10 +345,18 @@ resumen_caracteristicas <- cgnac_fac |>
   dplyr::group_by(variable) |>
   dplyr::mutate(
     `Porcentaje (%)` =
-      100 * `Número de observaciones` / sum(`Número de observaciones`)
+      100 *
+      `Número de observaciones` /
+      sum(`Número de observaciones`)
   ) |>
   dplyr::ungroup() |>
-  dplyr::arrange(variable, categoria)
+  dplyr::arrange(
+    variable,
+    orden_categoria
+  ) |>
+  dplyr::select(
+    -orden_categoria
+  )
 
 tabla_caracteristicas <- resumen_caracteristicas |>
   dplyr::transmute(
@@ -186,9 +365,17 @@ tabla_caracteristicas <- resumen_caracteristicas |>
     `Porcentaje (%)`
   )
 
-n_sexo <- sum(resumen_caracteristicas$variable == "Sexo")
-n_edad <- sum(resumen_caracteristicas$variable == "Edad (rango)")
-n_inst <- sum(resumen_caracteristicas$variable == "Instrucción formal")
+n_sexo <- sum(
+  resumen_caracteristicas$variable == "Sexo"
+)
+
+n_edad <- sum(
+  resumen_caracteristicas$variable == "Edad (rango)"
+)
+
+n_inst <- sum(
+  resumen_caracteristicas$variable == "Instrucción formal"
+)
 
 tabla_usc(
   tabla_caracteristicas,
@@ -196,7 +383,12 @@ tabla_usc(
   digits = 1,
   font_size = 9
 ) |>
-  kableExtra::pack_rows("Sexo", 1, n_sexo, bold = FALSE) |>
+  kableExtra::pack_rows(
+    "Sexo",
+    1,
+    n_sexo,
+    bold = FALSE
+  ) |>
   kableExtra::pack_rows(
     "Edad (rango)",
     n_sexo + 1,
@@ -210,7 +402,12 @@ tabla_usc(
     bold = FALSE
   ) |>
   nota_tabla(
-    nota = "La tabla no dispone de factor de expansión, ya que corresponde a información obtenida mediante estudio de casos según la metodología de la ESPAC.",
+    nota = paste(
+      "La tabla no dispone de factor de expansión,",
+      "ya que corresponde a información obtenida",
+      "mediante estudio de casos según la metodología",
+      "de la ESPAC."
+    ),
     fuente = fuente_espac
   )
 ```
@@ -409,11 +606,11 @@ labor_total_ha_exp <- sum(
 )
 
 colores_usos <- c(
-  "Cultivos permanentes" = paleta_tesis[3],
-  "Cultivos transitorios" = paleta_tesis[4],
-  "Pastos cultivados" = paleta_tesis[6],
-  "Pastos naturales" = paleta_tesis[7],
-  "Barbecho y descanso" = paleta_tesis[9]
+  "Cultivos permanentes" = unname(paleta_figuras_tesis["principal"]),
+  "Cultivos transitorios" = unname(paleta_figuras_tesis["secundario"]),
+  "Pastos cultivados" = unname(paleta_figuras_tesis["acento"]),
+  "Pastos naturales" = unname(paleta_figuras_tesis["apoyo"]),
+  "Barbecho y descanso" = unname(paleta_figuras_tesis["neutro"])
 )
 
 titulo_pastel <- paste0(
@@ -451,7 +648,7 @@ g_pie <- ggplot2::ggplot(
     title = titulo_pastel,
     fill = NULL
   ) +
-  tema_tesis_vacio +
+  tema_figura_vacia_tesis +
   ggplot2::theme(
     plot.title = ggplot2::element_text(
       face = "bold",
@@ -497,7 +694,7 @@ g_bar <- ggplot2::ggplot(
     x = NULL,
     y = "Hectáreas expandidas"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     plot.title = ggplot2::element_text(
       face = "bold",
@@ -2029,9 +2226,9 @@ tabla_usc(
 
 Si bien la distribución del tamaño de los predios permite identificar diferencias entre los regímenes de tenencia, la estructura agraria también puede analizarse a partir de la forma en que estas modalidades se combinan dentro de las unidades agropecuarias. Con este propósito, se presenta a continuación una representación gráfica que permite visualizar la composición relativa de las distintas formas de acceso a la tierra.
 
-La figura @fig-ternario-tenencia muestra la composición de la tenencia dentro de las unidades agropecuarias. Cada punto representa una unidad productiva y su posición dentro del triángulo indica la proporción de superficie bajo propiedad, arrendamiento y tenencias especiales.
+La figura @fig-ternario-tenencia muestra la composición de la tenencia dentro de las unidades agropecuarias. Cada punto representa una UPA y su posición depende de la proporción de su superficie bajo propiedad, arrendamiento y tenencias especiales. Los vértices corresponden a unidades con una sola modalidad, los lados representan combinaciones de dos grupos y el interior indica la coexistencia de los tres grupos de tenencia.
 
-La distribución de los puntos evidencia una concentración hacia el vértice correspondiente a la propiedad, lo que refleja la predominancia de este régimen dentro de la estructura agraria. No obstante, también se observan unidades productivas ubicadas en zonas intermedias del triángulo, lo que indica la coexistencia de diferentes modalidades de acceso a la tierra dentro de una misma explotación.
+La distribución de los puntos evidencia una concentración hacia el vértice correspondiente a la propiedad. No obstante, también se observan UPA sobre los lados y en el interior del triángulo, lo que refleja combinaciones de modalidades de acceso a la tierra dentro de una misma unidad productiva.
 
 
 ```{r}
@@ -2040,42 +2237,57 @@ La distribución de los puntos evidencia una concentración hacia el vértice co
 #| fig-align: center
 #| fig-width: 6.4
 #| fig-height: 5.0
-#| out-width: "92%"
+#| out-width: "100%"
 #| echo: false
 #| warning: false
 #| message: false
 
 ternaria <- base |>
   dplyr::mutate(
-    p_propiedad = to_num(dueño),
-    p_arrendamiento = to_num(arrendamiento),
-    p_especiales = to_num(especiales)
+    superficie_propiedad = to_num(tenencia_area_dueño),
+    superficie_arrendamiento = to_num(tenencia_area_arrendamiento),
+    superficie_especiales = to_num(tenencia_area_especiales),
+    superficie_tenencia_total =
+      superficie_propiedad +
+      superficie_arrendamiento +
+      superficie_especiales
   ) |>
   dplyr::filter(
-    is.finite(p_propiedad),
-    is.finite(p_arrendamiento),
-    is.finite(p_especiales)
+    is.finite(superficie_propiedad),
+    is.finite(superficie_arrendamiento),
+    is.finite(superficie_especiales),
+    superficie_propiedad >= 0,
+    superficie_arrendamiento >= 0,
+    superficie_especiales >= 0,
+    is.finite(superficie_tenencia_total),
+    superficie_tenencia_total > 0
   ) |>
   dplyr::mutate(
-    total =
-      p_propiedad +
-      p_arrendamiento +
-      p_especiales,
+    prop_propiedad =
+      superficie_propiedad / superficie_tenencia_total,
+    prop_arrendamiento =
+      superficie_arrendamiento / superficie_tenencia_total,
+    prop_especiales =
+      superficie_especiales / superficie_tenencia_total,
 
-    A = p_propiedad / total,
-    B = p_arrendamiento / total,
-    C = p_especiales / total,
-
-    x = B + (0.5 * C),
-    y = (sqrt(3) / 2) * C,
-
-    clase_mayoria = dplyr::case_when(
-      clase.mayoria == "dueño" ~ "Propiedad",
-      clase.mayoria == "arrendamiento" ~ "Arrendamiento",
-      clase.mayoria == "especiales" ~ "Tenencia especial",
-      TRUE ~ NA_character_
-    )
+    x = prop_arrendamiento + (0.5 * prop_especiales),
+    y = (sqrt(3) / 2) * prop_especiales
   )
+
+tol_ternaria <- 1e-8
+
+suma_proporciones_ternaria <-
+  ternaria$prop_propiedad +
+  ternaria$prop_arrendamiento +
+  ternaria$prop_especiales
+
+stopifnot(
+  !anyDuplicated(ternaria$Identificador),
+  all(
+    abs(suma_proporciones_ternaria - 1) <=
+      tol_ternaria
+  )
+)
 
 # Triángulo principal
 
@@ -2126,13 +2338,13 @@ grid_ternario <- purrr::map_dfr(
       x = c(
         0.5 * v,
         v,
-        1 - 0.5 * v
+        1 - v
       ),
 
       y = c(
         (sqrt(3) / 2) * v,
         0,
-        (sqrt(3) / 2) * v
+        0
       ),
 
       xend = c(
@@ -2178,11 +2390,13 @@ ggplot2::ggplot() +
     data = ternaria,
     ggplot2::aes(
       x = x,
-      y = y,
-      colour = clase_mayoria
+      y = y
     ),
-    alpha = 0.45,
-    size = 1.2
+    colour = unname(
+      paleta_figuras_tesis["principal"]
+    ),
+    alpha = 0.32,
+    size = 0.8
   ) +
 
   ggplot2::geom_text(
@@ -2202,15 +2416,6 @@ ggplot2::ggplot() +
     )
   ) +
 
-  ggplot2::scale_color_manual(
-    values = c(
-      "Propiedad" = paleta_tesis[1],
-      "Arrendamiento" = paleta_tesis[4],
-      "Tenencia especial" = paleta_tesis[6]
-    ),
-    name = "Tenencia predominante"
-  ) +
-
   ggplot2::coord_equal(
     xlim = c(-0.14, 1.14),
     ylim = c(-0.11, 0.99),
@@ -2222,17 +2427,9 @@ ggplot2::ggplot() +
     y = NULL
   ) +
 
-  tema_tesis_vacio +
+  tema_figura_vacia_tesis +
 
   ggplot2::theme(
-    legend.position = "bottom",
-    legend.title = ggplot2::element_text(
-      face = "bold",
-      size = 9
-    ),
-    legend.text = ggplot2::element_text(
-      size = 8
-    ),
     plot.margin = ggplot2::margin(
       8,
       8,
@@ -2247,9 +2444,9 @@ Los resultados muestran que la estructura de la tenencia de la tierra se caracte
 
 A partir de esta configuración institucional general, resulta pertinente examinar si las distintas modalidades de acceso a la tierra se distribuyen de manera similar entre los diferentes sistemas productivos del sector agropecuario. En particular, es relevante identificar si determinados sectores productivos presentan una mayor presencia relativa de modalidades como el arrendamiento o las tenencias especiales, lo cual podría reflejar estrategias productivas diferenciadas en el uso de la tierra.
 
-La @tbl-tenencia-sector presenta la distribución promedio del área de las unidades de producción agropecuaria (UPA) según los principales regímenes de tenencia de la tierra y el sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante en cada UPA a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estas actividades se agruparon en cinco sectores productivos (agricultura, pecuario, pastos, forestal y otros) y se calculó la proporción promedio del área del predio bajo cada régimen de tenencia (propiedad, arrendamiento y tenencias especiales) para cada grupo de UPA.
+La @tbl-tenencia-sector presenta la distribución promedio del área de las unidades de producción agropecuaria (UPA) según los principales regímenes de tenencia de la tierra y el sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante en cada UPA a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estas actividades se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros) y se calculó la proporción promedio del área del predio bajo cada régimen de tenencia (propiedad, arrendamiento y tenencias especiales) para cada grupo de UPA.
 
-En términos de grandes magnitudes, los resultados muestran que la tierra propia constituye la forma predominante de acceso a la tierra en todos los sistemas productivos, con valores que superan el 90 % del área en promedio en todos los sectores analizados. No obstante, se observan diferencias relevantes en la presencia del arrendamiento. En particular, las unidades con orientación agrícola presentan la mayor proporción promedio de área arrendada (alrededor de 8,6 %), mientras que en los sistemas basados en pastos y en las actividades pecuarias el arrendamiento representa proporciones menores (cercanas al 3 % o 4 % del área). Por su parte, las tenencias especiales mantienen una participación reducida en todos los sectores productivos.
+En términos de grandes magnitudes, los resultados muestran que la tierra propia constituye la forma predominante de acceso en los cuatro sectores, con participaciones comprendidas entre el 78,6 % en agricultura y el 88,4 % en el sector forestal. Las unidades con orientación agrícola presentan la mayor proporción promedio de área arrendada (7,3 %), seguidas por las pecuarias (4,3 %), otros sectores (4,2 %) y el sector forestal (1,1 %). Las tenencias especiales representan entre el 10,5 % del área en el sector forestal y el 14,1 % en agricultura.
 
 Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
 
@@ -2334,9 +2531,9 @@ Una vez caracterizada la estructura productiva del sector agropecuario y las mod
 
 Con el fin de identificar si el desempeño productivo varía según la especialización económica de las unidades agropecuarias, se presenta a continuación una síntesis de la productividad de la tierra y del trabajo según el sector productivo dominante. Este análisis permite complementar la descripción general del sector agropecuario con una aproximación más directa a la heterogeneidad productiva observada entre distintos tipos de unidades.
 
-La @tbl-productividad-sector presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el sector productivo dominante de las UPA. Para su construcción se identificó, en primer lugar, la actividad productiva predominante en cada unidad a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estos rubros se agruparon en cinco sectores productivos (agricultura, pecuario, pastos, forestal y otros) y se calcularon las medianas de productividad de cada grupo. El uso de la mediana permite representar los valores típicos de los sistemas productivos y reducir la influencia de valores extremos.
+La @tbl-productividad-sector presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el sector productivo dominante de las UPA. Para su construcción se identificó, en primer lugar, la actividad productiva predominante en cada unidad a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estos rubros se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros) y se calcularon las medianas de productividad de cada grupo. El uso de la mediana permite representar los valores típicos de los sistemas productivos y reducir la influencia de valores extremos.
 
-Los resultados muestran que las unidades orientadas principalmente a la producción de pastos presentan las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra cercana a 5.155 unidades monetarias por hectárea y una mediana de productividad del trabajo de aproximadamente 17.487 unidades monetarias por trabajador. En un segundo nivel se ubican las unidades con predominio de actividades agrícolas, que registran una mediana de productividad de la tierra de alrededor de 1.670, mientras que las explotaciones pecuarias presentan valores ligeramente inferiores, cercanos a 1.387. Por su parte, las actividades clasificadas como otros alcanzan una mediana de aproximadamente 979, y las actividades forestales presentan los niveles más bajos del conjunto (con una mediana cercana a 243 en productividad de la tierra).
+Los resultados muestran que las unidades de orientación pecuaria registran la mayor mediana de productividad de la tierra, con 2.051,7 unidades monetarias por hectárea, y también la mayor mediana de productividad del trabajo, con 4.106,3 unidades monetarias por trabajador. Las unidades agrícolas alcanzan medianas de 1.624,8 por hectárea y 2.151,3 por trabajador. Las actividades clasificadas como otros presentan 1.099,5 y 3.242,2, respectivamente, mientras que las unidades forestales registran las menores medianas: 560,1 por hectárea y 566,8 por trabajador.
 
 En términos analíticos, estos resultados evidencian que la productividad agropecuaria no se distribuye de manera homogénea entre los distintos sistemas productivos del país, sino que refleja diferencias estructurales asociadas al tipo de actividad predominante en las unidades productivas y a los niveles de intensificación en el uso de los factores de producción.
 
@@ -2413,7 +2610,7 @@ Si bien las diferencias por sector productivo permiten identificar contrastes re
 
 La @tbl-productividad-tenencia presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el régimen predominante de tenencia de las unidades de producción agropecuaria (UPA). Para su construcción se identificó el régimen de tenencia dominante en cada unidad a partir de la mayor proporción del área del predio bajo cada modalidad (propiedad, arrendamiento o tenencias especiales). Posteriormente, se calcularon las medianas de productividad de cada grupo para representar sus valores típicos y reducir la influencia de valores extremos.
 
-Los resultados muestran que las unidades en las que predomina el arrendamiento registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra cercana a 2.339 unidades monetarias por hectárea y una mediana de productividad del trabajo de aproximadamente 3.407 unidades monetarias por trabajador. En contraste, las unidades donde predomina la propiedad de la tierra presentan valores medianos menores (alrededor de 1.740 en productividad de la tierra), mientras que las unidades bajo tenencias especiales registran los niveles más bajos dentro del conjunto, con una mediana cercana a 1.253.
+Los resultados muestran que las unidades en las que predomina el arrendamiento registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra de 2.486 unidades monetarias por hectárea y una mediana de productividad del trabajo de 4.075 unidades monetarias por trabajador. Las unidades donde predomina la propiedad presentan medianas de 1.790 y 3.275, respectivamente. Las unidades bajo tenencias especiales registran las menores medianas de productividad de la tierra (1.503) y del trabajo (2.140).
 
 En términos analíticos, estos resultados sugieren que las distintas formas de acceso a la tierra se asocian con diferencias en los niveles de productividad observados en las unidades agropecuarias. En particular, la mayor productividad mediana observada en los predios bajo arrendamiento podría estar relacionada con estrategias productivas más intensivas o con un uso más eficiente de los factores productivos en contextos donde el acceso a la tierra se realiza a través de mecanismos de mercado.
 
@@ -2521,7 +2718,7 @@ ggplot2::ggplot(
   ggplot2::geom_histogram(
     ggplot2::aes(y = after_stat(density)),
     bins = 50,
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.2,
     alpha = 0.85
@@ -2529,7 +2726,7 @@ ggplot2::ggplot(
   ggplot2::geom_vline(
     xintercept = mediana_prod_tierra,
     linewidth = 0.7,
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linetype = "dashed"
   ) +
   ggplot2::annotate(
@@ -2554,7 +2751,7 @@ ggplot2::ggplot(
     x = "Productividad de la tierra (USD por hectárea, escala logarítmica)",
     y = "Densidad"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     panel.grid.minor = ggplot2::element_blank()
   )
@@ -2600,7 +2797,7 @@ ggplot2::ggplot(
   ggplot2::geom_histogram(
     ggplot2::aes(y = after_stat(density)),
     bins = 50,
-    fill = paleta_tesis[2],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.2,
     alpha = 0.85
@@ -2608,7 +2805,7 @@ ggplot2::ggplot(
   ggplot2::geom_vline(
     xintercept = mediana_prod_trabajo,
     linewidth = 0.7,
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linetype = "dashed"
   ) +
   ggplot2::annotate(
@@ -2633,7 +2830,7 @@ ggplot2::ggplot(
     x = "Productividad del trabajo (USD por trabajador, escala logarítmica)",
     y = "Densidad"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     panel.grid.minor = ggplot2::element_blank()
   )
@@ -2681,14 +2878,14 @@ ggplot2::ggplot(
 ) +
   ggplot2::geom_point(
     alpha = 0.18,
-    color = paleta_tesis[9],
+    color = paleta_figuras_tesis["neutro"],
     size = 0.9
   ) +
   ggplot2::geom_smooth(
     method = "loess",
     se = TRUE,
-    color = paleta_tesis[1],
-    fill = paleta_tesis[10],
+    color = paleta_figuras_tesis["principal"],
+    fill = "white",
     linewidth = 0.8
   ) +
   ggplot2::scale_x_log10(
@@ -2707,7 +2904,7 @@ ggplot2::ggplot(
     x = "Productividad de la tierra (USD por hectárea, escala logarítmica)",
     y = "Productividad del trabajo (USD por trabajador, escala logarítmica)"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     panel.grid.minor = ggplot2::element_blank()
   )
@@ -2778,14 +2975,12 @@ ggplot2::ggplot(
     fun = median,
     geom = "point",
     size = 2.5,
-    color = paleta_tesis[1]
+    color = paleta_figuras_tesis["principal"]
   ) +
 
   ggplot2::scale_fill_manual(
     values = c(
-      paleta_tesis[3],
-      paleta_tesis[6],
-      paleta_tesis[9]
+      colores_tenencia_tesis
     )
   ) +
 
@@ -2801,7 +2996,7 @@ ggplot2::ggplot(
     y = "Productividad de la tierra (USD por hectárea, escala logarítmica)"
   ) +
 
-  tema_tesis +
+  tema_figura_tesis +
 
   ggplot2::theme(
     legend.position = "none",
@@ -2872,14 +3067,12 @@ ggplot2::ggplot(
     fun = median,
     geom = "point",
     size = 2.5,
-    color = paleta_tesis[1]
+    color = paleta_figuras_tesis["principal"]
   ) +
 
   ggplot2::scale_fill_manual(
     values = c(
-      paleta_tesis[3],
-      paleta_tesis[6],
-      paleta_tesis[9]
+      colores_tenencia_tesis
     )
   ) +
 
@@ -2895,7 +3088,7 @@ ggplot2::ggplot(
     y = "Productividad del trabajo (USD por trabajador, escala logarítmica)"
   ) +
 
-  tema_tesis +
+  tema_figura_tesis +
 
   ggplot2::theme(
     legend.position = "none",
@@ -2963,7 +3156,7 @@ ggplot2::ggplot(
   ggplot2::geom_histogram(
     ggplot2::aes(y = after_stat(density)),
     bins = 50,
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.2,
     alpha = 0.85
@@ -2971,7 +3164,7 @@ ggplot2::ggplot(
   ggplot2::geom_vline(
     xintercept = mediana_indice_prod,
     linewidth = 0.7,
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linetype = "dashed"
   ) +
   ggplot2::annotate(
@@ -2997,7 +3190,7 @@ ggplot2::ggplot(
     x = "Índice combinado de productividad (escala logarítmica)",
     y = "Densidad"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     panel.grid.minor = ggplot2::element_blank()
   )
@@ -3068,14 +3261,12 @@ ggplot2::ggplot(
     fun = median,
     geom = "point",
     size = 2.5,
-    color = paleta_tesis[1]
+    color = paleta_figuras_tesis["principal"]
   ) +
 
   ggplot2::scale_fill_manual(
     values = c(
-      paleta_tesis[3],
-      paleta_tesis[6],
-      paleta_tesis[9]
+      colores_tenencia_tesis
     )
   ) +
 
@@ -3091,7 +3282,7 @@ ggplot2::ggplot(
     y = "Índice combinado de productividad (escala logarítmica)"
   ) +
 
-  tema_tesis +
+  tema_figura_tesis +
 
   ggplot2::theme(
     legend.position = "none",
@@ -3105,11 +3296,11 @@ Una vez examinada la productividad de los factores a nivel de las unidades agrop
 
 Con este propósito, se construyen indicadores provinciales de productividad de la tierra y del trabajo a partir de la información registrada en las unidades agropecuarias. Considerando que las variables de productividad presentan distribuciones altamente asimétricas y la presencia de valores extremos, los indicadores territoriales se estiman utilizando la mediana provincial, lo que permite representar de manera más adecuada los niveles típicos de productividad dentro de cada provincia. La representación cartográfica de estos indicadores se realiza mediante mapas coropléticos clasificados utilizando el método de cortes naturales (Jenks), el cual agrupa provincias con valores similares del indicador y facilita la identificación de diferencias dentro de la distribución de la productividad.
 
-En el caso de la productividad de la tierra, la distribución territorial de la @fig-mapa-prod-tierra-mediana-provincia muestra diferencias claras entre provincias del país. Los valores más elevados se registran en Tungurahua, donde la productividad alcanza aproximadamente 5.870 USD por hectárea. Le siguen Cotopaxi y Manabí, ambas con niveles cercanos a 3.300 USD por hectárea. También presentan valores relativamente altos Chimborazo, Pichincha y Santo Domingo de los Tsáchilas, territorios en los que se combinan sistemas productivos intensivos, presencia de cultivos comerciales, horticultura y actividades pecuarias especializadas.
+En el caso de la productividad de la tierra, la distribución territorial de la @fig-mapa-prod-tierra-mediana-provincia muestra diferencias claras entre provincias del país. Los valores más elevados se registran en Tungurahua, donde la mediana alcanza aproximadamente 5.916 USD por hectárea. Le siguen Cotopaxi (3.413) y Manabí (3.343). También presentan valores relativamente altos Chimborazo (2.702), Pichincha (2.169) y Santo Domingo de los Tsáchilas (2.000).
 
-En un nivel intermedio se ubican provincias de la Costa como Los Ríos y Guayas, así como Santa Elena y Carchi. En estos territorios predominan estructuras productivas basadas en cultivos agrícolas de mayor extensión o sistemas mixtos, lo que se refleja en niveles moderados de valor generado por unidad de superficie.
+En un nivel intermedio se ubican Los Ríos (1.905), Guayas (1.717), Santa Elena (1.648) y Carchi (1.320), seguidas por Cañar, El Oro, Bolívar e Imbabura, cuyas medianas se encuentran entre 1.121 y 1.217 USD por hectárea.
 
-En contraste, los valores más bajos se concentran en la región amazónica. Provincias como Orellana, Pastaza, Napo y Morona Santiago presentan niveles considerablemente menores de productividad por hectárea. Este patrón territorial se relaciona con la presencia de sistemas agropecuarios extensivos, particularmente ganadería de baja intensidad y actividades agrícolas con menor grado de especialización productiva.
+En contraste, los valores más bajos se concentran en provincias amazónicas: Orellana registra aproximadamente 351 USD por hectárea, Napo 370, Pastaza 416 y Morona Santiago 507.
 
 En términos generales, el patrón territorial evidencia mayores niveles de productividad de la tierra en varias provincias de la Sierra central y en determinados espacios agrícolas de la Costa, mientras que en la Amazonía predominan estructuras productivas que generan menor valor por unidad de superficie.
 
@@ -3126,10 +3317,26 @@ En términos generales, el patrón territorial evidencia mayores niveles de prod
 #| fig-height: 5.2
 
 normalizar_provincia <- function(x) {
-  x |>
+  provincia_normalizada <- x |>
     stringr::str_to_upper() |>
     stringi::stri_trans_general("Latin-ASCII") |>
     stringr::str_squish()
+
+  codigos_provincia <- as.character(provincias$DPA_PROVIN)
+  nombres_provincia <- provincias$DPA_DESPRO |>
+    stringr::str_to_upper() |>
+    stringi::stri_trans_general("Latin-ASCII") |>
+    stringr::str_squish()
+
+  posicion_codigo <- match(
+    provincia_normalizada,
+    codigos_provincia
+  )
+
+  provincia_normalizada[!is.na(posicion_codigo)] <-
+    nombres_provincia[posicion_codigo[!is.na(posicion_codigo)]]
+
+  provincia_normalizada
 }
 
 prod_tierra_prov <- base |>
@@ -3190,13 +3397,13 @@ ggplot2::ggplot() +
 
 El análisis territorial puede ampliarse incorporando el segundo factor productivo considerado en este estudio: el trabajo. Mientras que la productividad de la tierra refleja el valor generado por unidad de superficie, la productividad del trabajo permite aproximarse al rendimiento económico asociado a la mano de obra utilizada en las unidades agropecuarias. La representación espacial de este indicador permite identificar diferencias provinciales en la intensidad y el desempeño del factor trabajo dentro de la estructura productiva agropecuaria
 
-La distribución territorial de la productividad del trabajo de la @fig-mapa-productividad-trabajo-provincia presenta también diferencias relevantes entre provincias. Los niveles más altos se observan en Manabí, donde la productividad mediana del trabajo alcanza aproximadamente 12.852 USD por trabajador. Le siguen El Oro, Santo Domingo de los Tsáchilas y Esmeraldas, con valores superiores a 8.000 USD por trabajador, así como Santa Elena, que también se ubica en el grupo de provincias con mayor rendimiento del factor trabajo.
+La distribución territorial de la productividad del trabajo de la @fig-mapa-productividad-trabajo-provincia presenta también diferencias relevantes entre provincias. El nivel más alto se observa en Manabí, con una mediana aproximada de 12.226 USD por trabajador. Le siguen Esmeraldas (9.312), Santo Domingo de los Tsáchilas (8.870), El Oro (7.665) y Santa Elena (6.113).
 
 En varios de estos territorios predominan sistemas productivos asociados a actividades agrícolas comerciales, cultivos permanentes y ciertas actividades agroexportadoras que generan mayores ingresos por trabajador. En el caso de provincias costeras como Manabí, El Oro y Esmeraldas, estos resultados se relacionan con la presencia de cultivos como cacao, banano y otros sistemas agrícolas de carácter comercial.
 
-En un nivel intermedio se ubican provincias como Zamora Chinchipe, Morona Santiago, Pichincha, Carchi y Guayas, donde la productividad del trabajo presenta valores moderados dentro de la distribución nacional. En estos territorios coexisten sistemas productivos diversos que combinan agricultura, ganadería y actividades agropecuarias de distinta escala.
+En un nivel intermedio se ubican Zamora Chinchipe (5.482), Morona Santiago (5.234), Pichincha (4.677), Carchi (4.631) y Guayas (4.435).
 
-Por el contrario, los valores más bajos se registran en provincias como Napo, Chimborazo, Tungurahua y Orellana, donde la productividad del trabajo se ubica en los niveles inferiores del conjunto analizado. En estos casos, la menor generación de valor por trabajador puede asociarse a estructuras productivas basadas en unidades agropecuarias de pequeña escala, sistemas productivos tradicionales o actividades agropecuarias con menor nivel de especialización económica.
+Por el contrario, los valores más bajos se registran en Napo (962), Chimborazo (1.560), Tungurahua (1.804), Imbabura (2.094) y Cotopaxi (2.176).
 
 El patrón territorial de la productividad del trabajo muestra una mayor concentración de valores elevados en varias provincias de la Costa, mientras que en determinadas provincias de la Sierra y de la Amazonía se observan niveles relativamente menores. Este comportamiento refleja las diferencias regionales en la organización de los sistemas productivos agropecuarios y en la intensidad económica asociada al uso del factor trabajo.
 
@@ -3274,11 +3481,11 @@ Siguiendo el mismo criterio utilizado previamente, el índice combinado provinci
 
 La distribución territorial del índice combinado de productividad que se presenta en la @fig-mapa-indice-combinado-provincia permite sintetizar el desempeño conjunto de la tierra y del trabajo dentro del sector agropecuario. Al integrar ambos factores en un solo indicador, se obtiene una aproximación al nivel general de generación de valor de las unidades agropecuarias en cada provincia.
 
-Los niveles más elevados del índice se registran en Manabí, donde la mediana provincial alcanza aproximadamente 6.464. Le siguen Santo Domingo de los Tsáchilas y Santa Elena, con valores superiores a 3.700, así como El Oro y Tungurahua, que también se ubican entre las provincias con mayor desempeño productivo combinado. En estos territorios confluyen sistemas agrícolas comerciales, cultivos permanentes y actividades agropecuarias orientadas al mercado, lo que favorece una mayor generación de valor tanto por superficie como por trabajador.
+Los niveles más elevados del índice se registran en Manabí, donde la mediana provincial alcanza aproximadamente 6.288. Le siguen Santo Domingo de los Tsáchilas (4.080), Santa Elena (3.511), Tungurahua (3.319), El Oro (3.263) y Pichincha (3.081).
 
-En un nivel intermedio se ubican provincias como Pichincha, Esmeraldas, Los Ríos, Cotopaxi y Guayas, donde el índice combinado presenta valores relativamente similares. En estos territorios la estructura productiva se caracteriza por una diversidad de sistemas agrícolas y pecuarios, que combinan producción comercial, agricultura familiar y actividades ganaderas.
+En un nivel intermedio se ubican Esmeraldas (2.959), Los Ríos (2.798), Guayas (2.754), Cotopaxi (2.748) y Carchi (2.485).
 
-En contraste, los valores más bajos del índice se concentran principalmente en la región amazónica. Provincias como Napo, Pastaza y Orellana registran los niveles más reducidos dentro del conjunto analizado, seguidas por Sucumbíos y Morona Santiago. Este patrón territorial refleja la presencia predominante de sistemas agropecuarios extensivos, menor intensidad productiva y limitaciones estructurales asociadas a condiciones geográficas, infraestructura y acceso a mercados.
+En contraste, los valores más bajos del índice se concentran principalmente en la región amazónica. Napo registra la menor mediana provincial (599), seguida por Orellana (840), Pastaza (900), Sucumbíos (1.479) y Morona Santiago (1.626).
 
 En términos generales, el mapa del índice combinado evidencia que las mayores concentraciones de productividad agropecuaria se localizan en varias provincias de la Costa y en determinados espacios de la Sierra, mientras que en la Amazonía predominan estructuras productivas que generan menor valor agregado considerando conjuntamente el uso de la tierra y del trabajo. Este resultado sintetiza los patrones territoriales observados previamente en los análisis individuales de la productividad de la tierra y del trabajo.
 

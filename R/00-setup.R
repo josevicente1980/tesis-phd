@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 
 paquetes <- c(
-  "tidyverse", "readr", "readxl", "haven", "janitor", "skimr",
+  "here", "tidyverse", "readr", "readxl", "haven", "janitor", "skimr",
   "knitr", "kableExtra", "ggplot2", "scales", "stringr", "stringi",
   "forcats", "broom", "broom.mixed", "modelsummary", "sjlabelled",
   "DBI", "odbc", "survey", "patchwork", "sf", "terra", "tmap",
@@ -102,6 +102,21 @@ color_borde_tesis <- "#343A40"
 color_fondo_mapa <- "#F5F7F8"
 color_borde_mapa <- "#C9D3D8"
 color_na_mapa <- "#E8EDF0"
+
+# Identidad cromática exclusiva para figuras no cartográficas
+paleta_figuras_tesis <- c(
+  principal = "#264653",
+  secundario = "#5E7D8A",
+  acento = "#8C6A5D",
+  apoyo = "#89A9B8",
+  neutro = "#6C757D"
+)
+
+colores_tenencia_tesis <- c(
+  "#264653",
+  "#8C6A5D",
+  "#6C757D"
+)
 
 # ============================================================
 # FUNCIONES AUXILIARES GLOBALES
@@ -263,6 +278,68 @@ tema_tesis_vacio <- ggplot2::theme_void(
     legend.key = ggplot2::element_rect(fill = "transparent", colour = NA),
     plot.background = ggplot2::element_rect(fill = "white", colour = NA),
     plot.margin = ggplot2::margin(5, 5, 5, 5)
+  )
+
+# Tema homogéneo para figuras no cartográficas
+tema_figura_tesis <- tema_tesis +
+  ggplot2::theme(
+    plot.title = ggplot2::element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 11,
+      margin = ggplot2::margin(b = 4)
+    ),
+    plot.subtitle = ggplot2::element_text(
+      hjust = 0.5,
+      size = 9,
+      margin = ggplot2::margin(b = 5)
+    ),
+    axis.title = ggplot2::element_text(
+      face = "bold",
+      size = 9
+    ),
+    axis.text = ggplot2::element_text(
+      size = 8
+    ),
+    strip.text = ggplot2::element_text(
+      face = "bold",
+      size = 9
+    ),
+    legend.title = ggplot2::element_text(
+      face = "bold",
+      size = 8.5
+    ),
+    legend.text = ggplot2::element_text(
+      size = 8
+    ),
+    panel.grid.major = ggplot2::element_line(
+      colour = "#D9DEE3",
+      linewidth = 0.3
+    ),
+    plot.margin = ggplot2::margin(6, 8, 6, 6)
+  )
+
+tema_figura_vacia_tesis <- tema_tesis_vacio +
+  ggplot2::theme(
+    plot.title = ggplot2::element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 11,
+      margin = ggplot2::margin(b = 4)
+    ),
+    plot.subtitle = ggplot2::element_text(
+      hjust = 0.5,
+      size = 9,
+      margin = ggplot2::margin(b = 5)
+    ),
+    legend.title = ggplot2::element_text(
+      face = "bold",
+      size = 8.5
+    ),
+    legend.text = ggplot2::element_text(
+      size = 8
+    ),
+    plot.margin = ggplot2::margin(6, 8, 6, 6)
   )
 
 ggplot2::theme_set(

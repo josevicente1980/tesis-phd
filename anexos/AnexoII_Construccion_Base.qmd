@@ -1,4 +1,4 @@
-# Anexo II. Construcción de la base analítica de la investigación
+# Anexo II. Construcción de la base analítica de la investigación {#sec-anexo-base}
 
 La base analítica se construyó a partir de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022 del Instituto Nacional de Estadística y Censos. La documentación oficial se conserva en `docs/espac_2022/manuales/` y `docs/espac_2022/sintaxis_txt/`, mientras que los módulos originales de trabajo se almacenan en `data/raw/`. Como insumo complementario de valorización, el pipeline identifica el archivo del investigador ubicado en `docs/espac_2022/precios/Precio_Junio_25.xlsx`; la propia configuración aclara que este archivo no constituye documentación oficial de la ESPAC.
 

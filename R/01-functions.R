@@ -14,6 +14,7 @@ tabla_usc <- function(
     hold_position = TRUE
 ) {
   
+  font_size <- 8
   opciones_latex <- character(0)
 
   if (hold_position) {
@@ -48,6 +49,10 @@ tabla_usc <- function(
       font_size = font_size,
       full_width = FALSE,
       position = position
+    ) |>
+    kableExtra::row_spec(
+      row = 0,
+      bold = TRUE
     ) |>
     kableExtra::column_spec(
       column = seq_len(ncol(data)),

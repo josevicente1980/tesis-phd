@@ -1,4 +1,4 @@
-# Anexo I. Construcción de la base de precios agropecuarios
+# Anexo I. Construcción de la base de precios agropecuarios {#sec-anexo-precios}
 
 La incorporación de precios agropecuarios responde a la necesidad metodológica de disponer de referencias monetarias comparables para valorar productos registrados originalmente en unidades físicas. En esta investigación, dicha información cumple una función auxiliar: aporta insumos para la construcción documentada de precios de referencia, sin sustituir las decisiones de homologación, selección temporal y validación que requiere su eventual uso analítico.
 

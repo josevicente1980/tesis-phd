@@ -124,7 +124,7 @@ ggplot2::ggplot(
 ) +
   ggplot2::geom_col(
     ggplot2::aes(y = superficie),
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.25,
     width = 0.60
@@ -143,12 +143,12 @@ ggplot2::ggplot(
       y = upa,
       group = 1
     ),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linewidth = 0.9
   ) +
   ggplot2::geom_point(
     ggplot2::aes(y = upa),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     fill = "white",
     shape = 21,
     size = 3,
@@ -182,7 +182,7 @@ ggplot2::ggplot(
   ggplot2::coord_cartesian(
     clip = "off"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     strip.text = ggplot2::element_text(
       face = "bold",
@@ -255,19 +255,19 @@ ggplot2::ggplot(
 ) +
   ggplot2::geom_col(
     ggplot2::aes(y = hectareas),
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.25,
     width = 0.55
   ) +
   ggplot2::geom_line(
     ggplot2::aes(y = promedio_escalado, group = 1),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linewidth = 0.9
   ) +
   ggplot2::geom_point(
     ggplot2::aes(y = promedio_escalado),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     fill = "white",
     shape = 21,
     size = 3,
@@ -302,7 +302,7 @@ ggplot2::ggplot(
   ) +
   ggplot2::labs(x = NULL) +
   ggplot2::coord_cartesian(clip = "off") +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     axis.text.x = ggplot2::element_text(face = "bold"),
     axis.title.y.right = ggplot2::element_text(face = "bold"),
@@ -379,7 +379,9 @@ ggplot2::ggplot(
     family = "serif"
   ) +
   ggplot2::scale_fill_manual(
-    values = paleta_tesis[c(1, 6)],
+    values = unname(
+      paleta_figuras_tesis[c("principal", "acento")]
+    ),
     name = NULL
   ) +
   ggplot2::scale_y_continuous(
@@ -392,7 +394,7 @@ ggplot2::ggplot(
     y = "Hectáreas"
   ) +
   ggplot2::coord_cartesian(clip = "off") +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     legend.position = "top",
     axis.text.x = ggplot2::element_text(face = "bold"),
@@ -464,7 +466,7 @@ ggplot2::ggplot(
 ) +
   ggplot2::geom_col(
     ggplot2::aes(y = superficie),
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.25,
     width = 0.60
@@ -483,12 +485,12 @@ ggplot2::ggplot(
       y = upa,
       group = 1
     ),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linewidth = 0.9
   ) +
   ggplot2::geom_point(
     ggplot2::aes(y = upa),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     fill = "white",
     shape = 21,
     size = 3,
@@ -516,7 +518,7 @@ ggplot2::ggplot(
   ggplot2::coord_cartesian(
     clip = "off"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     axis.text.x = ggplot2::element_text(
       face = "bold"
@@ -577,7 +579,7 @@ ggplot2::ggplot(
 ) +
   ggplot2::geom_col(
     ggplot2::aes(y = superficie),
-    fill = paleta_tesis[4],
+    fill = paleta_figuras_tesis["secundario"],
     color = color_borde_tesis,
     linewidth = 0.25,
     width = 0.60
@@ -596,12 +598,12 @@ ggplot2::ggplot(
       y = upa,
       group = 1
     ),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linewidth = 0.9
   ) +
   ggplot2::geom_point(
     ggplot2::aes(y = upa),
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     fill = "white",
     shape = 21,
     size = 3,
@@ -632,7 +634,7 @@ ggplot2::ggplot(
   ggplot2::coord_cartesian(
     clip = "off"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     axis.text.x = ggplot2::element_text(
       face = "bold"
@@ -681,11 +683,11 @@ ggplot2::ggplot(
   ggplot2::aes(x = anio, y = valor)
 ) +
   ggplot2::geom_line(
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     linewidth = 0.9
   ) +
   ggplot2::geom_point(
-    color = paleta_tesis[1],
+    color = paleta_figuras_tesis["principal"],
     fill = "white",
     shape = 21,
     size = 3,
@@ -717,7 +719,7 @@ ggplot2::ggplot(
   ggplot2::coord_cartesian(
     clip = "off"
   ) +
-  tema_tesis +
+  tema_figura_tesis +
   ggplot2::theme(
     axis.text.x = ggplot2::element_text(
       face = "bold"
