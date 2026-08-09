@@ -153,6 +153,48 @@
 % Texto de tablas en Trebuchet MS 9 pt.
 \usepackage{etoolbox}
 
+\def\uscNoShortCaption{\uscNoShortCaption}
+\long\def\uscEmitFigureCaption#1#2{%
+  \def\uscShortCaptionValue{#1}%
+  \ifx\uscShortCaptionValue\uscNoShortCaption
+    \uscOriginalCaption{#2}%
+  \else
+    \uscOriginalCaption[#1]{#2}%
+  \fi
+}
+\long\def\uscInsertFigureSourceBreak#1#2 Fuente:#3 Fuente:#4\uscSourceEnd{%
+  \ifblank{#4}{%
+    \uscEmitFigureCaption{#1}{#2}%
+  }{%
+    \uscEmitFigureCaption{#1}{#2\newline Fuente:#3}%
+  }%
+}
+\long\def\uscPreserveFigureSourceBreak#1#2\newline Fuente:#3\newline Fuente:#4\uscSourceEnd{%
+  \ifblank{#4}{%
+    \uscInsertFigureSourceBreak{#1}#2 Fuente:\uscSourceMarker{} Fuente:\uscSourceEnd
+  }{%
+    \uscEmitFigureCaption{#1}{#2\newline Fuente:#3}%
+  }%
+}
+\long\def\uscProcessFigureCaption#1#2{%
+  \uscPreserveFigureSourceBreak{#1}#2%
+    \newline Fuente:\uscSourceMarker\newline Fuente:\uscSourceEnd
+}
+\long\def\uscFigureCaptionWithoutShort#1{%
+  \uscProcessFigureCaption{\uscNoShortCaption}{#1}%
+}
+\long\def\uscFigureCaptionWithShort[#1]#2{%
+  \uscProcessFigureCaption{#1}{#2}%
+}
+\makeatletter
+\AtBeginEnvironment{figure}{%
+  \let\uscOriginalCaption\caption
+  \renewcommand{\caption}{%
+    \@ifnextchar[{\uscFigureCaptionWithShort}{\uscFigureCaptionWithoutShort}%
+  }%
+}
+\makeatother
+
 \AtBeginEnvironment{tabular}{\trebuchet\fontsize{9}{11}\selectfont}
 \AtBeginEnvironment{longtable}{\trebuchet\fontsize{9}{11}\selectfont}
 

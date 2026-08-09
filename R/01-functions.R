@@ -126,7 +126,7 @@ nota_tabla <- function(
     ""
   }
   
-  tabla |>
+  tabla_con_nota <- tabla |>
     kableExtra::footnote(
       general_title = titulo,
       general = texto,
@@ -134,6 +134,19 @@ nota_tabla <- function(
       threeparttable = TRUE,
       escape = TRUE
     )
+
+  if (tiene_nota) {
+    attributes_tabla <- attributes(tabla_con_nota)
+    tabla_con_nota <- sub(
+      "\\item \\textit{Nota: } \n\\item ",
+      "\\item \\textit{Nota:} ",
+      tabla_con_nota,
+      fixed = TRUE
+    )
+    attributes(tabla_con_nota) <- attributes_tabla
+  }
+
+  tabla_con_nota
 }
 
 
