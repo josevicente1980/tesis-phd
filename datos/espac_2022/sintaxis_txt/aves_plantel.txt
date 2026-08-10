@@ -1,0 +1,184 @@
+* Encoding: UTF-8.
+* TÍTULO DE LA SINTAXIS:							   
+* TABLAS 11,63, 64, 66 y 68 AVES DE PLANTELES AVÍCOLAS
+* OPERACIÓN ESTADÍSTICA:													   
+* Encuesta de Superficie y Producción Agropecuaria Continua ESPAC_2022			   
+* UNIDAD TÉCNICA RESPONSABLE: 												   
+* Dirección de Estadísticas Agropecuarias y Ambientales					   
+* ENTIDAD EJECUTORA:														   
+* Instituto Nacional de Estadística y Censos (INEC)							   
+*==============================================================================*.
+* Fecha de elaboración:          Septiembre - 2014						   
+* Fecha última modificación:   Marzo- 2022			   
+*==============================================================================*.
+* Elaborado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias    						   
+* Aprobado por:													   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias  							       
+*==============================================================================*.
+* Revisado por:																   
+* Dirección de Estadísticas Agropecuarias y Ambientales (DEAGA)						   
+* Gestión de Estadísticas Agropecuarias     						   
+*==============================================================================*.
+*Indicaciones.
+*1- Descargue la Bases de datos de aves de planteles avícolas"apnac2022" de la página web: http://www.ecuadorencifras.gob.ec//estadisticas-agropecuarias-2/#
+
+*2- Guarde la base y copie el directorio en:.
+get file = 'C:\....\apnac2022.sav'.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 11                                    *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_k1222 ap_k1223 ap_k1224 ap_k1225 ap_k1226 ap_k1227 
+    DISPLAY=LABEL  /VLABELS VARIABLES=avesp_existencia DISPLAY=NONE
+  /TABLE ap_k1222 [SUM] + ap_k1223 [SUM] + ap_k1224 [SUM] + ap_k1225 [SUM] + ap_k1226 [SUM] + ap_k1227 [SUM] BY 
+    avesp_existencia
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=avesp_existencia ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCION AGROPECUARIA CONTINUA ESPAC 2022'
+    'TABLA 11. NÚMERO DE AVES POR EXISTENCIA Y MOVIMIENTO, SEGÚN TIPO DE CRIANZA Y ESPECIES'
+    CORNER='TIPO DE CRIANZA Y ESPECIES'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+EXECUTE.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_k051231 ap_k051232 ap_k051233 ap_k051234 ap_k051235 ap_k051236 
+    DISPLAY=LABEL  /VLABELS VARIABLES=avesp_ventas DISPLAY=NONE
+  /TABLE ap_k051231 [SUM] + ap_k051232 [SUM] + ap_k051233 [SUM] + ap_k051234 [SUM] + ap_k051235 [SUM] + ap_k051236 [SUM] BY avesp_ventas
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=avesp_ventas ORDER=A KEY=VALUE EMPTY=INCLUDE.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_cons_gapo ap_cons_gare ap_cons_polli ap_cons_avest ap_cons_pavos ap_cons_codor
+    DISPLAY=LABEL  /VLABELS VARIABLES=avesp_autoconsumo DISPLAY=NONE
+  /TABLE ap_cons_gapo [SUM] + ap_cons_gare [SUM] + ap_cons_polli [SUM] + ap_cons_avest [SUM] + ap_cons_pavos [SUM] + ap_cons_codor [SUM] BY 
+    avesp_autoconsumo
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=avesp_autoconsumo ORDER=A KEY=VALUE EMPTY=INCLUDE.
+
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 63                                *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_tn ap_trs ap_trc ap_tro ual_prov DISPLAY=NONE  /VLABELS VARIABLES=ap_total 
+    ap_k1222 ap_k1223 ap_k1224 ap_k1225 ap_k1226 ap_k1227 
+    DISPLAY=LABEL
+  /TABLE ap_tn [C] + ap_trs [C] + ap_trc [C] + ap_tro [C] + ual_prov [C] BY ap_total [S][SUM] + 
+    ap_k1222 [S][SUM] + ap_k1223 [S][SUM] + ap_k1224 [S][SUM] + ap_k1225 [S][SUM] + ap_k1226 [S][SUM] + 
+    ap_k1227 [S][SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ap_tn ap_trs ap_trc ap_tro  ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 63. NÚMERO DE AVES CRIADAS EN PLANTELES AVÍCOLAS POR ESPECIES, SEGÚN REGIÓN Y '+
+    'PROVINCIA'
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 64                           *
+*==============================================================================*.
+***** factor solo para la variable pollos de engorde*****.
+
+WEIGHT BY fact_exp_fin_engorde.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES= ap_tn ap_trs ap_trc ap_tro ual_prov DISPLAY=NONE  /VLABELS 
+    VARIABLES= ap_ctpollitos DISPLAY=LABEL
+  /TABLE  ap_tn + ap_trs + ap_trc +ap_tro+ ual_prov BY ap_ctpollitos [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ap_tn ap_trs ap_trc ap_tro ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 64. NÚMERO DE POLLOS DE ENGORDE AL AÑO SEGÚN  ESPECIE, SEGÚN REGIÓN Y '+
+    'PROVINCIA'
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 66                              *
+*==============================================================================*.
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_tn ap_trs ap_trc ap_tro ual_prov DISPLAY=NONE  /VLABELS 
+    VARIABLES=ap_vengapo ap_autogapo ap_vengarep ap_autogarep ap_venpoypo ap_autopoypo ap_venavest 
+    ap_autoavest ap_venpavos ap_autopavos ap_vencodorn ap_autocodorn 
+    DISPLAY=LABEL
+  /TABLE ap_tn + ap_trs + ap_trc + ap_tro  + ual_prov BY ap_vengapo [SUM] + ap_autogapo [SUM] + 
+    ap_vengarep [SUM] + ap_autogarep [SUM] + ap_venpoypo [SUM] + ap_autopoypo [SUM] + ap_venavest [SUM] 
+    + ap_autoavest [SUM] + ap_venpavos [SUM] + ap_autopavos [SUM] + ap_vencodorn [SUM] + ap_autocodorn 
+    [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ap_tn ap_trs ap_trc ap_tro  ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 66. DESTINO DE LAS AVES CRIADAS EN PLANTELES AVÍCOLAS POR ESPECIES, SEGÚN '+
+    'REGIÓN Y PROVINCIA'
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADISTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+*==============================================================================*.
+*                            CONSTRUCCIÓN DE LA TABLA 68                            *
+*==============================================================================*.
+
+WEIGHT BY fact_exp_fin.
+
+* Tablas personalizadas.
+CTABLES
+  /VLABELS VARIABLES=ap_tn ap_trs ap_trc ap_tro ual_prov DISPLAY=NONE  /VLABELS VARIABLES=ap_k1238 ap_k1239 ap_k1240 ap_k1241 
+    DISPLAY=LABEL
+  /TABLE ap_tn + ap_trs + ap_trc + ap_tro  + ual_prov BY ap_k1238 [SUM] + ap_k1239 [SUM] + ap_k1240 [SUM] + ap_k1241 [SUM]
+  /SLABELS VISIBLE=NO
+  /CATEGORIES VARIABLES=ap_tn ap_trs ap_trc ap_tro ual_prov ORDER=A KEY=VALUE EMPTY=INCLUDE
+  /TITLES
+    TITLE='ENCUESTA DE SUPERFICIE Y PRODUCCIÓN AGROPECUARIA CONTINUA 2022'
+    'TABLA 68. PRODUCCIÓN Y DESTINO DE HUEVOS DE GALLINA, SEGÚN REGIÓN Y PROVINCIA' 
+    CORNER='REGIÓN Y PROVINCIA'
+    CAPTION='INSTITUTO NACIONAL DE ESTADÍSTICA Y CENSOS (INEC) ESPAC - 2022'.
+
+WEIGHT OFF.
+FILTER OFF.
+USE ALL.
+EXECUTE.
+
+
+
+
+

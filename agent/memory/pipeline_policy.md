@@ -43,14 +43,14 @@ queda documentado unicamente como nombre historico o de compatibilidad. No debe 
 La documentacion oficial ESPAC utilizada para validar decisiones metodologicas se encuentra en:
 
 ```text
-docs/espac_2022/manuales/
-docs/espac_2022/sintaxis_txt/
+datos/espac_2022/manuales/
+datos/espac_2022/sintaxis_txt/
 ```
 
 El archivo:
 
 ```text
-docs/espac_2022/precios/Precio_Junio_25.xlsx
+datos/espac_2022/precios/Precio_Junio_25.xlsx
 ```
 
 no es documentacion oficial ESPAC. Es un insumo metodologico construido por el investigador y se utiliza como fuente oficial de valoracion economica dentro del pipeline de la tesis.

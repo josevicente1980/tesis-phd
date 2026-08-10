@@ -25,7 +25,7 @@ Este workflow es permanente y debe aplicarse automaticamente a todos los capitul
 
 Consultar obligatoriamente:
 
-- `docs/espac_2022/`
+- `datos/espac_2022/`
 - `agent/knowledge/reviewers/`
 - `agent/memory/`
 

@@ -33,7 +33,7 @@ Antes de revisar cualquier capitulo, el JRA debera consultar obligatoriamente y 
    - conocimiento estructurado de revisores;
    - futuras bases de conocimiento del proyecto.
 
-3. `docs/espac_2022/`
+3. `datos/espac_2022/`
    - documentacion oficial;
    - manuales;
    - metodologia;
@@ -60,8 +60,8 @@ Antes de revisar cualquier capitulo, el JRA debera consultar obligatoriamente y 
 Consultar cuando sea necesario:
 
 ```text
-docs/espac_2022/manuales/
-docs/espac_2022/sintaxis_txt/
+datos/espac_2022/manuales/
+datos/espac_2022/sintaxis_txt/
 ```
 
 La documentacion oficial ESPAC prevalece sobre cualquier codigo historico.
