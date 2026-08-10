@@ -12,6 +12,12 @@ _freeze/
 *_files/
 index_cache/
 
+# EXCEPCIÓN:
+# GitHub Pages necesita los recursos generados por Quarto
+# dentro de docs/index_files/ para mostrar figuras y otros recursos.
+!docs/index_files/
+!docs/index_files/**
+
 # Datos originales y procesados
 data/raw/
 data/processed/
@@ -34,8 +40,8 @@ docs/revisiones/
 # Archivos temporales
 *.tmp
 *.temp
-*.log
-~$*
+*.log*
+*~$*
 .DS_Store
 Thumbs.db
 
@@ -48,6 +54,7 @@ Thumbs.db
 # Configuración local de Claude Code
 .claude/settings.local.json
 
+# Archivos internos de Quarto
 /.quarto/
 **/*.quarto_ipynb
 
