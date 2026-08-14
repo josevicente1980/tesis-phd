@@ -1,0 +1,15 @@
+# Resumo {.unnumbered}
+
+\enlargethispage{2\baselineskip}
+
+Esta tese analiza a asociación entre os réximes de tenza da terra, a produtividade agropecuaria e a eficiencia técnica das unidades de produción agropecuaria (UPA) do Ecuador continental. O problema de investigación sitúase nun contexto agrario heteroxéneo, onde coexisten propiedade, arrendamento ou parzaría e tenzas especiais, e onde a evidencia nacional sobre as súas diferenzas de desempeño segue a ser limitada. O obxectivo é determinar como se relaciona a tenza predominante coa produtividade da terra e do traballo, unha vez consideradas características produtivas, tecnolóxicas, sociodemográficas e territoriais.
+
+A fonte de información é a Enquisa de Superficie e Produción Agropecuaria Continua (ESPAC) 2022 do Instituto Nacional de Estatística e Censos, e a UPA constitúe a unidade de análise. A partir do valor económico agregado da produción agropecuaria construíronse dous indicadores de produtividade parcial: valor da produción por hectárea e por traballador. A estratexia empírica combina estatística descritiva, modelos OLS con erros estándar robustos HC1, modelos lineais multinivel con intercepto aleatorio provincial e modelos de fronteira estocástica (SFA). Os modelos OLS e multinivel estimáronse sobre 22.075 UPA con información completa, mentres que a SFA se estimou sobre 21.430 UPA con produtividades da terra e do traballo estritamente positivas.
+
+Os resultados mostran que, respecto das UPA con predominio de arrendamento ou parzaría, a propiedade e as tenzas especiais se asocian con menores niveis de ambas as produtividades nas tres familias de modelos. Na SFA, os coeficientes de propiedade son $-0,173$ para a produtividade da terra e $-0,286$ para a produtividade do traballo; para as tenzas especiais son $-0,399$ e $-0,699$, respectivamente ($p<0,001$ en todos os casos). Estas asociacións non demostran efectos causais e poden recoller selección de mercado, composición produtiva e heteroxeneidade non observada. O acceso a internet e a educación presentan asociacións positivas consistentes, mentres que os indicadores tecnolóxicos mostran patróns diferenciados. Nos modelos nulos multinivel, a provincia representa o 15,0 % da variabilidade da produtividade da terra e o 9,2 % da produtividade laboral. As eficiencias técnicas medias estimadas son 40,6 % e 39,1 %, con valores de $\gamma$ do 65,7 % e do 51,1 %, respectivamente.
+
+Conclúese que a relación entre tenza e desempeño agropecuario é complexa e non apoia unha vantaxe produtiva uniforme da propiedade formal. As políticas rurais non deberían limitarse á titulación, senón incorporar seguridade contractual, conectividade, formación e extensión técnica, infraestrutura e respostas territorialmente diferenciadas. 
+
+**Palabras clave:** tenza da terra; produtividade agropecuaria; eficiencia técnica; fronteira estocástica; modelo multinivel; Ecuador.
+
+\clearpage

@@ -1,8 +1,8 @@
-# Anexo I. Construcción de la base de precios agropecuarios {#sec-anexo-precios}
+# Construcción de la base de precios agropecuarios {#sec-anexo-precios}
 
 La incorporación de precios agropecuarios responde a la necesidad metodológica de disponer de referencias monetarias comparables para valorar productos registrados originalmente en unidades físicas. En esta investigación, dicha información cumple una función auxiliar: aporta insumos para la construcción documentada de precios de referencia, sin sustituir las decisiones de homologación, selección temporal y validación que requiere su eventual uso analítico.
 
-La fuente institucional corresponde al Sistema de Información Pública Agropecuaria (SIPA) del Ministerio de Agricultura y Ganadería del Ecuador. Los archivos publicados en formato Excel se identificaron en el portal institucional y se descargaron mediante un script reproducible de R. Todas las rutas locales se resolvieron de forma relativa desde la raíz del proyecto con `here::here()`, y los archivos originales se conservaron en `data/external/sipa/archivos_excel/`.
+La fuente institucional corresponde al SIPA del Ministerio de Agricultura y Ganadería del Ecuador. Los archivos publicados en formato Excel se identificaron en el portal institucional y se descargaron mediante un script reproducible de R. Todas las rutas locales se resolvieron de forma relativa desde la raíz del proyecto con `here::here()`, y los archivos originales se conservaron en `data/external/sipa/archivos_excel/`.
 
 \vspace{0.5cm}
 
@@ -19,7 +19,7 @@ La fuente institucional corresponde al Sistema de Información Pública Agropecu
 \textbf{Elemento} & \textbf{Descripción} \\
 \hline
 \endhead
-Fuente institucional & Sistema de Información Pública Agropecuaria. \\
+Fuente institucional & SIPA. \\
 Entidad responsable & Ministerio de Agricultura y Ganadería del Ecuador. \\
 Formato original & Archivos Excel. \\
 Carpeta de almacenamiento & \texttt{data/external/sipa/archivos\_excel/}. \\

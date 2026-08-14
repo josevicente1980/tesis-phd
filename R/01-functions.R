@@ -11,7 +11,8 @@ tabla_usc <- function(
     font_size = 8,
     position = "center",
     scale_down = TRUE,
-    hold_position = TRUE
+    hold_position = TRUE,
+    strict_position = FALSE
 ) {
   
   font_size <- 8
@@ -20,7 +21,7 @@ tabla_usc <- function(
   if (hold_position) {
     opciones_latex <- c(
       opciones_latex,
-      "hold_position"
+      if (strict_position) "HOLD_position" else "hold_position"
     )
   }
   

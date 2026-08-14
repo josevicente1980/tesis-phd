@@ -19,8 +19,10 @@ format:
 
     pandoc-args:
       - --pdf-engine=C:/TinyTeX/bin/windows/xelatex.exe
+      - --top-level-division=chapter
 
     documentclass: book
+    top-level-division: chapter
 
     classoption:
       - twoside

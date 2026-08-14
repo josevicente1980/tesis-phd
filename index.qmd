@@ -15,18 +15,26 @@ source(project_path("R", "01-functions.R"))
 \setcounter{page}{1}
 \pagestyle{fancy}
 
-\tableofcontents
-\clearpage
-\listoftables
-\clearpage
-\listoffigures
-\clearpage
-
 {{< include preambulo/siglas.qmd >}}
 {{< include preambulo/dedicatoria.qmd >}}
 {{< include preambulo/agradecimientos.qmd >}}
 {{< include preambulo/resumen.qmd >}}
+{{< include preambulo/resumo.qmd >}}
 {{< include preambulo/abstract.qmd >}}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Índice}
+\renewcommand{\contentsname}{ÍNDICE}
+\tableofcontents
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Índice de tablas}
+\listoftables
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Índice de figuras}
+\listoffigures
+\clearpage
 
 \clearpage
 \pagenumbering{arabic}
@@ -34,13 +42,21 @@ source(project_path("R", "01-functions.R"))
 \pagestyle{fancy}
 
 {{< include capitulos/CapituloI.qmd >}}
+
+\part{MARCO CONCEPTUAL Y REVISIÓN DE LA LITERATURA}
+
 {{< include capitulos/CapituloII.qmd >}}
 {{< include capitulos/CapituloIII.qmd >}}
 {{< include capitulos/CapituloIV.qmd >}}
+
+\part{PRODUCTIVIDAD AGRARIA Y TENENCIA DE LA TIERRA EN EL ECUADOR: ANÁLISIS ESTADÍSTICO Y ECONOMÉTRICO}
+
 {{< include capitulos/CapituloV.qmd >}}
 {{< include capitulos/CapituloVI.qmd >}}
 {{< include capitulos/CapituloVII.qmd >}}
+\setcounter{secnumdepth}{-1}
 {{< include capitulos/CapituloVIII.qmd >}}
+\setcounter{secnumdepth}{4}
 
 # Bibliografía {.unnumbered}
 
@@ -50,6 +66,14 @@ source(project_path("R", "01-functions.R"))
 :::
 
 \clearpage
+
+\phantomsection
+\chapter*{ANEXOS}
+\addcontentsline{toc}{chapter}{ANEXOS}
+\clearpage
+\appendix
+\renewcommand{\appendixname}{Anexo}
+\renewcommand{\chaptername}{Anexo}
 
 {{< include anexos/AnexoI_Precios.qmd >}}
 

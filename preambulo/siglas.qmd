@@ -7,6 +7,7 @@
 \hline
 AIC & Criterio de información de Akaike (\textit{Akaike Information Criterion}) \\
 BIC & Criterio de información bayesiano (\textit{Bayesian Information Criterion}) \\
+BP & Prueba de Breusch-Pagan \\
 CDES & Centro de Derechos Económicos y Sociales \\
 CEPAL & Comisión Económica para América Latina y el Caribe \\
 CESA & Central Ecuatoriana de Servicios Agrícolas \\
@@ -15,9 +16,12 @@ ECUARUNARI & Ecuador Runacunapac Riccharimui \\
 ESPAC & Encuesta de Superficie y Producción Agropecuaria Continua \\
 FENOC & Federación Nacional de Organizaciones Campesinas \\
 FIDA & Fondo Internacional de Desarrollo Agrícola \\
+gl & Grados de libertad \\
 GPS & Sistema de posicionamiento global (\textit{Global Positioning System}) \\
+ha & Hectárea \\
 HC1 & Corrección tipo 1 de la matriz robusta de varianzas y covarianzas \\
 ICC & Coeficiente de correlación intraclase (\textit{Intraclass Correlation Coefficient}) \\
+IDEA & Instituto de Estrategias Agropecuarias \\
 IERAC & Instituto Ecuatoriano de Reforma Agraria y Colonización \\
 INDA & Instituto Nacional de Desarrollo Agrario \\
 INEC & Instituto Nacional de Estadística y Censos \\
@@ -27,13 +31,16 @@ LOESS & Suavización local mediante regresión (\textit{Locally Estimated Scatte
 LOTRTA & Ley Orgánica de Tierras Rurales y Territorios Ancestrales \\
 MAGAP & Ministerio de Agricultura, Ganadería, Acuacultura y Pesca \\
 MCO & Mínimos cuadrados ordinarios \\
+NA & Valor ausente o no disponible en los datos \\
 OLS & Mínimos cuadrados ordinarios (\textit{Ordinary Least Squares}) \\
 PRAT & Programa de Regularización y Administración de Tierras Rurales \\
 PTF & Productividad total de los factores \\
 REML & Máxima verosimilitud restringida (\textit{Restricted Maximum Likelihood}) \\
+RI & Relación inversa entre el tamaño de la explotación y la productividad de la tierra \\
 SAFER & Sociedades de ordenamiento territorial y establecimiento rural de Francia (\textit{Sociétés d'aménagement foncier et d'établissement rural}) \\
 SFA & Análisis de frontera estocástica (\textit{Stochastic Frontier Analysis}) \\
 SIGTIERRAS & Sistema Nacional de Información y Gestión de Tierras Rurales e Infraestructura Tecnológica \\
+SIPA & Sistema de Información Pública Agropecuaria \\
 UPA & Unidad de producción agropecuaria \\
 USD & Dólar de los Estados Unidos \\
 VIF & Factor de inflación de la varianza (\textit{Variance Inflation Factor}) \\

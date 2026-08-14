@@ -10,6 +10,7 @@
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 \usepackage{microtype}
+\usepackage[none]{hyphenat}
 
 % -------------------------------------------------
 % INTERLINEADO Y PÁRRAFOS
@@ -18,7 +19,7 @@
 \singlespacing
 
 \setlength{\parindent}{0.75cm}
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{10pt}
 
 % Evita estiramientos verticales artificiales.
 \raggedbottom
@@ -42,9 +43,10 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 
-% Inicio de capítulo y páginas en blanco: sin encabezado ni numeración visible.
+% Inicio de capítulo: sin encabezado, con numeración visible en el pie exterior.
 \fancypagestyle{plain}{%
   \fancyhf{}%
+  \fancyfoot[LE,RO]{\thepage}%
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
 }
@@ -60,7 +62,7 @@
 % Capítulo
 \titleformat{\chapter}[display]
   {\normalfont\bfseries\fontsize{15}{18}\selectfont\raggedleft}
-  {}
+  {\MakeUppercase{\chaptername~\thechapter}}
   {0pt}
   {\MakeUppercase}
 
@@ -69,6 +71,12 @@
   {0pt}
   {3\baselineskip}
   {1\baselineskip}
+
+\titleformat{\part}[display]
+  {\normalfont\bfseries\fontsize{15}{18}\selectfont\centering}
+  {}
+  {0pt}
+  {\MakeUppercase{PARTE~\thepart.\space}}
 
 % Nivel 1: 1.1 grosa, versaleta, sin tabular.
 \titleformat{\section}
@@ -238,9 +246,9 @@
 \displaywidowpenalty=10000
 \brokenpenalty=10000
 
-% Reduce guiones automáticos y mejora saltos de línea.
-\hyphenpenalty=8000
-\exhyphenpenalty=8000
+% Desactiva globalmente la separación silábica automática.
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \tolerance=2500
 \emergencystretch=3em
 
@@ -280,13 +288,20 @@
 \renewcommand{\textfraction}{0.07}
 \renewcommand{\floatpagefraction}{0.75}
 
+% Impide que un flotante pendiente invada la sección siguiente.
+% Se conserva la colocación natural de LaTeX dentro de cada apartado.
+\pretocmd{\section}{\FloatBarrier}{}{}
+\pretocmd{\subsection}{\FloatBarrier}{}{}
+\pretocmd{\subsubsection}{\FloatBarrier}{}{}
+\pretocmd{\paragraph}{\FloatBarrier}{}{}
+
 % -------------------------------------------------
 % APÉNDICES
 % -------------------------------------------------
 \usepackage[toc,page]{appendix}
-\renewcommand{\appendixname}{Apéndice}
-\renewcommand{\appendixtocname}{Apéndices}
-\renewcommand{\appendixpagename}{Apéndices}
+\renewcommand{\appendixname}{Anexo}
+\renewcommand{\appendixtocname}{ANEXOS}
+\renewcommand{\appendixpagename}{ANEXOS}
 
 % -------------------------------------------------
 % HIPERVÍNCULOS
