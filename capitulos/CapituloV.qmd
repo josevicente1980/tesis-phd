@@ -1,4 +1,4 @@
-# Capítulo V: Metodología y fuentes
+# Metodología y fuentes
 
 Este capítulo describe el diseño metodológico de la investigación, la fuente de información utilizada, el proceso de construcción de la base analítica, la definición y operacionalización de las variables, la conformación de las muestras y la estrategia econométrica empleada para analizar la asociación entre la tenencia de la tierra, la productividad agropecuaria y la eficiencia relativa de las UPA. Asimismo, se presentan los criterios de reproducibilidad, las consideraciones éticas y las limitaciones metodológicas que delimitan el alcance de las inferencias obtenidas.
 
@@ -13,7 +13,7 @@ source(project_path("R", "01-functions.R"))
 
 ## Diseño metodológico
 
-La investigación adopta un enfoque cuantitativo, aplicado y no experimental para examinar la asociación entre el régimen predominante de tenencia de la tierra, la productividad agropecuaria y la eficiencia técnica de las UPA del Ecuador continental. El diseño combina un componente descriptivo con tres familias de modelos econométricos: mínimos cuadrados ordinarios (OLS), modelos lineales multinivel y análisis de frontera estocástica (SFA). Esta combinación permite estudiar asociaciones promedio, heterogeneidad provincial y eficiencia técnica bajo supuestos paramétricos complementarios [@coelli_total_2005; @aigner_formulation_1977; @battese_model_1995].
+La investigación adopta un enfoque cuantitativo, aplicado y no experimental para examinar la asociación entre el régimen predominante de tenencia de la tierra, la productividad agropecuaria y la eficiencia técnica de las UPA del Ecuador continental. El diseño combina un componente descriptivo con tres familias de modelos econométricos: OLS, modelos lineales multinivel y SFA. Esta combinación permite estudiar asociaciones promedio, heterogeneidad provincial y eficiencia técnica bajo supuestos paramétricos complementarios [@coelli_total_2005; @aigner_formulation_1977; @battese_model_1995].
 
 El estudio es transversal porque utiliza observaciones correspondientes a 2022. Las variables no fueron asignadas ni manipuladas y la ESPAC no sigue a las mismas UPA a través del tiempo. Por esta razón, los coeficientes se interpretan como asociaciones condicionadas y no como efectos causales de la tenencia o de las prácticas tecnológicas. El término *efecto* se reserva para los componentes definidos por la especificación estadística —por ejemplo, el intercepto aleatorio provincial— y no implica identificación causal [@wooldridge_introductory_2020].
 
@@ -21,7 +21,7 @@ La unidad de análisis es la UPA, definida como el conjunto de terrenos y medios
 
 ## Fuente de información
 
-La fuente principal es la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, elaborada por el Instituto Nacional de Estadística y Censos (INEC). La encuesta reúne información sobre personas productoras, superficie y uso de la tierra, cultivos, producción pecuaria, empleo, tecnologías y localización. Su estructura modular permite integrar características institucionales, productivas, sociodemográficas y territoriales a nivel de UPA [@espac_encuesta_2013].
+La fuente principal es la ESPAC 2022, elaborada por el INEC. La encuesta reúne información sobre personas productoras, superficie y uso de la tierra, cultivos, producción pecuaria, empleo, tecnologías y localización. Su estructura modular permite integrar características institucionales, productivas, sociodemográficas y territoriales a nivel de UPA [@espac_encuesta_2013].
 
 La investigación se circunscribe al Ecuador continental. Galápagos se excluye por sus condiciones ecológicas, normativas y productivas particulares. Para la construcción de la base se utilizaron los módulos necesarios para obtener el identificador de la UPA, superficie, regímenes de tenencia, producción física y su valorización, trabajo, edad y educación de la persona productora, acceso a internet, provincia y uso de riego, fertilizantes y plaguicidas.
 
@@ -76,7 +76,7 @@ $$
 PL_i=\frac{produccion\_ec_i}{eu\_k1301_i}.
 $$
 
-Los dos indicadores son complementarios. El primero expresa valor de producción por hectárea; el segundo, valor por trabajador. No son medidas de productividad total de los factores y pueden responder de manera diferente a la escala y a la intensidad de los sistemas productivos.
+Los dos indicadores son complementarios. El primero expresa valor de producción por hectárea; el segundo, valor por trabajador. No son medidas de PTF y pueden responder de manera diferente a la escala y a la intensidad de los sistemas productivos.
 
 En OLS y multinivel, ambas respuestas se transformaron mediante $\ln(1+x)$, lo que conserva los ceros válidos y reduce la asimetría. La SFA utiliza la misma transformación funcional, pero se restringe adicionalmente a UPA con ambas productividades estrictamente positivas. Aunque la transformación $\ln(1+x)$ admite valores iguales a cero, esta restricción se aplicó para estimar la eficiencia únicamente entre unidades con producción y productividad observadas positivas, de modo que la distancia respecto de la frontera tenga una interpretación económica adecuada. En consecuencia, las fronteras estimadas corresponden a los indicadores de productividad dentro de esa submuestra y no a una función física de producción con cantidades separadas de todos los insumos.
 
@@ -139,7 +139,7 @@ La división en dos tablas evita un escalado que reduzca la legibilidad y permit
 
 ## Muestras analíticas
 
-La base analítica inicial estuvo conformada por 42.444 unidades de producción agropecuaria del Ecuador continental. A partir de esta base se construyeron muestras específicas para la estimación econométrica, de acuerdo con la disponibilidad y validez de las variables requeridas por cada familia de modelos.
+La base analítica inicial estuvo conformada por 42.444 UPA del Ecuador continental. A partir de esta base se construyeron muestras específicas para la estimación econométrica, de acuerdo con la disponibilidad y validez de las variables requeridas por cada familia de modelos.
 
 Los modelos OLS y multinivel se estimaron con una muestra común de 22.075 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
 
@@ -180,13 +180,13 @@ $$
 \ln(1+Y_{ij})=\beta_0+\sum_{k=1}^{K}\beta_kX_{kij}+u_j+\varepsilon_{ij},
 $$
 
-donde $u_j\sim N(0,\sigma_u^2)$ es la desviación del intercepto de la provincia $j$ y $\varepsilon_{ij}\sim N(0,\sigma_e^2)$ es el residuo a nivel de UPA. El coeficiente de correlación intraclase se calcula como
+donde $u_j\sim N(0,\sigma_u^2)$ es la desviación del intercepto de la provincia $j$ y $\varepsilon_{ij}\sim N(0,\sigma_e^2)$ es el residuo a nivel de UPA. El coeficiente de correlación intraclase (ICC) se calcula como
 
 $$
 ICC=\frac{\sigma_u^2}{\sigma_u^2+\sigma_e^2}.
 $$
 
-El ICC del modelo nulo cuantifica la proporción de variabilidad asociada a diferencias entre provincias antes de incluir covariables; el ICC del modelo completo representa la heterogeneidad territorial residual. La mejora de ajuste frente a OLS se evalúa únicamente para la misma respuesta y muestra mediante AIC, BIC y log-verosimilitud.
+El ICC del modelo nulo cuantifica la proporción de variabilidad asociada a diferencias entre provincias antes de incluir covariables; el ICC del modelo completo representa la heterogeneidad territorial residual. La mejora de ajuste frente a OLS se evalúa únicamente para la misma respuesta y muestra mediante el criterio de información de Akaike (AIC), el criterio de información bayesiano (BIC) y log-verosimilitud.
 
 ### Fronteras estocásticas y eficiencia técnica
 
@@ -214,7 +214,7 @@ expresa la proporción de la varianza compuesta atribuida al componente de inefi
 
 ## Diagnóstico, comparación e interpretación
 
-Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad y heterocedasticidad. El Capítulo VII reporta VIF, prueba de Breusch-Pagan y evaluación gráfica de residuos. La significancia se acompaña de magnitud y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
+Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad y heterocedasticidad. El Capítulo VII reporta el factor de inflación de la varianza (VIF), prueba de Breusch-Pagan y evaluación gráfica de residuos. La significancia se acompaña de magnitud y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
 
 Las comparaciones de AIC, BIC y log-verosimilitud se realizan solo entre modelos estimados sobre la misma respuesta, muestra y función de verosimilitud. No se comparan directamente los criterios de ajuste de OLS, multinivel y SFA cuando sus universos o supuestos difieren. Del mismo modo, las eficiencias técnicas de las fronteras de tierra y trabajo son medidas específicas de cada respuesta y no indicadores intercambiables.
 

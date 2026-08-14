@@ -1,4 +1,4 @@
-# Capítulo III. Contexto histórico de la propiedad y tenencia de la tierra en Ecuador
+# Contexto histórico de la propiedad y tenencia de la tierra en Ecuador
 
 ```{r}
 #| label: setup-capitulo-iii
@@ -87,7 +87,7 @@ En suma, entre 1900 y 1950 el Ecuador atravesó una serie de intentos parciales 
 
 En 1954 se llevó a cabo el primer censo agropecuario de la historia del Ecuador, constituyéndose en una herramienta clave para diagnosticar la estructura de la tenencia de la tierra en el país. Los resultados revelaron una marcada concentración de la propiedad rural, evidenciando las profundas desigualdades heredadas del régimen colonial y mantenidas durante la época republicana.
 
-En la región Sierra, el censo registró aproximadamente 260.000 unidades de producción agropecuaria. De ellas, el 81,7 % correspondía a unidades productivas con menos de cinco hectáreas (ha), las cuales en conjunto controlaban únicamente el 10,8 % del área agrícola total. En el otro extremo, apenas el 0,3 % de las unidades de producción agropecuaria (unas 780 mayores de 100 ha) concentraban el 48,3 % de la superficie cultivable. La región Costa reflejaba una estructura similar: el 71,3 % de las unidades de producción agropecuaria, con menos de cinco hectáreas, abarcaba tan solo el 3 % del área total, mientras que el 2,2 % de las mayores a 100 ha acaparaban el 64,4 % de la tierra disponible [@francescutti_regularizacion_2002] (@fig-distribucion-sup).
+En la región Sierra, el censo registró aproximadamente 260.000 UPA. De ellas, el 81,7 % correspondía a unidades productivas con menos de cinco hectáreas (ha), las cuales en conjunto controlaban únicamente el 10,8 % del área agrícola total. En el otro extremo, apenas el 0,3 % de las UPA (unas 780 mayores de 100 ha) concentraban el 48,3 % de la superficie cultivable. La región Costa reflejaba una estructura similar: el 71,3 % de las UPA, con menos de cinco hectáreas, abarcaba tan solo el 3 % del área total, mientras que el 2,2 % de las mayores a 100 ha acaparaban el 64,4 % de la tierra disponible [@francescutti_regularizacion_2002] (@fig-distribucion-sup).
 
 Estos datos ofrecieron la primera evidencia empírica sistematizada del patrón estructural de desigualdad agraria, y pusieron de manifiesto la urgencia de implementar reformas agrarias integrales que permitieran una redistribución más equitativa de los recursos productivos del país.
 
@@ -96,7 +96,7 @@ Estos datos ofrecieron la primera evidencia empírica sistematizada del patrón 
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Distribución de la superficie agraria y número de unidades de producción agropecuaria por tamaño en Sierra y Costa, 1954. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 1954."
+#| fig-cap: "Distribución de la superficie agraria y número de UPA por tamaño en Sierra y Costa, 1954. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 1954."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 3.8
@@ -204,7 +204,7 @@ A inicios de la década de 1960, convergieron en Ecuador diversos procesos hist�
 
 La tenencia de la tierra en esa época seguía constituyendo el fundamento de una estructura institucional profundamente desigual, que generaba distorsiones en la distribución del ingreso y en el acceso a los medios de producción. El latifundio, expresión más visible de esa estructura, concentraba el control del mercado laboral rural y del mercado de tierras, reproduciendo condiciones de pobreza, dependencia y explotación [@brassel__2008].
 
-En ese contexto, el gobierno militar promulgó la Primera Ley de Reforma Agraria y Colonización mediante el Decreto Ejecutivo No. 1480, del 11 de julio de 1964. Esta legislación reconocía abiertamente la necesidad de una reforma estructural como requisito para avanzar hacia la industrialización del país. En ese entonces, el 0,4 % de los propietarios concentraba el 45 % de las tierras agrícolas, mientras que el 90 % de los predios (ocupados por cerca de la mitad de la población) eran tan reducidos que resultaban insuficientes incluso para sostener a una sola familia [@wasserstrom_deforestation_2013].
+En ese contexto, el gobierno militar promulgó la Primera Ley de Reforma Agraria y Colonización mediante el Decreto Ejecutivo número (No.) 1480, del 11 de julio de 1964. Esta legislación reconocía abiertamente la necesidad de una reforma estructural como requisito para avanzar hacia la industrialización del país. En ese entonces, el 0,4 % de los propietarios concentraba el 45 % de las tierras agrícolas, mientras que el 90 % de los predios (ocupados por cerca de la mitad de la población) eran tan reducidos que resultaban insuficientes incluso para sostener a una sola familia [@wasserstrom_deforestation_2013].
 
 La ley se sustentaba en cuatro pilares fundamentales: 1. *Expropiación de latifundios improductivos*, con el objetivo de entregar la tierra a los campesinos que la trabajaban y eliminar formas precarias de tenencia como el huasipungo[^2], el arrimazgo[^3] y otras modalidades semifeudales. 2. *Fomento de empresas cooperativas campesinas*, organizadas sobre tierras estatales para promover el trabajo colectivo y la producción a escala. 3. *Colonización dirigida*, mediante la adjudicación de tierras baldías a grupos campesinos, como mecanismo de desconcentración poblacional y productiva. 4. *Creación del Instituto Ecuatoriano de Reforma Agraria y Colonización (IERAC)*, entidad responsable de planificar, ejecutar y supervisar el proceso de redistribución de tierras.
 
@@ -428,7 +428,7 @@ Adicionalmente, se establecieron sanciones para las invasiones de tierras privad
 
 El siglo XXI inició con la aplicación del Tercer Censo Agropecuario (2000). Según @carrion_byron_2008, los resultados confirmaron el escaso impacto redistributivo de las reformas agrarias del siglo XX, lo cual reactivó la discusión sobre la necesidad de políticas de redistribución de la tierra.
 
-El 68,5 % de las unidades de producción agropecuaria (UPA) se registraron como “propias con título”, aunque solo concentraban el 4,1 % de la superficie agrícola. Mientras tanto, el minifundio siguió creciendo, especialmente en la Sierra, afectando negativamente las condiciones de vida rural.
+El 68,5 % de las UPA se registraron como “propias con título”, aunque solo concentraban el 4,1 % de la superficie agrícola. Mientras tanto, el minifundio siguió creciendo, especialmente en la Sierra, afectando negativamente las condiciones de vida rural.
 
 Los datos evidenciaron que:
 
@@ -443,7 +443,7 @@ Estos resultados mostraban la persistencia de una estructura agraria polarizada,
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Superficie agraria controlada y porcentaje de unidades de producción agropecuaria según tamaño de UPA. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 2000."
+#| fig-cap: "Superficie agraria controlada y porcentaje de UPA según tamaño. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 2000."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 3.2
@@ -546,8 +546,8 @@ La desagregación de la distribución por tamaño evidencia la persistencia de u
 -   El 0,68 % de la población controlaba el 46,3 % de la superficie agrícola.
 -   Las UPA de menos de 5 hectáreas representaban el 63,96 % del total de explotaciones, con un promedio de solo 1,4 ha, por lo que concentraban únicamente el 6,53 % de la superficie agrícola total.
 -   Las explotaciones entre 5 y 50 hectáreas abarcaban el 32,9 % de las UPA, controlando el 34,5 % de la tierra.
--   Las UPA entre 50 y 100 hectáreas constituían el 3,97 % del total, pero poseían el 18,33 % de la superficie agrícola.
--   Las explotaciones mayores a 100 hectáreas representaban apenas el 0,16 % de las UPA, pero controlaban el 16 % de la tierra cultivable, con un promedio superior a 1.400 hectáreas por unidad.
+-   Las UPA entre 50 y 100 hectáreas constituían el 3,0 % del total, pero poseían el 18,3 % de la superficie agrícola.
+-   Las explotaciones mayores a 100 hectáreas representaban apenas el 0,16 % de las UPA, pero controlaban el 40,6 % de la tierra cultivable, con un promedio superior a 1.400 hectáreas por unidad.
 
 Esta diferencia extrema implica una proporción de 1.000 a 1 entre las grandes y las pequeñas propiedades. Además, se contabilizaban aproximadamente 165.000 minifundios de menos de 0,5 hectáreas, lo que representa la mitad de todas las unidades productivas pequeñas del país.
 
@@ -556,7 +556,7 @@ Esta diferencia extrema implica una proporción de 1.000 a 1 entre las grandes y
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Distribución de la superficie agraria y de las unidades de producción agropecuaria según tamaño de explotación en Ecuador. Fuente: Elaboración propia a partir de Salgado (2022)."
+#| fig-cap: "Distribución de la superficie agraria y de las UPA según tamaño de explotación en Ecuador. Fuente: Elaboración propia a partir de Salgado (2022)."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 4.2
@@ -652,7 +652,7 @@ ggplot2::ggplot(
 
 ### Cifras de los censos agropecuarios para el período 1954-2000
 
-De acuerdo con el análisis del @magap_politica_2016, una comparación longitudinal de los datos sobre distribución de la tierra recogidos en los tres censos agropecuarios nacionales (1954, 1974 y 2000), así como en la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2013, revela importantes transformaciones en el número de UPA registradas y la extensión de la superficie agrícola, aunque no así en la distribución de la tierra entre los productores.
+De acuerdo con el análisis del @magap_politica_2016, una comparación longitudinal de los datos sobre distribución de la tierra recogidos en los tres censos agropecuarios nacionales (1954, 1974 y 2000), así como en la ESPAC 2013, revela importantes transformaciones en el número de UPA registradas y la extensión de la superficie agrícola, aunque no así en la distribución de la tierra entre los productores.
 
 En efecto, entre 1954 y 2000 se registró un incremento de 496.811 nuevas unidades productivas y una expansión neta de 5.358.657 hectáreas de superficie agrícola. No obstante, tales avances en cobertura territorial y acceso formal no se tradujeron en una mejora sustantiva en los niveles de equidad de la distribución de la tierra entre unidades productivas. Por el contrario, la concentración estructural del recurso tierra se ha mantenido como una característica persistente del sistema agrario ecuatoriano.
 
@@ -732,7 +732,7 @@ ggplot2::ggplot(
 
 Aunque se observa una disminución progresiva del índice, esta evolución ha sido lenta y marginal, lo que demuestra que la desigualdad estructural en el acceso a la tierra se ha mantenido prácticamente inalterada en las últimas seis décadas. Tal persistencia obedece, en gran medida, a dos fenómenos contradictorios pero simultáneos: por un lado, la fragmentación del minifundio, como resultado de la presión demográfica y herencias sucesivas; y por otro, la reconcentración de la gran propiedad, producto de procesos de acumulación de tierras en manos de grandes empresas agroindustriales y actores corporativos. En consecuencia, el sistema agrario ecuatoriano presenta un modelo dual y polarizado, en el que conviven minifundios crecientemente inviables con latifundios tecnificados que concentran los recursos productivos, perpetuando las brechas sociales y territoriales en el agro ecuatoriano.
 
-Durante las últimas seis décadas, la legislación y las políticas públicas en Ecuador han buscado influir en la estructura de la tenencia y distribución de la tierra mediante diversas formas de intervención estatal. Según el análisis del @magap_politica_2016, si bien la redistribución no logró una transformación radical del régimen agrario, sí es posible identificar ciertas variaciones significativas en la configuración de las unidades de producción agropecuaria (UPA) entre 1954 y 2000.
+Durante las últimas seis décadas, la legislación y las políticas públicas en Ecuador han buscado influir en la estructura de la tenencia y distribución de la tierra mediante diversas formas de intervención estatal. Según el análisis del @magap_politica_2016, si bien la redistribución no logró una transformación radical del régimen agrario, sí es posible identificar ciertas variaciones significativas en la configuración de las UPA entre 1954 y 2000.
 
 La @tbl-base-estratos muestra que la evolución de la estructura agraria refleja un crecimiento generalizado del número de unidades productivas, impulsado principalmente por los estratos de menor tamaño. Este aumento responde a procesos de fragmentación de la tierra que no se acompañan de una expansión proporcional de la superficie, lo que evidencia una intensificación del minifundio y una reducción del tamaño efectivo de las explotaciones pequeñas.
 
@@ -824,11 +824,11 @@ tabla_usc(
   )
 ```
 
-El incremento del número de unidades de producción agropecuaria (UPA) en todos los estratos de tamaño entre 1954 y 2000 plantea una cuestión metodológica relevante respecto a la naturaleza de este crecimiento. En efecto, no puede asumirse de manera automática que dicho aumento refleje exclusivamente cambios estructurales reales en la organización de la producción agraria. Parte de esta variación puede estar asociada a mejoras progresivas en la cobertura, el alcance y la capacidad de registro de los censos agropecuarios, especialmente en los estratos de menor tamaño, históricamente subrepresentados. La ampliación de los mecanismos de levantamiento de información, así como una mayor presencia institucional en el territorio rural, pudieron contribuir a visibilizar unidades productivas que previamente no eran captadas de forma sistemática. En este sentido, las cifras deben interpretarse con cautela, entendiendo que combinan tanto transformaciones efectivas en la estructura agraria como avances en la calidad estadística y en el grado de cobertura censal.
+El incremento del número de UPA en todos los estratos de tamaño entre 1954 y 2000 plantea una cuestión metodológica relevante respecto a la naturaleza de este crecimiento. En efecto, no puede asumirse de manera automática que dicho aumento refleje exclusivamente cambios estructurales reales en la organización de la producción agraria. Parte de esta variación puede estar asociada a mejoras progresivas en la cobertura, el alcance y la capacidad de registro de los censos agropecuarios, especialmente en los estratos de menor tamaño, históricamente subrepresentados. La ampliación de los mecanismos de levantamiento de información, así como una mayor presencia institucional en el territorio rural, pudieron contribuir a visibilizar unidades productivas que previamente no eran captadas de forma sistemática. En este sentido, las cifras deben interpretarse con cautela, entendiendo que combinan tanto transformaciones efectivas en la estructura agraria como avances en la calidad estadística y en el grado de cobertura censal.
 
 ### Cifras mas recientes de la ESPAC para 2013 y 2022
 
-Comparado con el último Censo Agropecuario de 2000, los datos de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) correspondientes
+Comparado con el último Censo Agropecuario de 2000, los datos de la ESPAC correspondientes
 a 2013 evidencian que, si bien han existido ciertos cambios en la estructura de las explotaciones agrarias, persisten tendencias estructurales de desigualdad que afectan tanto a la concentración como a la atomización de la tierra [@espac_encuesta_2013].
 
 En términos de superficie, las grandes UPA (más de 100 ha) continuaron reduciendo en el período 2000-2013 su peso territorial. En 2000, estas unidades representaban el 42,6 % de la superficie agrícola, cifra que disminuyó al 33,5 % en 2013. No obstante, en los últimos años de ese periodo se observó una reversión parcial de esta tendencia, con un aumento en la importancia relativa de estas grandes UPA [@magap_politica_2016].
@@ -945,7 +945,7 @@ tabla_usc(
   )
 ```
 
-Así, pese a las diferencias metodológicas entre un censo exhaustivo y una encuesta representativa, el contraste entre el último Censo Agropecuario de 2000 (ver @tbl-calculos-estratos) y las cifras más recientes de la ESPAC revela similitudes estructurales relevantes. No obstante, estas coincidencias deben interpretarse con cautela, dado que mientras el Censo constituye un levantamiento exhaustivo de las unidades de producción agropecuaria, la ESPAC se basa en un diseño muestral y, por tanto, sus resultados corresponden a estimaciones estadísticas. Aun así, ambas fuentes narran la misma historia estructural: entre 2000 y 2022 el agro ecuatoriano no transitó hacia una redistribución significativa de la tierra, sino que mantuvo la coexistencia del minifundio fragmentado y la gran propiedad concentrada, configurando un patrón persistente que condiciona la productividad.
+Así, pese a las diferencias metodológicas entre un censo exhaustivo y una encuesta representativa, el contraste entre el último Censo Agropecuario de 2000 (ver @tbl-calculos-estratos) y las cifras más recientes de la ESPAC revela similitudes estructurales relevantes. No obstante, estas coincidencias deben interpretarse con cautela, dado que mientras el Censo constituye un levantamiento exhaustivo de las UPA, la ESPAC se basa en un diseño muestral y, por tanto, sus resultados corresponden a estimaciones estadísticas. Aun así, ambas fuentes narran la misma historia estructural: entre 2000 y 2022 el agro ecuatoriano no transitó hacia una redistribución significativa de la tierra, sino que mantuvo la coexistencia del minifundio fragmentado y la gran propiedad concentrada, configurando un patrón persistente que condiciona la productividad.
 
 ## Datos sobre los modos de tenencia de la tierra 2000-2022
 
@@ -974,7 +974,7 @@ tenencia_2000 <- DBI::dbReadTable(
 DBI::dbDisconnect(con_cna_2000)
 ```
 
-La tabla @tbl-cna2000-tenencia muestra la estructura de los modos de tenencia de la tierra en el Ecuador según el Censo Nacional Agropecuario de 2000. Esta aparecía dominada por la propiedad con título (tierras trabajadas en tenencia directa con título de propiedad), que concentraba el 68,5 % de las unidades productivas. Por lo tanto, más de 2/3 de los productores contaban con derechos de propiedad formalizados sobre la totalidad de las superficies que trabajaban, lo que les permitía, al menos en términos institucionales, disponer de un mayor grado de seguridad para la toma de decisiones productivas.
+La @tbl-cna2000-tenencia muestra la estructura de los modos de tenencia de la tierra en el Ecuador según el Censo Nacional Agropecuario de 2000. Esta aparecía dominada por la propiedad con título (tierras trabajadas en tenencia directa con título de propiedad), que concentraba el 68,5 % de las unidades productivas. Por lo tanto, más de 2/3 de los productores contaban con derechos de propiedad formalizados sobre la totalidad de las superficies que trabajaban, lo que les permitía, al menos en términos institucionales, disponer de un mayor grado de seguridad para la toma de decisiones productivas.
 
 Al lado de ello, las formas de ocupación sin título y otras modalidades informales representaban en conjunto el 11,8 % del total de unidades productivas. Estos casos reflejaban situaciones de alta vulnerabilidad, en las que el vínculo con la tierra era inestable, condicionando la producción dado el riesgo permanente de pérdida del acceso al uso de las superficies.
 
@@ -1032,9 +1032,9 @@ tabla_usc(
   )
 ```
 
-Una vez analizado el patrón estructural de la distribución de las UPA según la forma de tenencia de la tierra correspondiente al año 2000, y antes de proceder a la comparación con los resultados de la ESPAC 2022, conviene precisar un aspecto metodológico relevante. Si bien los resultados sobre tenencia de la tierra para 2022 ya fueron abordados en el Capítulo II, específicamente en el apartado 2.4, aquellos que se presentan a continuación difieren en su enfoque analítico. En el Capítulo II el análisis se centró en la superficie asociada a cada régimen de tenencia, mientras que en esta sección las cifras se construyen a partir del número de unidades de producción agropecuaria, lo que permite una lectura complementaria sobre la estructura de la tenencia desde la perspectiva de la distribución de las UPA.
+Una vez analizado el patrón estructural de la distribución de las UPA según la forma de tenencia de la tierra correspondiente al año 2000, y antes de proceder a la comparación con los resultados de la ESPAC 2022, conviene precisar un aspecto metodológico relevante. Si bien los resultados sobre tenencia de la tierra para 2022 ya fueron abordados en el Capítulo II, específicamente en el apartado 2.4, aquellos que se presentan a continuación difieren en su enfoque analítico. En el Capítulo II el análisis se centró en la superficie asociada a cada régimen de tenencia, mientras que en esta sección las cifras se construyen a partir del número de UPA, lo que permite una lectura complementaria sobre la estructura de la tenencia desde la perspectiva de la distribución de las UPA.
 
-Cabe precisar también que, aunque la tabla @tbl-tenencia_tierrafpp presenta un único régimen de tenencia por UPA, ello responde a que se ha considerado exclusivamente el régimen de tenencia predominante en cada predio. En contraste, la tabla @tbl-sunac-tabla-mono-multi complementa este análisis al clasificar las UPA según presenten mono-tenencia o multi-tenencia, a partir de la identificación de regímenes distintos dentro de cada unidad productiva. La clasificación se elaboró identificando, para cada UPA, si los terrenos registrados en la encuesta se encontraban asociados a un único régimen de tenencia o a más de uno. A diferencia de las estimaciones nacionales expandidas, los resultados presentados corresponden a valores muestrales sin expansión, construidos directamente a partir de las 42.444 UPA incluidas en la base de análisis de la ESPAC 2022.
+Cabe precisar también que, aunque la @tbl-tenencia_tierrafpp presenta un único régimen de tenencia por UPA, ello responde a que se ha considerado exclusivamente el régimen de tenencia predominante en cada predio. En contraste, la @tbl-sunac-tabla-mono-multi complementa este análisis al clasificar las UPA según presenten mono-tenencia o multi-tenencia, a partir de la identificación de regímenes distintos dentro de cada unidad productiva. La clasificación se elaboró identificando, para cada UPA, si los terrenos registrados en la encuesta se encontraban asociados a un único régimen de tenencia o a más de uno. A diferencia de las estimaciones nacionales expandidas, los resultados presentados corresponden a valores muestrales sin expansión, construidos directamente a partir de las 42.444 UPA incluidas en la base de análisis de la ESPAC 2022.
 
 En términos agregados, se observa que 41.148 unidades productivas agropecuarias corresponden a explotaciones con un solo régimen de tenencia, lo que representa el 96,95 por ciento del total de UPA analizadas. Por su parte, 1.296 unidades productivas presentan más de un régimen de tenencia dentro de sus terrenos, equivalentes al 3,05 por ciento del total.
 

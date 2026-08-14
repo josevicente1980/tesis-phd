@@ -1,4 +1,4 @@
-# Capítulo VI. Caracterización estructural del sector agropecuario en Ecuador
+# Caracterización estructural del sector agropecuario en Ecuador
 
 ```{r}
 #| label: setup-capitulo-vi
@@ -145,23 +145,23 @@ sunac2022 <- objetos_rds_capitulo_vi$sunac2022
 
 ## Introducción
 
-En este apartado se presentan los principales resultados descriptivos de la ESPAC 2022, a partir de un análisis exploratorio orientado a identificar patrones generales, tendencias iniciales y rasgos relevantes de la información disponible. Esta aproximación preliminar resulta fundamental para comprender la estructura y distribución de las actividades agropecuarias registradas, así como para reconocer la existencia de heterogeneidades entre regiones, tipos de cultivos y sistemas de producción. El objetivo es construir un panorama general que sirva como base para los análisis posteriores, facilitando la identificación de concentraciones productivas, variaciones territoriales y comportamientos que inciden en la configuración del sector agropecuario.
+En este capítulo se presentan los principales resultados descriptivos de la ESPAC 2022, a partir de un análisis exploratorio orientado a identificar patrones generales, tendencias iniciales y rasgos relevantes de la información disponible. Esta aproximación preliminar resulta fundamental para comprender la estructura y distribución de las actividades agropecuarias registradas, así como para reconocer la existencia de heterogeneidades entre regiones, tipos de cultivos y sistemas de producción. El objetivo es construir un panorama general que sirva como base para los análisis posteriores, facilitando la identificación de concentraciones productivas, variaciones territoriales y comportamientos que inciden en la configuración del sector agropecuario.
 
 Asimismo, se examina la estructura de la tenencia de la tierra, con el fin de caracterizar las distintas formas de acceso y control de las unidades productivas registradas en la ESPAC 2022. De manera complementaria, se analiza la producción y la productividad agropecuaria, considerando tanto el volumen de producción como su relación con los factores productivos disponibles. Este análisis permite identificar diferencias en los niveles de desempeño entre cultivos, actividades pecuarias y territorios, así como aproximarse al uso relativo de la tierra y del trabajo [^productividad_trabajo].
 
-[^productividad_trabajo]: Conviene precisar que, para efectos de este análisis, la productividad del trabajo se operacionaliza formalmente a partir de este momento, a través del indicador de productividad por persona ocupada en las Unidades de Producción Agropecuaria (UPA).
+[^productividad_trabajo]: Conviene precisar que, para efectos de este análisis, la productividad del trabajo se operacionaliza formalmente a partir de este momento, a través del indicador de productividad por persona ocupada en las UPA.
 
-Finalmente, a partir de estos resultados descriptivos, se realiza una primera aproximación a la relación entre tenencia de la tierra y productividad, explorando la existencia de diferencias sistemáticas en el desempeño productivo asociadas a los distintos regímenes de tenencia. Este ejercicio no persigue establecer relaciones causales, sino identificar regularidades empíricas y patrones observables que orienten el diseño y la interpretación de los análisis econométricos desarrollados en las secciones posteriores.
+Finalmente, a partir de estos resultados descriptivos, se realiza una primera aproximación a la relación entre tenencia de la tierra y productividad, explorando la existencia de diferencias sistemáticas en el desempeño productivo asociadas a los distintos regímenes de tenencia. Este ejercicio no persigue establecer relaciones causales, sino identificar regularidades empíricas y patrones observables que orienten el diseño y la interpretación de los análisis econométricos desarrollados en el capítulo siguiente.
 
 ## Análisis de la ESPAC 2022
 
 ### Características socioeconómicas de los agricultores
 
-La @tbl-resumen-caracteristicas se construyó a partir de la tabla de características generales de la ESPAC 2022, que contiene información sociodemográfica de los productores asociados a las 42.444 UPA registradas. El procesamiento siguió los criterios establecidos en la sintaxis oficial del INEC para generar tabulados estadísticos. En primer lugar, se aplicaron los filtros de depuración de la base, con los que se eliminaron cuestionarios especiales y posibles registros asociados a intersecciones cuando estas variables estaban disponibles. Posteriormente, el análisis se restringió a los registros identificados como productores agropecuarios, de modo que la caracterización sociodemográfica corresponde a los responsables directos de la gestión productiva de las UPA.
+La @tbl-resumen-caracteristicas se construyó a partir de la tabla de características generales de la ESPAC 2022. La base original contiene 42.444 UPA; sin embargo, la información sociodemográfica presentada en esta tabla corresponde específicamente a los 30.154 registros identificados como productores agropecuarios. Para su construcción se siguieron los criterios de depuración establecidos en la sintaxis de procesamiento utilizada para la ESPAC, excluyendo los códigos de encuesta no válidos y restringiendo posteriormente el análisis a los registros identificados como productores. Por tanto, las 30.154 observaciones de la tabla no representan una pérdida de información, sino el universo específico para el cual se dispone de características sociodemográficas del productor.
 
-Una vez definido el universo de análisis, las variables de sexo, rango de edad y nivel de instrucción formal fueron recodificadas como factores categóricos respetando el orden de los códigos originales de la encuesta, con el fin de mantener coherencia con los tabulados institucionales. A partir de estas variables se calcularon frecuencias absolutas y porcentajes sobre el total de observaciones válidas dentro de cada dimensión, manteniendo explícitamente las categorías de respuesta “No informa” cuando estas aparecen en la base de datos. Este procedimiento permite construir una descripción estructurada del perfil de los productores a partir de las observaciones disponibles en la encuesta.
+Una vez definido este universo, las variables de sexo, rango de edad y nivel de instrucción formal fueron recodificadas como factores categóricos, respetando las categorías de la encuesta. Se calcularon frecuencias absolutas y porcentajes sobre el total de 30.154 productores, manteniendo explícitamente la categoría “No informa” cuando corresponde. De este modo, cada dimensión representa la totalidad de productores incluidos en el análisis y sus porcentajes suman el 100 %, salvo posibles diferencias mínimas atribuibles exclusivamente al redondeo de las cifras presentadas.
 
-Bajo este enfoque, los resultados permiten observar, una predominancia de productores hombres, una concentración de los productores en grupos etarios de adultos y adultos mayores, y una estructura educativa caracterizada principalmente por niveles de instrucción básica o ausencia de escolaridad formal. En conjunto, la información evidencia un perfil sociodemográfico de los productores agropecuarios que combina predominio masculino, envejecimiento relativo de la población productora y niveles educativos mayoritariamente bajos, elementos que deben interpretarse como una caracterización descriptiva derivada directamente de las observaciones registradas en la ESPAC 2022.
+Los resultados muestran una marcada predominancia de productores hombres, así como una concentración en los grupos de mayor edad y una estructura educativa caracterizada principalmente por niveles de instrucción básica o ausencia de escolaridad formal. En conjunto, estos resultados evidencian un perfil sociodemográfico definido por el predominio masculino, el envejecimiento relativo de la población productora y niveles educativos mayoritariamente bajos. Estas características deben interpretarse como una descripción de los productores identificados en la ESPAC 2022 y no del conjunto de las 42.444 UPA registradas en la base original.
 
 ```{r}
 #| label: tbl-resumen-caracteristicas
@@ -170,77 +170,24 @@ Bajo este enfoque, los resultados permiten observar, una predominancia de produc
 #| message: false
 #| warning: false
 
-cgnac_base <- cgnac2022 |>
+# Base de productores válidos
+cgnac_fac <- cgnac2022 |>
+  dplyr::filter(
+    !al_ncues %in% c(9999, 8888, 7777, 6666, 5555),
+    as.numeric(haven::zap_labels(Productor)) == 1
+  ) |>
   dplyr::mutate(
-    Identificador = as.character(Identificador)
-  )
 
-if ("al_ncues" %in% names(cgnac_base)) {
-  cgnac_base <- cgnac_base |>
-    dplyr::filter(
-      !al_ncues %in% c(9999, 8888, 7777, 6666, 5555)
-    )
-}
-
-posibles_inter <- c(
-  "interseccion",
-  "intersecciones",
-  "cg_interseccion",
-  "cg_intersecciones"
-)
-
-col_inter <- posibles_inter[
-  posibles_inter %in% names(cgnac_base)
-][1]
-
-if (!is.na(col_inter)) {
-  cgnac_base <- cgnac_base |>
-    dplyr::filter(
-      as.numeric(
-        haven::zap_labels(.data[[col_inter]])
-      ) != 1
-    )
-}
-
-if ("Productor" %in% names(cgnac_base)) {
-  cgnac_base <- cgnac_base |>
-    dplyr::filter(
-      as.numeric(
-        haven::zap_labels(Productor)
-      ) == 1
-    )
-}
-
-cgnac_fac <- cgnac_base |>
-  dplyr::mutate(
+    # Sexo
     cg_k100 = factor(
-      as.numeric(
-        haven::zap_labels(cg_k100)
-      ),
+      as.numeric(haven::zap_labels(cg_k100)),
       levels = c(1, 2),
-      labels = c(
-        "Hombre",
-        "Mujer"
-      )
+      labels = c("Hombre", "Mujer")
     ),
-    cg_k102 = factor(
-      as.numeric(
-        haven::zap_labels(cg_k102)
-      ),
-      levels = c(1, 2, 3, 4, 7, 9),
-      labels = c(
-        "Ninguna",
-        "Primaria",
-        "Secundaria",
-        "Superior",
-        "Posgrado",
-        "No informa"
-      )
-    ),
+
+    # Edad
     edad_rango = factor(
-      as.numeric(
-        haven::zap_labels(edad_rango)
-      ),
+      as.numeric(haven::zap_labels(edad_rango)),
       levels = c(1, 2, 3, 4, 5, 6),
       labels = c(
         "Entre 15 y 24 años",
@@ -250,14 +197,29 @@ cgnac_fac <- cgnac_base |>
         "65 años y más",
         "No informa"
       )
+    ),
+
+    # Instrucción formal
+    cg_k102 = factor(
+      as.numeric(haven::zap_labels(cg_k102)),
+      levels = c(1, 2, 3, 4, 7, 9),
+      labels = c(
+        "Ninguna",
+        "Primaria",
+        "Secundaria",
+        "Superior",
+        "Posgrado",
+        "No informa"
+      )
     )
   )
 
+# Resumen de características
 resumen_caracteristicas <- cgnac_fac |>
   dplyr::select(
-    cg_k100,
-    edad_rango,
-    cg_k102
+    Sexo = cg_k100,
+    `Edad (rango)` = edad_rango,
+    `Instrucción formal` = cg_k102
   ) |>
   tidyr::pivot_longer(
     cols = dplyr::everything(),
@@ -265,12 +227,12 @@ resumen_caracteristicas <- cgnac_fac |>
     values_to = "categoria"
   ) |>
   dplyr::mutate(
-    variable = dplyr::recode(
-      variable,
-      cg_k100 = "Sexo",
-      edad_rango = "Edad (rango)",
-      cg_k102 = "Instrucción formal"
+    categoria = dplyr::if_else(
+      is.na(categoria),
+      "No informa",
+      as.character(categoria)
     ),
+
     variable = factor(
       variable,
       levels = c(
@@ -279,92 +241,73 @@ resumen_caracteristicas <- cgnac_fac |>
         "Instrucción formal"
       )
     ),
-    categoria = dplyr::if_else(
-      is.na(categoria),
-      "No informa",
-      as.character(categoria)
-    ),
+
     orden_categoria = dplyr::case_when(
+
+      # Sexo
       variable == "Sexo" &
         categoria == "Hombre" ~ 1,
-
       variable == "Sexo" &
         categoria == "Mujer" ~ 2,
-
       variable == "Sexo" &
-        categoria == "No informa" ~ 3,
+        categoria == "No informa" ~ 99,
 
+      # Edad
       variable == "Edad (rango)" &
         categoria == "Entre 15 y 24 años" ~ 1,
-
       variable == "Edad (rango)" &
         categoria == "Entre 25 y 34 años" ~ 2,
-
       variable == "Edad (rango)" &
         categoria == "Entre 35 y 44 años" ~ 3,
-
       variable == "Edad (rango)" &
         categoria == "Entre 45 y 64 años" ~ 4,
-
       variable == "Edad (rango)" &
         categoria == "65 años y más" ~ 5,
-
       variable == "Edad (rango)" &
-        categoria == "No informa" ~ 6,
+        categoria == "No informa" ~ 99,
 
+      # Instrucción formal
       variable == "Instrucción formal" &
         categoria == "Ninguna" ~ 1,
-
       variable == "Instrucción formal" &
         categoria == "Primaria" ~ 2,
-
       variable == "Instrucción formal" &
         categoria == "Secundaria" ~ 3,
-
       variable == "Instrucción formal" &
         categoria == "Superior" ~ 4,
-
       variable == "Instrucción formal" &
         categoria == "Posgrado" ~ 5,
-
       variable == "Instrucción formal" &
-        categoria == "No informa" ~ 6,
-
-      TRUE ~ 99
+        categoria == "No informa" ~ 99
     )
   ) |>
-  dplyr::group_by(
+  dplyr::count(
     variable,
     categoria,
-    orden_categoria
-  ) |>
-  dplyr::summarise(
-    `Número de observaciones` = dplyr::n(),
-    .groups = "drop"
+    orden_categoria,
+    name = "Número de observaciones"
   ) |>
   dplyr::group_by(variable) |>
   dplyr::mutate(
     `Porcentaje (%)` =
-      100 *
-      `Número de observaciones` /
+      100 * `Número de observaciones` /
       sum(`Número de observaciones`)
   ) |>
   dplyr::ungroup() |>
   dplyr::arrange(
     variable,
     orden_categoria
-  ) |>
-  dplyr::select(
-    -orden_categoria
   )
 
+# Tabla final
 tabla_caracteristicas <- resumen_caracteristicas |>
-  dplyr::transmute(
+  dplyr::select(
     Categoría = categoria,
     `Número de observaciones`,
     `Porcentaje (%)`
   )
 
+# Número de filas por bloque
 n_sexo <- sum(
   resumen_caracteristicas$variable == "Sexo"
 )
@@ -377,11 +320,13 @@ n_inst <- sum(
   resumen_caracteristicas$variable == "Instrucción formal"
 )
 
+# Presentación
 tabla_usc(
   tabla_caracteristicas,
   align = c("l", "r", "r"),
   digits = 1,
-  font_size = 9
+  font_size = 9,
+  strict_position = TRUE
 ) |>
   kableExtra::pack_rows(
     "Sexo",
@@ -403,20 +348,20 @@ tabla_usc(
   ) |>
   nota_tabla(
     nota = paste(
-      "La tabla no dispone de factor de expansión,",
-      "ya que corresponde a información obtenida",
-      "mediante estudio de casos según la metodología",
-      "de la ESPAC."
+      "La tabla resume información sociodemográfica de",
+      "30.154 productores identificados en la base CGNAC.",
+      "No utiliza factor de expansión, por corresponder a un",
+      "estudio de casos según la metodología de la ESPAC."
     ),
     fuente = fuente_espac
   )
 ```
 
-### Uso de suelo.
+### Uso de suelo
 
-La @tbl-usos-suelo-sunac2022 se elaboró a partir de la tabla uso de suelo de la ESPAC 2022, empleando las variables de superficie por categoría de uso del suelo definidas en la sintaxis oficial de la encuesta. Para la estimación de las áreas, los registros fueron estandarizados y posteriormente ponderados mediante el factor de expansión aplicado a nivel de Unidad de Producción Agropecuaria (UPA)[^capitulovi-1]. La superficie correspondiente a cada categoría se calculó multiplicando las hectáreas declaradas por su respectivo factor y agregando los resultados según el tipo de uso. 
+La @tbl-usos-suelo-sunac2022 se elaboró a partir de la tabla uso de suelo de la ESPAC 2022, empleando las variables de superficie por categoría de uso del suelo definidas en la sintaxis oficial de la encuesta. Para la estimación de las áreas, los registros fueron estandarizados y posteriormente ponderados mediante el factor de expansión aplicado a nivel de UPA[^capitulovi-1]. La superficie correspondiente a cada categoría se calculó multiplicando las hectáreas declaradas por su respectivo factor y agregando los resultados según el tipo de uso. 
 
-Como resultado de esta agregación estadística, la superficie total expandida se estima en 12.197.499,3 hectáreas a nivel nacional. A partir de este volumen total, la distribución territorial indica que los bosques naturales concentran la mayor extensión dentro del total de hectáreas registradas. En orden descendente, le siguen los pastos cultivados y los cultivos permanentes; en conjunto, estas tres categorías agrupan la principal proporción de la superficie total expandida. Por otro lado, los usos restantes (pastos naturales, otros usos, barbecho, cultivos transitorios, plantaciones forestales, páramos y descanso)[^capitulovi-2] muestran participaciones individuales menores y constituyen una fracción reducida en comparación con los usos predominantes. En particular, los cultivos transitorios ocupan una proporción menor dentro del área total analizada. En términos estructurales, la superficie declarada por las UPA se distribuye fundamentalmente entre la cobertura forestal, las áreas destinadas a pasturas y los cultivos permanentes.
+Como resultado de esta agregación estadística, la superficie total expandida se estima en 12.197.499,3 hectáreas a nivel nacional. A partir de este volumen total, la distribución territorial indica que los montes y bosques concentran la mayor extensión dentro del total de hectáreas registradas. En orden descendente, le siguen los pastos cultivados y los cultivos permanentes; en conjunto, estas tres categorías agrupan la principal proporción de la superficie total expandida. Por otro lado, los usos restantes (pastos naturales, otros usos, barbecho y descanso, cultivos transitorios y páramos)[^capitulovi-2] muestran participaciones individuales menores y constituyen una fracción reducida en comparación con los usos predominantes. En particular, los cultivos transitorios ocupan una proporción menor dentro del área total analizada. En términos estructurales, la superficie declarada por las UPA se distribuye fundamentalmente entre la cobertura forestal, las áreas destinadas a pasturas y los cultivos permanentes.
 
 [^capitulovi-1]: El criterio estadístico WEIGHT BY emplea el factor de expansión (variable fact_exp_fin) para transformar los datos muestrales en estimaciones representativas a escala nacional. Este ponderador indica la cantidad de unidades del universo poblacional que están representadas por cada registro encuestado. Al multiplicar la variable de interés por este factor antes de su agregación, los resultados obtenidos constituyen una aproximación estadística de la estructura agraria del país y no un conteo de la muestra.
 
@@ -519,7 +464,7 @@ tabla_usc(
 
 Para analizar la distribución de la superficie con labor agropecuaria, se procesaron los datos de la ESPAC 2022 aplicando el factor de expansión a las hectáreas declaradas en las cinco categorías principales de uso del suelo. Este procedimiento permitió obtener estimaciones representativas a escala nacional. La superficie total con labor agropecuaria asciende a 5.348.611,2 hectáreas, equivalentes al 43,9 % del área total.
 
-La @fig-superficie-uso-2022 presenta la distribución de este volumen ponderado mediante una composición gráfica dual. La estructura porcentual muestra que los pastos cultivados concentran la mayor proporción del área, seguidos por los cultivos permanentes. Las demás categorías tienen participaciones menores, cuya magnitud y orden se observan en la propia figura. En términos absolutos, el área destinada a pastos cultivados también supera a las demás categorías, mientras que los usos con menor participación registran extensiones más próximas entre sí.
+Para analizar la distribución de la superficie con labor agropecuaria, se procesaron los datos de la ESPAC 2022 aplicando el factor de expansión a las hectáreas declaradas en cinco categorías de uso del suelo: cultivos permanentes, cultivos transitorios, barbecho y descanso, pastos cultivados y pastos naturales. Por tanto, de las categorías presentadas en la @tbl-usos-suelo-sunac2022, se excluyeron montes y bosques, páramos y otros usos, al no formar parte de la superficie considerada con labor agropecuaria en este análisis. La superficie total así estimada asciende a 5.348.611,2 hectáreas, equivalentes al 43,9 % del área total. La @fig-superficie-uso-2022 presenta la distribución de este volumen ponderado mediante una composición gráfica dual en porcentaje y en hectáreas. Los pastos cultivados concentran la mayor proporción del área, seguidos por los cultivos permanentes. Las demás categorías tienen participaciones menores, cuya magnitud y orden se observan en la propia figura. 
 
 ```{r}
 #| label: fig-superficie-uso-2022
@@ -530,7 +475,7 @@ La @fig-superficie-uso-2022 presenta la distribución de este volumen ponderado 
 #|   I("Superficie con labor agropecuaria y superficie por uso agropecuario, 2022. \\newline Fuente: Elaboración propia, a partir de la ESPAC 2022.")
 #| fig-align: center
 #| fig-width: 7.2
-#| fig-height: 4.8
+#| fig-height: 5.2
 
 vars_usos_fig <- c(
   "us_k301ha",
@@ -585,13 +530,15 @@ labor_2022 <- base_fig_usos |>
     dplyr::desc(total_ha_exp)
   ) |>
   dplyr::mutate(
-    porcentaje = 100 * total_ha_exp / sum(total_ha_exp, na.rm = TRUE),
+    porcentaje = 100 * total_ha_exp / sum(total_ha_exp),
     uso = factor(uso, levels = uso),
+
     lab_pct = dplyr::if_else(
       porcentaje >= 4,
       formato_pct(porcentaje),
       ""
     ),
+
     lab_leyenda = paste0(
       as.character(uso),
       " (",
@@ -606,16 +553,29 @@ labor_total_ha_exp <- sum(
 )
 
 colores_usos <- c(
-  "Cultivos permanentes" = unname(paleta_figuras_tesis["principal"]),
-  "Cultivos transitorios" = unname(paleta_figuras_tesis["secundario"]),
-  "Pastos cultivados" = unname(paleta_figuras_tesis["acento"]),
-  "Pastos naturales" = unname(paleta_figuras_tesis["apoyo"]),
-  "Barbecho y descanso" = unname(paleta_figuras_tesis["neutro"])
+  "Cultivos permanentes" = unname(
+    paleta_figuras_tesis["principal"]
+  ),
+  "Cultivos transitorios" = unname(
+    paleta_figuras_tesis["secundario"]
+  ),
+  "Pastos cultivados" = unname(
+    paleta_figuras_tesis["acento"]
+  ),
+  "Pastos naturales" = unname(
+    paleta_figuras_tesis["apoyo"]
+  ),
+  "Barbecho y descanso" = unname(
+    paleta_figuras_tesis["neutro"]
+  )
 )
 
 titulo_pastel <- paste0(
-  "Superficie con labor agropecuaria\n(",
-  formato_num(labor_total_ha_exp, digits = 1),
+  "Distribución porcentual\n(",
+  formato_num(
+    labor_total_ha_exp,
+    digits = 1
+  ),
   " ha)"
 )
 
@@ -634,8 +594,12 @@ g_pie <- ggplot2::ggplot(
   ) +
   ggplot2::coord_polar("y") +
   ggplot2::geom_text(
-    ggplot2::aes(label = lab_pct),
-    position = ggplot2::position_stack(vjust = 0.5),
+    ggplot2::aes(
+      label = lab_pct
+    ),
+    position = ggplot2::position_stack(
+      vjust = 0.5
+    ),
     size = 2.8,
     family = "serif"
   ) +
@@ -643,6 +607,12 @@ g_pie <- ggplot2::ggplot(
     values = colores_usos,
     breaks = labor_2022$uso,
     labels = labor_2022$lab_leyenda
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      ncol = 1,
+      byrow = TRUE
+    )
   ) +
   ggplot2::labs(
     title = titulo_pastel,
@@ -655,11 +625,35 @@ g_pie <- ggplot2::ggplot(
       hjust = 0.5,
       size = 10
     ),
-    legend.position = "bottom",
-    legend.text = ggplot2::element_text(size = 7),
-    legend.key.size = grid::unit(0.35, "cm"),
-    plot.margin = ggplot2::margin(5, 5, 5, 5)
+    legend.position = "right",
+    legend.text = ggplot2::element_text(
+      size = 7
+    ),
+    legend.key.size = grid::unit(
+      0.32,
+      "cm"
+    ),
+    legend.spacing.y = grid::unit(
+      0.08,
+      "cm"
+    ),
+    legend.margin = ggplot2::margin(
+      t = 0,
+      r = 0,
+      b = 0,
+      l = 4
+    ),
+    plot.margin = ggplot2::margin(
+      5,
+      5,
+      5,
+      5
+    )
   )
+
+# ------------------------------------------------------------
+# GRÁFICO DE BARRAS
+# ------------------------------------------------------------
 
 g_bar <- ggplot2::ggplot(
   labor_2022,
@@ -676,21 +670,31 @@ g_bar <- ggplot2::ggplot(
   ) +
   ggplot2::geom_text(
     ggplot2::aes(
-      label = formato_num(total_ha_exp, digits = 1)
+      label = formato_num(
+        total_ha_exp,
+        digits = 1
+      )
     ),
     vjust = -0.45,
     size = 2.7,
     family = "serif"
   ) +
   ggplot2::scale_y_continuous(
-    labels = function(x) formato_num(x, digits = 0),
-    expand = ggplot2::expansion(mult = c(0, 0.15))
+    labels = function(x) {
+      formato_num(
+        x,
+        digits = 0
+      )
+    },
+    expand = ggplot2::expansion(
+      mult = c(0, 0.15)
+    )
   ) +
   ggplot2::scale_fill_manual(
     values = colores_usos
   ) +
   ggplot2::labs(
-    title = "Superficie por uso agropecuario",
+    title = "Hectáreas",
     x = NULL,
     y = "Hectáreas expandidas"
   ) +
@@ -708,12 +712,22 @@ g_bar <- ggplot2::ggplot(
     ),
     legend.position = "none",
     panel.grid.minor = ggplot2::element_blank(),
-    plot.margin = ggplot2::margin(5, 5, 5, 5)
+    plot.margin = ggplot2::margin(
+      5,
+      5,
+      5,
+      5
+    )
   )
+
+# ------------------------------------------------------------
+# COMBINAR LOS DOS GRÁFICOS
+# Se da algo más de espacio al panel izquierdo por la leyenda
+# ------------------------------------------------------------
 
 g_pie + g_bar +
   patchwork::plot_layout(
-    widths = c(1, 1.35)
+    widths = c(1.2, 1.3)
   )
 ```
 
@@ -721,7 +735,7 @@ g_pie + g_bar +
 
 La estructura de los principales usos del suelo agropecuario se analiza a partir del procesamiento de los módulos de cultivos permanentes, cultivos transitorios y pastos cultivados de la ESPAC 2022. La estimación de las superficies se efectuó mediante la expansión de los registros muestrales usando el factor de expansión de la encuesta, con el fin de obtener agregados representativos a escala nacional. Con fines analíticos y expositivos, se aplicó un criterio de cobertura acumulada del 80 %, que consistió en ordenar los cultivos según su superficie expandida y seleccionar aquellos que concentran la mayor parte del total en cada módulo, agrupando las participaciones residuales en una categoría agregada. Este procedimiento permite identificar los rubros estructuralmente dominantes sin perder de vista la diversidad restante de menor peso relativo.
 
-En términos agregados, la superficie expandida correspondiente a los principales usos productivos considerados en esta sección alcanza aproximadamente 5,3 millones de hectáreas a escala nacional. De este total, alrededor de 2,3 millones de hectáreas corresponden a pastos cultivados, mientras que 1,37 millones de hectáreas se destinan a cultivos permanentes y cerca de 0,79 millones de hectáreas se encuentran ocupadas por cultivos transitorios. Estas magnitudes permiten dimensionar la escala relativa de los distintos sistemas productivos y evidencian el peso territorial de las actividades pecuarias dentro de la estructura agropecuaria del país.
+En términos agregados, la superficie expandida correspondiente a los principales usos productivos considerados en esta sección alcanza aproximadamente 5,3 millones de hectáreas a escala nacional. De este total, alrededor de 2,3 millones de hectáreas corresponden a pastos cultivados, mientras que 1,37 millones de hectáreas se destinan a cultivos permanentes y 0,79 millones de hectáreas se encuentran ocupadas por cultivos transitorios. Estas magnitudes permiten dimensionar la escala relativa de los distintos sistemas productivos y evidencian el peso territorial de las actividades pecuarias dentro de la estructura agropecuaria del país.
 
 Más allá de su utilidad descriptiva, esta caracterización resulta relevante para la investigación porque la composición productiva constituye una condición estructural dentro de la cual se configuran los niveles de productividad de la superficie y del trabajo. En efecto, los distintos cultivos difieren en requerimientos de tierra, intensidad laboral, duración del ciclo productivo, incorporación tecnológica y articulación con los mercados. Por ello, el predominio superficial de determinados rubros no implica, por sí mismo, mayores niveles de productividad, pero sí permite reconocer la base agraria sobre la que posteriormente se examina su relación con la tenencia de la tierra.
 
@@ -890,7 +904,28 @@ ct_fin <- top_cobertura_modulo(
   umbral = 0.80,
   etiqueta_otros = "Resto de transitorios"
 ) |>
-  dplyr::mutate(Módulo = "Cultivos transitorios")
+  dplyr::mutate(
+    cultivo = dplyr::if_else(
+      stringr::str_to_upper(cultivo) == "OTROS TRANSITORIOS",
+      "Resto de transitorios",
+      cultivo
+    )
+  ) |>
+  dplyr::group_by(cultivo) |>
+  dplyr::summarise(
+    superficie_ha = sum(superficie_ha, na.rm = TRUE),
+    porcentaje = sum(porcentaje, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    es_resto = cultivo == "Resto de transitorios"
+  ) |>
+  dplyr::arrange(es_resto, dplyr::desc(superficie_ha)) |>
+  dplyr::mutate(
+    porcentaje_acumulado = cumsum(porcentaje),
+    Módulo = "Cultivos transitorios"
+  ) |>
+  dplyr::select(-es_resto)
 
 pc_fin <- top_cobertura_pastos(
   data = pcnac2022,
@@ -898,9 +933,34 @@ pc_fin <- top_cobertura_pastos(
   umbral = 0.80,
   etiqueta_otros = "Resto de pastos cultivados"
 ) |>
-  dplyr::mutate(Módulo = "Pastos cultivados")
+  dplyr::mutate(
+    cultivo = dplyr::if_else(
+      cultivo == "Otros pastos",
+      "Resto de pastos cultivados",
+      cultivo
+    )
+  ) |>
+  dplyr::group_by(cultivo) |>
+  dplyr::summarise(
+    superficie_ha = sum(superficie_ha, na.rm = TRUE),
+    porcentaje = sum(porcentaje, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    es_resto = cultivo == "Resto de pastos cultivados"
+  ) |>
+  dplyr::arrange(es_resto, dplyr::desc(superficie_ha)) |>
+  dplyr::mutate(
+    porcentaje_acumulado = cumsum(porcentaje),
+    Módulo = "Pastos cultivados"
+  ) |>
+  dplyr::select(-es_resto)
 
-tabla_cultivos <- dplyr::bind_rows(cp_fin, ct_fin, pc_fin) |>
+tabla_cultivos <- dplyr::bind_rows(
+  cp_fin,
+  ct_fin,
+  pc_fin
+) |>
   dplyr::mutate(
     Módulo = factor(
       Módulo,
@@ -910,11 +970,11 @@ tabla_cultivos <- dplyr::bind_rows(cp_fin, ct_fin, pc_fin) |>
         "Pastos cultivados"
       )
     ),
+    cultivo = stringr::str_to_sentence(cultivo),
     superficie_ha = round(superficie_ha, 1),
     porcentaje = round(porcentaje, 1),
     porcentaje_acumulado = round(porcentaje_acumulado, 1)
-  ) |>
-  dplyr::arrange(Módulo, dplyr::desc(superficie_ha))
+  )
 
 tabla_cultivos_print <- tabla_cultivos |>
   dplyr::select(
@@ -954,7 +1014,7 @@ tabla_usc(
     bold = FALSE
   ) |>
   nota_tabla(
-    nota = "Se incluyen los cultivos que concentran al menos el 80% de la superficie expandida; el resto se agrupa en una categoría residual.",
+    nota = "Se incluyen los cultivos que concentran la mayor superficie expandida; el resto se agrupa en una categoría residual.",
     fuente = fuente_espac
   )
 ```
@@ -1277,6 +1337,7 @@ ggplot2::ggplot() +
     plot.margin = ggplot2::margin(5, 5, 5, 5)
   )
 ```
+
 A partir del análisis de la distribución territorial de los cultivos permanentes y transitorios, es posible observar que la estructura productiva agrícola del país se organiza a través de sistemas productivos con distintas características en cuanto a ciclos de producción, requerimientos de tierra y organización del trabajo. Mientras algunos cultivos se desarrollan sobre superficies relativamente extensas asociadas a sistemas agrícolas tradicionales, otros se caracterizan por concentrar su producción en áreas más reducidas con mayores niveles de especialización productiva.
 
 En este contexto, resulta pertinente examinar el caso de la producción florícola, cuya estructura productiva presenta características particulares dentro del sector agropecuario. A diferencia de varios cultivos analizados previamente, la floricultura se desarrolla generalmente en superficies más acotadas, pero bajo sistemas de producción que demandan una organización técnica y laboral más intensiva. Por esta razón, el análisis de este subsector permite incorporar una dimensión adicional al estudio de la productividad agrícola, al evidenciar cómo distintos sistemas productivos combinan de manera diferenciada los factores tierra y trabajo.
@@ -1386,6 +1447,7 @@ tabla_flores <- dplyr::bind_rows(
   flores_trans
 ) |>
   dplyr::mutate(
+    flor = stringr::str_to_sentence(flor),
     superficie = round(superficie, 1),
     porcentaje = round(porcentaje, 1)
   )
@@ -1425,15 +1487,14 @@ tabla_usc(
   )
 ```
 
+
 En conjunto, el análisis de los cultivos permanentes, los cultivos transitorios, los pastos cultivados y la producción florícola muestra que la estructura agrícola ecuatoriana se compone de sistemas productivos con distintos requerimientos de superficie, ciclos de producción y organización del trabajo. Asimismo, su distribución territorial presenta configuraciones diferenciadas entre las regiones Costa, Sierra y Amazonía.
 
 ### Caracterización de la actividad pecuaria
 
 En conjunto con la producción agrícola analizada en la sección anterior, la actividad pecuaria constituye otro componente relevante dentro de la estructura productiva de las unidades agropecuarias. Mientras algunos sistemas productivos se orientan principalmente al cultivo de la tierra, otros combinan actividades agrícolas y pecuarias o concentran su producción en la crianza de animales. En este contexto, se estima pertinente examinar la composición de las existencias pecuarias registradas en la ESPAC 2022, con el fin de identificar las principales especies presentes en el sistema productivo agropecuario y su peso relativo dentro del conjunto del hato nacional.
 
-A partir de un total de 5.629.981 cabezas de ganado registradas en la ESPAC 2022, la estructura pecuaria nacional presenta una composición diferenciada entre las especies consideradas. Dentro de este conjunto, el ganado vacuno concentra la mayor parte de las existencias pecuarias registradas en la encuesta 68,6 %. Junto con el ganado porcino y ovino, estas tres especies reúnen la mayor proporción del hato nacional, lo que permite identificar su papel dentro de la configuración general de la actividad pecuaria (@tbl-pecuario-estructura-general).
-
-Las demás especies presentan una participación menor dentro del total. Entre ellas se encuentran el ganado caballar, mular, asnal y caprino, cuya presencia suele vincularse con actividades complementarias dentro de las unidades agropecuarias, como el trabajo agrícola, el transporte rural o sistemas productivos de menor escala.
+A partir de un total de 5.629.981 cabezas de ganado registradas en la ESPAC 2022, la estructura pecuaria nacional presenta una composición diferenciada entre las especies consideradas. Dentro de este conjunto, el ganado vacuno concentra la mayor parte de las existencias pecuarias registradas en la encuesta (68,6 %). Junto con el ganado porcino y ovino, estas tres especies reúnen la mayor proporción del hato nacional, lo que permite identificar su papel dentro de la configuración general de la actividad pecuaria (@tbl-pecuario-estructura-general).
 
 ```{r}
 #| label: tbl-pecuario-estructura-general
@@ -1441,6 +1502,7 @@ Las demás especies presentan una participación menor dentro del total. Entre e
 #| echo: false
 #| message: false
 #| warning: false
+#| tbl-pos: H
 
 tabla_pecuario_general <- tibble::tibble(
   especie = c(
@@ -1503,6 +1565,8 @@ tabla_usc(
     fuente = fuente_espac
   )
 ```
+
+Las demás especies presentan una participación menor dentro del total. Entre ellas se encuentran el ganado caballar, mular, asnal y caprino, cuya presencia suele vincularse con actividades complementarias dentro de las unidades agropecuarias, como el trabajo agrícola, el transporte rural o sistemas productivos de menor escala.
 
 La estructura del hato bovino nacional asciende a 3.860.493 cabezas. Dentro de este total predominan las hembras, especialmente las vacas, lo que confirma el peso de las unidades orientadas a reproducción, leche y doble propósito. En contraste, los machos presentan una participación menor, mientras que las categorías jóvenes muestran la continuidad del proceso de reposición del hato (@tbl-estructura-hato-bovino).
 
@@ -1751,7 +1815,7 @@ tabla_usc(
   )
 ```
 
-La producción lechera bovina se sustenta en 815.065 vacas ordeñadas, que en conjunto generan 5.502.787 litros diarios. A partir de estas cifras, el rendimiento promedio nacional se ubica en 6,75 litros por vaca por día. Estos indicadores permiten caracterizar el nivel de producción lechera dentro del sistema bovino y constituyen una referencia inicial para el análisis posterior de productividad en las unidades agropecuarias @tbl-produccion-lechera-bovina.
+La producción lechera bovina se sustenta en 815.065 vacas ordeñadas, que en conjunto generan 5.502.787 litros diarios. A partir de estas cifras, el rendimiento promedio nacional se ubica en 6,75 litros por vaca por día. Estos indicadores permiten caracterizar el nivel de producción lechera dentro del sistema bovino y constituyen una referencia inicial para el análisis posterior de productividad en las unidades agropecuarias (@tbl-produccion-lechera-bovina).
 
 ```{r}
 #| label: tbl-produccion-lechera-bovina
@@ -2059,13 +2123,13 @@ tabla_usc(
 
 La estructura productiva descrita en las secciones anteriores se desarrolla dentro de un marco institucional definido por las formas de acceso y control de la tierra. En el caso del sector agropecuario ecuatoriano, estas formas se expresan en distintos regímenes de tenencia que condicionan la organización de las unidades productivas y el uso de la superficie agrícola.
 
-Para efectos del análisis, las modalidades de tenencia registradas en la encuesta se agrupan en tres categorías analíticas: dueño, arrendamiento y tenencias especiales. Esta reclasificación permite simplificar la estructura institucional del acceso a la tierra y facilita su análisis en relación con el tamaño de los predios y las características productivas de las unidades agropecuarias.
+Para efectos del análisis, las modalidades de tenencia registradas en la encuesta se agrupan en tres categorías analíticas: tenencia directa, arrendamiento y aparcería y otros regímenes de tenencia. Esta reclasificación permite simplificar la estructura institucional del acceso a la tierra y facilita su análisis en relación con el tamaño de los predios y las características productivas de las unidades agropecuarias.
 
 Los resultados presentados en la @tbl-tenencia-superficie se elaboraron a partir del régimen predominante de tenencia dentro de cada UPA, definido según la mayor superficie acumulada de terrenos en la unidad. La superficie total se obtuvo sumando la variable supertotal y las estimaciones se expandieron mediante el factor de expansión de la ESPAC 2022. Con esta base se calcularon la media y la mediana del tamaño de las unidades productivas según tres grandes grupos de tenencia.
 
-Los resultados muestran que el régimen de propiedad concentra el 93,0 % de las unidades productivas agropecuarias del país. En este grupo, la superficie media alcanza 4,69 hectáreas, mientras que la mediana se sitúa en 0,89 hectáreas. El arrendamiento representa el 4,9 % de las unidades, con una superficie media de 3,54 hectáreas y una mediana de 1,09 hectáreas. Por su parte, las formas de tenencia agrupadas como especiales corresponden al 2,1 % de las UPA y presentan una superficie media de 15,49 hectáreas, mientras que la mediana alcanza 1,14 hectáreas.
+Los resultados muestran que la tenencia directa concentra el 93,0 % de las unidades productivas agropecuarias del país. En este grupo, la superficie media alcanza 4,69 hectáreas, mientras que la mediana se sitúa en 0,89 hectáreas. El arrendamiento y aparcería representa el 4,9 % de las unidades, con una superficie media de 3,54 hectáreas y una mediana de 1,09 hectáreas. Por su parte, los otros regímenes de tenencia corresponden al 2,1 % de las UPA y presentan una superficie media de 15,49 hectáreas, mientras que la mediana alcanza 1,14 hectáreas.
 
-La incorporación del percentil 90 permite identificar con mayor claridad la asimetría en la distribución de la tierra. En las UPA bajo propiedad y arrendamiento, el 90 % de las unidades poseen menos de 9 y 7,95 hectáreas, respectivamente, mientras que las formas especiales alcanzan un percentil 90 de 34,61 hectáreas. La diferencia entre la media, la mediana y el percentil 90 sugiere una estructura agraria caracterizada por el predominio de pequeñas explotaciones y una concentración relativa de superficie en un grupo reducido de unidades de mayor tamaño.
+La incorporación del percentil 90 permite identificar con mayor claridad la asimetría en la distribución de la tierra. En las UPA bajo tenencia directa y arrendamiento o aparcería, el 90 % de las unidades poseen menos de 9 y 7,95 hectáreas, respectivamente, mientras que los otros regímenes de tenencia alcanzan un percentil 90 de 34,61 hectáreas. La diferencia entre la media, la mediana y el percentil 90 sugiere una estructura agraria caracterizada por el predominio de pequeñas explotaciones y una concentración relativa de superficie en un grupo reducido de unidades de mayor tamaño.
 
 ```{r}
 #| label: tbl-tenencia-superficie
@@ -2187,7 +2251,8 @@ upa_tenencia_final <- upa_total |>
   dplyr::mutate(
     clase_mayoria = factor(
       clase_mayoria,
-      levels = c("Dueño", "Arrendatario", "Especiales")
+      levels = c("Dueño", "Arrendatario", "Especiales"),
+      labels = c("Tenencia directa", "arrendamiento y aparcería", "Otros regímenes de tenencia")
     )
   )
 
@@ -2226,14 +2291,14 @@ tabla_usc(
 
 Si bien la distribución del tamaño de los predios permite identificar diferencias entre los regímenes de tenencia, la estructura agraria también puede analizarse a partir de la forma en que estas modalidades se combinan dentro de las unidades agropecuarias. Con este propósito, se presenta a continuación una representación gráfica que permite visualizar la composición relativa de las distintas formas de acceso a la tierra.
 
-La figura @fig-ternario-tenencia muestra la composición de la tenencia dentro de las unidades agropecuarias. Cada punto representa una UPA y su posición depende de la proporción de su superficie bajo propiedad, arrendamiento y tenencias especiales. Los vértices corresponden a unidades con una sola modalidad, los lados representan combinaciones de dos grupos y el interior indica la coexistencia de los tres grupos de tenencia.
+La @fig-ternario-tenencia muestra la composición de la tenencia dentro de las unidades agropecuarias. Cada punto representa una UPA y su posición depende de la proporción de su superficie bajo tenencia directa, arrendamiento-aparcería y otros regímenes de tenencia. Los vértices corresponden a unidades con una sola modalidad, los lados representan combinaciones de dos grupos y el interior indica la coexistencia de los tres grupos de tenencia.
 
-La distribución de los puntos evidencia una concentración hacia el vértice correspondiente a la propiedad. No obstante, también se observan UPA sobre los lados y en el interior del triángulo, lo que refleja combinaciones de modalidades de acceso a la tierra dentro de una misma unidad productiva.
+La distribución de los puntos evidencia una concentración hacia el vértice correspondiente a la tenencia directa. No obstante, también se observan UPA sobre los lados y en el interior del triángulo, lo que refleja combinaciones de modalidades de acceso a la tierra dentro de una misma unidad productiva.
 
 
 ```{r}
 #| label: fig-ternario-tenencia
-#| fig-cap: "Composición de la tenencia de la tierra en las unidades agropecuarias según proporción de superficie bajo propiedad, arrendamiento y tenencias especiales, ESPAC 2022."
+#| fig-cap: "Composición de la tenencia de la tierra en las unidades agropecuarias según proporción de superficie bajo tenencia directa, arrendamiento y aparcería y otros regímenes de tenencia, ESPAC 2022."
 #| fig-align: center
 #| fig-width: 6.4
 #| fig-height: 5.0
@@ -2315,9 +2380,9 @@ vertices <- tibble::tibble(
     sqrt(3) / 2
   ),
   etiqueta = c(
-    "100% Propiedad",
+    "100% Tenencia directa",
     "100% Arrendamiento",
-    "100% Especiales"
+    "100% Otros regímenes de tenencia"
   )
 )
 
@@ -2440,15 +2505,15 @@ ggplot2::ggplot() +
 ```
 
 
-Los resultados muestran que la estructura de la tenencia de la tierra se caracteriza por una clara predominancia de la propiedad, acompañada de diferentes configuraciones en la combinación de modalidades de acceso dentro de las unidades agropecuarias. Estas características institucionales constituyen un elemento relevante para el análisis de la organización productiva del sector agropecuario, en la medida en que las formas de acceso y control de la tierra pueden asociarse con distintas escalas de operación y condiciones de uso de los recursos productivos.
+Los resultados muestran que la estructura de la tenencia de la tierra se caracteriza por una clara predominancia de la tenencia directa, acompañada de diferentes configuraciones en la combinación de modalidades de acceso dentro de las unidades agropecuarias. Estas características institucionales constituyen un elemento relevante para el análisis de la organización productiva del sector agropecuario, en la medida en que las formas de acceso y control de la tierra pueden asociarse con distintas escalas de operación y condiciones de uso de los recursos productivos.
 
-A partir de esta configuración institucional general, resulta pertinente examinar si las distintas modalidades de acceso a la tierra se distribuyen de manera similar entre los diferentes sistemas productivos del sector agropecuario. En particular, es relevante identificar si determinados sectores productivos presentan una mayor presencia relativa de modalidades como el arrendamiento o las tenencias especiales, lo cual podría reflejar estrategias productivas diferenciadas en el uso de la tierra.
+A partir de esta configuración institucional general, resulta pertinente examinar si las distintas modalidades de acceso a la tierra se distribuyen de manera similar entre los diferentes sistemas productivos del sector agropecuario. En particular, es relevante identificar si determinados sectores productivos presentan una mayor presencia relativa de modalidades como el arrendamiento-aparcería u otros regímenes de tenencia, lo cual podría reflejar estrategias productivas diferenciadas en el uso de la tierra.
 
-La @tbl-tenencia-sector presenta la distribución promedio del área de las unidades de producción agropecuaria (UPA) según los principales regímenes de tenencia de la tierra y el sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante en cada UPA a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estas actividades se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros) y se calculó la proporción promedio del área del predio bajo cada régimen de tenencia (propiedad, arrendamiento y tenencias especiales) para cada grupo de UPA.
+La @tbl-tenencia-sector presenta la distribución promedio del área de las UPA según los principales regímenes de tenencia de la tierra y el sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante en cada UPA a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estas actividades se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros); la categoría otros comprende la cría de asnos, caballos, mulas y cabras. Finalmente, se calculó la proporción promedio del área del predio bajo cada régimen de tenencia (tenencia directa, arrendamiento-aparcería y otros regímenes de tenencia) para cada grupo de UPA.
 
-En términos de grandes magnitudes, los resultados muestran que la tierra propia constituye la forma predominante de acceso en los cuatro sectores, con participaciones comprendidas entre el 78,6 % en agricultura y el 88,4 % en el sector forestal. Las unidades con orientación agrícola presentan la mayor proporción promedio de área arrendada (7,3 %), seguidas por las pecuarias (4,3 %), otros sectores (4,2 %) y el sector forestal (1,1 %). Las tenencias especiales representan entre el 10,5 % del área en el sector forestal y el 14,1 % en agricultura.
+En términos de grandes magnitudes, los resultados muestran que las tierras en propiedad constituyen la forma predominante de acceso en los cuatro sectores, con participaciones comprendidas entre el 78,6 % en agricultura y el 88,4 % en el sector forestal. Las unidades con orientación agrícola presentan la mayor proporción promedio de área bajo arrendamiento y aparcería (7,3 %), seguidas por las pecuarias (4,3 %), otros sectores (4,2 %) y el sector forestal (1,1 %). Los otros regímenes de tenencia representan entre el 10,5 % del área en el sector forestal y el 14,1 % en agricultura.
 
-Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
+Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento y aparcería en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
 
 ```{r}
 #| label: tbl-tenencia-sector
@@ -2494,18 +2559,18 @@ tabla_tenencia_sector <- base |>
   ) |>
   dplyr::group_by(sector_prod) |>
   dplyr::summarise(
-    `Área propia (%)` = 100 * w_mean(dueno, peso),
-    `Área en arrendamiento (%)` = 100 * w_mean(arrendamiento_area, peso),
-    `Tenencias especiales (%)` = 100 * w_mean(especiales_area, peso),
+    `Tierras en propiedad (%)` = 100 * w_mean(dueno, peso),
+    `arrendamiento y aparcería (%)` = 100 * w_mean(arrendamiento_area, peso),
+    `Otros regímenes de tenencia (%)` = 100 * w_mean(especiales_area, peso),
     .groups = "drop"
   ) |>
   dplyr::mutate(
-    `Área propia (%)` = round(`Área propia (%)`, 1),
-    `Área en arrendamiento (%)` = round(`Área en arrendamiento (%)`, 1),
-    `Tenencias especiales (%)` = round(`Tenencias especiales (%)`, 1)
+    `Tierras en propiedad (%)` = round(`Tierras en propiedad (%)`, 1),
+    `arrendamiento y aparcería (%)` = round(`arrendamiento y aparcería (%)`, 1),
+    `Otros regímenes de tenencia (%)` = round(`Otros regímenes de tenencia (%)`, 1)
   ) |>
   dplyr::arrange(
-    dplyr::desc(`Área propia (%)`)
+    dplyr::desc(`Tierras en propiedad (%)`)
   ) |>
   dplyr::rename(
     `Sector productivo` = sector_prod
@@ -2531,9 +2596,9 @@ Una vez caracterizada la estructura productiva del sector agropecuario y las mod
 
 Con el fin de identificar si el desempeño productivo varía según la especialización económica de las unidades agropecuarias, se presenta a continuación una síntesis de la productividad de la tierra y del trabajo según el sector productivo dominante. Este análisis permite complementar la descripción general del sector agropecuario con una aproximación más directa a la heterogeneidad productiva observada entre distintos tipos de unidades.
 
-La @tbl-productividad-sector presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el sector productivo dominante de las UPA. Para su construcción se identificó, en primer lugar, la actividad productiva predominante en cada unidad a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estos rubros se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros) y se calcularon las medianas de productividad de cada grupo. El uso de la mediana permite representar los valores típicos de los sistemas productivos y reducir la influencia de valores extremos.
+La @tbl-productividad-sector presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el sector productivo dominante de las UPA. Para su construcción se identificó, en primer lugar, la actividad productiva predominante en cada unidad a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estos rubros se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros) y se calcularon las medianas de productividad de cada grupo. El cálculo se restringió a 28.580 UPA con ambas productividades finitas y estrictamente positivas y con un factor de expansión finito y positivo; por construcción, estos criterios requieren producción valorizada, superficie declarada y número de personas ocupadas estrictamente positivos. El uso de la mediana permite representar los valores típicos de los sistemas productivos y reducir la influencia de valores extremos.
 
-Los resultados muestran que las unidades de orientación pecuaria registran la mayor mediana de productividad de la tierra, con 2.051,7 unidades monetarias por hectárea, y también la mayor mediana de productividad del trabajo, con 4.106,3 unidades monetarias por trabajador. Las unidades agrícolas alcanzan medianas de 1.624,8 por hectárea y 2.151,3 por trabajador. Las actividades clasificadas como otros presentan 1.099,5 y 3.242,2, respectivamente, mientras que las unidades forestales registran las menores medianas: 560,1 por hectárea y 566,8 por trabajador.
+Los resultados muestran que las unidades de orientación pecuaria registran la mayor mediana de productividad de la tierra, con 2.051,7 USD/ha, y también la mayor mediana de productividad del trabajo, con 4.106,3 USD por persona ocupada. Las unidades agrícolas alcanzan medianas de 1.624,8 USD/ha y 2.151,3 USD por persona ocupada. Las actividades clasificadas como otros presentan 1.099,5 USD/ha y 3.242,2 USD por persona ocupada, respectivamente, mientras que las unidades forestales registran las menores medianas: 560,1 USD/ha y 566,8 USD por persona ocupada.
 
 En términos analíticos, estos resultados evidencian que la productividad agropecuaria no se distribuye de manera homogénea entre los distintos sistemas productivos del país, sino que refleja diferencias estructurales asociadas al tipo de actividad predominante en las unidades productivas y a los niveles de intensificación en el uso de los factores de producción.
 
@@ -2578,17 +2643,17 @@ tabla_prod_sector <- base |>
   ) |>
   dplyr::group_by(sector_prod) |>
   dplyr::summarise(
-    `Mediana productividad de la tierra` = stats::median(prod_sup, na.rm = TRUE),
-    `Mediana productividad del trabajo` = stats::median(prod_trab, na.rm = TRUE),
+    `Mediana productividad de la tierra (USD/ha)` = stats::median(prod_sup, na.rm = TRUE),
+    `Mediana productividad del trabajo (USD/persona ocupada)` = stats::median(prod_trab, na.rm = TRUE),
     `Número de observaciones` = dplyr::n(),
     .groups = "drop"
   ) |>
   dplyr::arrange(
-    dplyr::desc(`Mediana productividad de la tierra`)
+    dplyr::desc(`Mediana productividad de la tierra (USD/ha)`)
   ) |>
   dplyr::mutate(
-    `Mediana productividad de la tierra` = round(`Mediana productividad de la tierra`, 2),
-    `Mediana productividad del trabajo` = round(`Mediana productividad del trabajo`, 2)
+    `Mediana productividad de la tierra (USD/ha)` = round(`Mediana productividad de la tierra (USD/ha)`, 2),
+    `Mediana productividad del trabajo (USD/persona ocupada)` = round(`Mediana productividad del trabajo (USD/persona ocupada)`, 2)
   ) |>
   dplyr::rename(
     `Sector productivo` = sector_prod
@@ -2608,11 +2673,11 @@ tabla_usc(
 
 Si bien las diferencias por sector productivo permiten identificar contrastes relevantes en la especialización económica de las unidades agropecuarias, el análisis puede profundizarse incorporando la dimensión institucional del acceso a la tierra. En este sentido, resulta pertinente examinar si los niveles típicos de productividad también difieren según el régimen predominante de tenencia, dado que las modalidades de acceso y control del suelo pueden condicionar la intensidad productiva, la escala de operación y las decisiones de uso de los factores.
 
-La @tbl-productividad-tenencia presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el régimen predominante de tenencia de las unidades de producción agropecuaria (UPA). Para su construcción se identificó el régimen de tenencia dominante en cada unidad a partir de la mayor proporción del área del predio bajo cada modalidad (propiedad, arrendamiento o tenencias especiales). Posteriormente, se calcularon las medianas de productividad de cada grupo para representar sus valores típicos y reducir la influencia de valores extremos.
+La @tbl-productividad-tenencia presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el régimen predominante de tenencia de las UPA. Para su construcción se identificó el régimen de tenencia dominante en cada unidad a partir de la mayor proporción del área del predio bajo cada modalidad (tenencia directa, arrendamiento y aparcería u otros regímenes de tenencia). Se utilizó la misma muestra de 28.580 UPA de la @tbl-productividad-sector, restringida a observaciones con ambas productividades finitas y estrictamente positivas y con un factor de expansión finito y positivo; por construcción, estos criterios requieren producción valorizada, superficie declarada y número de personas ocupadas estrictamente positivos. Posteriormente, se calcularon las medianas de productividad de cada grupo para representar sus valores típicos y reducir la influencia de valores extremos.
 
-Los resultados muestran que las unidades en las que predomina el arrendamiento registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra de 2.486 unidades monetarias por hectárea y una mediana de productividad del trabajo de 4.075 unidades monetarias por trabajador. Las unidades donde predomina la propiedad presentan medianas de 1.790 y 3.275, respectivamente. Las unidades bajo tenencias especiales registran las menores medianas de productividad de la tierra (1.503) y del trabajo (2.140).
+Los resultados muestran que las unidades en las que predomina el arrendamiento y aparcería registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra de 2.486 USD/ha y una mediana de productividad del trabajo de 4.075 USD por persona ocupada. Las unidades donde predomina la tenencia directa presentan medianas de 1.790 USD/ha y 3.275 USD por persona ocupada, respectivamente. Las unidades bajo otros regímenes de tenencia registran las menores medianas de productividad de la tierra (1.503 USD/ha) y del trabajo (2.140 USD por persona ocupada).
 
-En términos analíticos, estos resultados sugieren que las distintas formas de acceso a la tierra se asocian con diferencias en los niveles de productividad observados en las unidades agropecuarias. En particular, la mayor productividad mediana observada en los predios bajo arrendamiento podría estar relacionada con estrategias productivas más intensivas o con un uso más eficiente de los factores productivos en contextos donde el acceso a la tierra se realiza a través de mecanismos de mercado.
+En términos analíticos, estos resultados sugieren que las distintas formas de acceso a la tierra se asocian con diferencias en los niveles de productividad observados en las unidades agropecuarias. En particular, la mayor productividad mediana observada en los predios bajo arrendamiento y aparcería podría estar relacionada con estrategias productivas más intensivas o con un uso más eficiente de los factores productivos en contextos donde el acceso a la tierra se realiza a través de mecanismos de mercado.
 
 ```{r}
 #| label: tbl-productividad-tenencia
@@ -2624,14 +2689,14 @@ En términos analíticos, estos resultados sugieren que las distintas formas de 
 tabla_prod_tenencia <- base |>
   dplyr::mutate(
     tenencia_dom = dplyr::case_when(
-      clase.mayoria == "dueño" ~ "Propiedad",
-      clase.mayoria == "arrendamiento" ~ "Arrendamiento",
-      clase.mayoria == "especiales" ~ "Tenencias especiales",
+      clase.mayoria == "dueño" ~ "Tenencia directa",
+      clase.mayoria == "arrendamiento" ~ "arrendamiento y aparcería",
+      clase.mayoria == "especiales" ~ "Otros regímenes de tenencia",
       TRUE ~ NA_character_
     ),
     tenencia_dom = factor(
       tenencia_dom,
-      levels = c("Propiedad", "Arrendamiento", "Tenencias especiales")
+      levels = c("Tenencia directa", "arrendamiento y aparcería", "Otros regímenes de tenencia")
     ),
     prod_sup = to_num(productividad_superficie),
     prod_trab = to_num(productividad_trabajo),
@@ -2648,17 +2713,17 @@ tabla_prod_tenencia <- base |>
   ) |>
   dplyr::group_by(tenencia_dom) |>
   dplyr::summarise(
-    `Mediana prod. tierra` = stats::median(prod_sup, na.rm = TRUE),
-    `Mediana prod. trabajo` = stats::median(prod_trab, na.rm = TRUE),
+    `Mediana prod. tierra (USD/ha)` = stats::median(prod_sup, na.rm = TRUE),
+    `Mediana prod. trabajo (USD/persona ocupada)` = stats::median(prod_trab, na.rm = TRUE),
     `N.º observaciones` = dplyr::n(),
     .groups = "drop"
   ) |>
   dplyr::mutate(
-    `Mediana prod. tierra` = round(`Mediana prod. tierra`, 2),
-    `Mediana prod. trabajo` = round(`Mediana prod. trabajo`, 2)
+    `Mediana prod. tierra (USD/ha)` = round(`Mediana prod. tierra (USD/ha)`, 2),
+    `Mediana prod. trabajo (USD/persona ocupada)` = round(`Mediana prod. trabajo (USD/persona ocupada)`, 2)
   ) |>
   dplyr::arrange(
-    dplyr::desc(`Mediana prod. tierra`)
+    dplyr::desc(`Mediana prod. tierra (USD/ha)`)
   ) |>
   dplyr::rename(
     `Régimen de tenencia` = tenencia_dom
@@ -2680,7 +2745,7 @@ Una vez identificadas las diferencias de productividad según sector productivo 
 
 En primer lugar, se analiza la distribución de la productividad de la tierra. Este indicador permite identificar el grado de heterogeneidad existente en el rendimiento económico asociado al uso de la superficie agrícola, así como reconocer la presencia de unidades productivas con niveles significativamente distintos de eficiencia en el uso del recurso tierra. 
 
-La figura @fig-distribucion-productividad-tierra muestra la distribución de la productividad de la tierra en las unidades agropecuarias. La representación en escala logarítmica permite observar con mayor claridad la forma de la distribución, evitando que los valores más elevados dominen la representación gráfica y oculten el comportamiento de la mayor parte de las unidades productivas.
+La @fig-distribucion-productividad-tierra muestra la distribución de la productividad de la tierra en las unidades agropecuarias. La representación en escala logarítmica permite observar con mayor claridad la forma de la distribución, evitando que los valores más elevados dominen la representación gráfica y oculten el comportamiento de la mayor parte de las unidades productivas.
 
 Los resultados evidencian una distribución altamente heterogénea de la productividad de la tierra. La mayor concentración de unidades agropecuarias se ubica en niveles intermedios de productividad, mientras que hacia los extremos de la distribución se observa un número considerablemente menor de unidades con niveles muy bajos o muy elevados de rendimiento económico por hectárea. Este patrón sugiere la coexistencia de distintos modelos productivos dentro del sector agropecuario ecuatoriano, donde una amplia proporción de unidades opera con niveles moderados de productividad, mientras que un conjunto más reducido alcanza niveles significativamente superiores, probablemente asociados a sistemas productivos más intensivos o especializados.
 
@@ -2688,7 +2753,7 @@ Por ende, la distribución observada pone de manifiesto la marcada heterogeneida
 
 ```{r}
 #| label: fig-distribucion-productividad-tierra
-#| fig-cap: "Distribución de la productividad de la tierra en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución de la productividad de la tierra en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Distribución de la productividad de la tierra"
 #| fig-align: center
 #| fig-width: 7.2
@@ -2759,7 +2824,7 @@ ggplot2::ggplot(
 
 El análisis de la productividad de la tierra permite identificar importantes diferencias en el rendimiento económico asociado al uso de la superficie agrícola. No obstante, el desempeño productivo de las unidades agropecuarias también depende de la forma en que se utiliza el trabajo dentro de los sistemas productivos. En este sentido, resulta pertinente examinar la distribución de la productividad del trabajo, entendida como la producción generada por unidad de mano de obra empleada, con el fin de complementar el análisis del desempeño productivo de las unidades agropecuarias.
 
-La figura @fig-distribucion-productividad-trabajo presenta la distribución de la productividad del trabajo en las unidades agropecuarias. Al igual que en el caso de la productividad de la tierra, la representación se realiza en escala logarítmica con el fin de facilitar la visualización de una variable que presenta una elevada dispersión y la presencia de valores extremos.
+La @fig-distribucion-productividad-trabajo presenta la distribución de la productividad del trabajo en las unidades agropecuarias. Al igual que en el caso de la productividad de la tierra, la representación se realiza en escala logarítmica con el fin de facilitar la visualización de una variable que presenta una elevada dispersión y la presencia de valores extremos.
 
 La distribución muestra una concentración importante de unidades agropecuarias en niveles intermedios de productividad laboral, mientras que hacia los extremos de la distribución se observa un número menor de unidades con valores muy bajos o muy elevados de producción por trabajador. Este patrón refleja la existencia de diferencias en el rendimiento económico asociado al uso del trabajo entre las unidades productivas.
 
@@ -2767,7 +2832,7 @@ En conjunto, la forma de la distribución pone de manifiesto la heterogeneidad e
 
 ```{r}
 #| label: fig-distribucion-productividad-trabajo
-#| fig-cap: "Distribución de la productividad del trabajo en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución de la productividad del trabajo en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Distribución de la productividad del trabajo"
 #| fig-align: center
 #| fig-width: 7.2
@@ -2840,7 +2905,7 @@ Una vez examinadas por separado las distribuciones de la productividad de la tie
 
 La @fig-relacion-productividades presenta la relación entre la productividad de la tierra y la productividad del trabajo en las unidades agropecuarias. La representación se realiza en escala logarítmica en ambos ejes con el fin de facilitar la visualización de variables que presentan una elevada dispersión y valores extremos.
 
-La nube de puntos muestra una asociación positiva entre ambos indicadores de productividad. En términos generales, las unidades agropecuarias que registran mayores niveles de productividad por superficie tienden también a presentar mayores niveles de productividad del trabajo. La línea de ajuste local (LOESS), junto con su intervalo de confianza al 95 %, permite visualizar esta tendencia general dentro de la distribución de los datos.
+La nube de puntos muestra una asociación positiva entre ambos indicadores de productividad. En términos generales, las unidades agropecuarias que registran mayores niveles de productividad por superficie tienden también a presentar mayores niveles de productividad del trabajo. La línea de suavización local mediante regresión (LOESS), junto con su intervalo de confianza al 95 %, permite visualizar esta tendencia general dentro de la distribución de los datos.
 
 Al mismo tiempo, la dispersión observada alrededor de la línea de tendencia indica la existencia de diferencias en la forma en que los factores productivos se combinan dentro de las unidades agropecuarias. De este modo, unidades productivas con niveles similares de productividad de la tierra pueden registrar distintos niveles de productividad del trabajo, lo que refleja la diversidad de configuraciones productivas presentes en el sector agropecuario.
 
@@ -2848,7 +2913,7 @@ El patrón observado permite identificar la relación existente entre ambos fact
 
 ```{r}
 #| label: fig-relacion-productividades
-#| fig-cap: "Relación entre la productividad de la tierra y la productividad del trabajo en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Relación entre la productividad de la tierra y la productividad del trabajo en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Relación entre productividades"
 #| fig-align: center
 #| fig-width: 7.2
@@ -2912,11 +2977,11 @@ ggplot2::ggplot(
 
 Una vez examinada la relación entre la productividad de la tierra y la productividad del trabajo, se estima adecuado analizar cómo estos niveles de desempeño productivo se distribuyen entre los distintos regímenes de tenencia de la tierra presentes en las unidades agropecuarias.
 
-La @fig-prod-tierra-tenencia muestra que la productividad de la tierra presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares entre categorías, aunque el arrendamiento registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en rangos intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos evidencian una elevada heterogeneidad dentro de cada régimen. En particular, las tenencias especiales presentan una mayor dispersión hacia niveles bajos de productividad. En conjunto, los resultados sugieren que la variabilidad intragrupo es superior a las diferencias observadas entre los distintos regímenes de tenencia.
+La @fig-prod-tierra-tenencia muestra que la productividad de la tierra presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares entre categorías, aunque el arrendamiento y aparcería registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en rangos intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos evidencian una elevada heterogeneidad dentro de cada régimen. En particular, los otros regímenes de tenencia presentan una mayor dispersión hacia niveles bajos de productividad. En conjunto, los resultados sugieren que la variabilidad intragrupo es superior a las diferencias observadas entre los distintos regímenes de tenencia.
 
 ```{r}
 #| label: fig-prod-tierra-tenencia
-#| fig-cap: "Distribución de la productividad de la tierra según régimen predominante de tenencia de la tierra en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución de la productividad de la tierra según régimen predominante de tenencia de la tierra en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Productividad de la tierra según tenencia"
 #| fig-align: center
 #| fig-width: 7.2
@@ -2935,9 +3000,9 @@ datos_prod_tierra_tenencia <- base |>
         "especiales"
       ),
       labels = c(
-        "Propiedad",
-        "Arrendamiento",
-        "Tenencias especiales"
+        "Tenencia directa",
+        "arrendamiento y aparcería",
+        "Otros regímenes de tenencia"
       )
     ),
     prod_sup = to_num(productividad_superficie)
@@ -3004,11 +3069,11 @@ ggplot2::ggplot(
   )
 ```
 
-Complementariamente, resulta pertinente analizar si este patrón también se observa en la productividad del trabajo según el régimen predominante de tenencia de la tierra. La @fig-prod-trabajo-tenencia muestra que la productividad del trabajo presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares, aunque el arrendamiento registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en niveles intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos reflejan una elevada heterogeneidad dentro de cada régimen. Las tenencias especiales exhiben una mayor dispersión y una distribución más extendida hacia niveles altos de productividad. En conjunto, los resultados indican que la variabilidad intragrupo supera las diferencias observadas entre los distintos regímenes de tenencia. 
+Complementariamente, resulta pertinente analizar si este patrón también se observa en la productividad del trabajo según el régimen predominante de tenencia de la tierra. La @fig-prod-trabajo-tenencia muestra que la productividad del trabajo presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares, aunque el arrendamiento y aparcería registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en niveles intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos reflejan una elevada heterogeneidad dentro de cada régimen. Los otros regímenes de tenencia exhiben una mayor dispersión y una distribución más extendida hacia niveles altos de productividad. En conjunto, los resultados indican que la variabilidad intragrupo supera las diferencias observadas entre los distintos regímenes de tenencia. 
 
 ```{r}
 #| label: fig-prod-trabajo-tenencia
-#| fig-cap: "Distribución de la productividad del trabajo según régimen predominante de tenencia de la tierra en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución de la productividad del trabajo según régimen predominante de tenencia de la tierra en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Productividad del trabajo según tenencia"
 #| fig-align: center
 #| fig-width: 7.2
@@ -3027,9 +3092,9 @@ datos_prod_trabajo_tenencia <- base |>
         "especiales"
       ),
       labels = c(
-        "Propiedad",
-        "Arrendamiento",
-        "Tenencias especiales"
+        "Tenencia directa",
+        "arrendamiento y aparcería",
+        "Otros regímenes de tenencia"
       )
     ),
     prod_trab = to_num(productividad_trabajo)
@@ -3126,7 +3191,7 @@ base <- base |>
 
 ```{r}
 #| label: fig-distribucion-indice-productividad
-#| fig-cap: "Distribución del índice combinado de productividad en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución del índice combinado de productividad en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Distribución del índice combinado de productividad"
 #| fig-align: center
 #| fig-width: 7.2
@@ -3198,11 +3263,11 @@ ggplot2::ggplot(
 
 Una vez examinada la distribución del índice combinado de productividad, es relevante evaluar cómo este indicador se distribuye entre los distintos regímenes de tenencia de la tierra presentes en las unidades agropecuarias.
 
-La figura @fig-indice-productividad-tenencia evidencia que el índice combinado de productividad presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia, lo que sugiere un desempeño agregado similar entre categorías. Los niveles centrales muestran diferencias moderadas, observándose una mediana ligeramente superior en las unidades bajo arrendamiento, mientras que propiedad exhibe valores cercanos y las tenencias especiales presentan una mediana levemente inferior. Asimismo, la mayor concentración de observaciones se localiza en rangos intermedios del índice, aunque las distribuciones muestran colas extendidas y una marcada presencia de valores extremos, reflejando una elevada heterogeneidad interna. En particular, las tenencias especiales registran la mayor dispersión, con una distribución más amplia hacia valores bajos y altos de productividad. En conjunto, la evidencia sugiere que las diferencias en el índice combinado entre regímenes de tenencia son reducidas en comparación con la variabilidad existente dentro de cada grupo, lo que indica que otros factores estructurales y productivos podrían desempeñar un papel más relevante en la explicación del desempeño agregado de las unidades agropecuarias.
+La @fig-indice-productividad-tenencia evidencia que el índice combinado de productividad presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia, lo que sugiere un desempeño agregado similar entre categorías. Los niveles centrales muestran diferencias moderadas, observándose una mediana ligeramente superior en las unidades bajo arrendamiento y aparcería, mientras que la tenencia directa exhibe valores cercanos y los otros regímenes de tenencia presentan una mediana levemente inferior. Asimismo, la mayor concentración de observaciones se localiza en rangos intermedios del índice, aunque las distribuciones muestran colas extendidas y una marcada presencia de valores extremos, reflejando una elevada heterogeneidad interna. En particular, los otros regímenes de tenencia registran la mayor dispersión, con una distribución más amplia hacia valores bajos y altos de productividad. En conjunto, la evidencia sugiere que las diferencias en el índice combinado entre regímenes de tenencia son reducidas en comparación con la variabilidad existente dentro de cada grupo, lo que indica que otros factores estructurales y productivos podrían desempeñar un papel más relevante en la explicación del desempeño agregado de las unidades agropecuarias.
 
 ```{r}
 #| label: fig-indice-productividad-tenencia
-#| fig-cap: "Distribución del índice combinado de productividad según régimen predominante de tenencia de la tierra en las unidades de producción agropecuaria (UPA), ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
+#| fig-cap: "Distribución del índice combinado de productividad según régimen predominante de tenencia de la tierra en las UPA, ESPAC 2022. Fuente: Elaboración propia a partir de la ESPAC 2022."
 #| fig-scap: "Índice combinado de productividad según tenencia"
 #| fig-align: center
 #| fig-width: 7.2
@@ -3221,9 +3286,9 @@ datos_indice_tenencia <- base |>
         "especiales"
       ),
       labels = c(
-        "Propiedad",
-        "Arrendamiento",
-        "Tenencias especiales"
+        "Tenencia directa",
+        "arrendamiento y aparcería",
+        "Otros regímenes de tenencia"
       )
     ),
     indice_prod = to_num(indice_productividad)
@@ -3296,7 +3361,7 @@ Una vez examinada la productividad de los factores a nivel de las unidades agrop
 
 Con este propósito, se construyen indicadores provinciales de productividad de la tierra y del trabajo a partir de la información registrada en las unidades agropecuarias. Considerando que las variables de productividad presentan distribuciones altamente asimétricas y la presencia de valores extremos, los indicadores territoriales se estiman utilizando la mediana provincial, lo que permite representar de manera más adecuada los niveles típicos de productividad dentro de cada provincia. La representación cartográfica de estos indicadores se realiza mediante mapas coropléticos clasificados utilizando el método de cortes naturales (Jenks), el cual agrupa provincias con valores similares del indicador y facilita la identificación de diferencias dentro de la distribución de la productividad.
 
-En el caso de la productividad de la tierra, la distribución territorial de la @fig-mapa-prod-tierra-mediana-provincia muestra diferencias claras entre provincias del país. Los valores más elevados se registran en Tungurahua, donde la mediana alcanza aproximadamente 5.916 USD por hectárea. Le siguen Cotopaxi (3.413) y Manabí (3.343). También presentan valores relativamente altos Chimborazo (2.702), Pichincha (2.169) y Santo Domingo de los Tsáchilas (2.000).
+En el caso de la productividad de la tierra, la distribución territorial de la @fig-mapa-prod-tierra-mediana-provincia muestra diferencias claras entre provincias del país. Los valores más elevados se registran en Tungurahua, donde la mediana alcanza aproximadamente 5.916 dólares de los Estados Unidos (USD) por hectárea. Le siguen Cotopaxi (3.413) y Manabí (3.343). También presentan valores relativamente altos Chimborazo (2.702), Pichincha (2.169) y Santo Domingo de los Tsáchilas (2.000).
 
 En un nivel intermedio se ubican Los Ríos (1.905), Guayas (1.717), Santa Elena (1.648) y Carchi (1.320), seguidas por Cañar, El Oro, Bolívar e Imbabura, cuyas medianas se encuentran entre 1.121 y 1.217 USD por hectárea.
 
