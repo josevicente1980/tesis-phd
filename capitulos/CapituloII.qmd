@@ -423,6 +423,10 @@ Arrendamiento y otros contratos de cesión. Incluye las categorías: arrendatari
 
 Otros regímenes de tenencia. Incluyen las tierras gestionadas de manera colectiva por comunidades bajo la figura del comunero, donde los derechos de usufructo son asignados por la comunidad sin derecho a venta; las situaciones de invasión, en las que se ocupan tierras sin permiso legal; las tierras en litigio, sujetas a disputas legales sin resolución definitiva; y otras formas de tenencia (@tbl-tenencia-tipo).
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-tenencia-tipo
 #| tbl-cap: "Clasificación de tipos de tenencia de la tierra"

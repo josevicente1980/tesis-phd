@@ -1350,6 +1350,10 @@ Por su parte, las flores transitorias presentan una composición más diversific
 
 Dentro del contexto productivo ecuatoriano, la floricultura se vincula principalmente con sistemas agrícolas especializados desarrollados en espacios de la Sierra, donde las condiciones climáticas, la altitud y la organización técnica de la producción han favorecido el cultivo de flores con orientación comercial. En ese sentido, su análisis permite incorporar un tipo de sistema agrícola distinto al de los cultivos extensivos y al de varios cultivos alimentarios de ciclo corto analizados previamente. Desde la perspectiva de esta investigación, este subsector resulta relevante porque expresa una forma de organización productiva en la que la superficie cultivada, el manejo técnico y el uso del trabajo se articulan de manera distinta a la observada en otros sistemas agrícolas.
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-flores-principales-nacional
 #| tbl-cap: "Flores con mayor superficie sembrada y participación porcentual según módulo, ESPAC 2022"
@@ -1668,6 +1672,10 @@ tabla_usc(
 ```
 
 La composición racial del ganado bovino muestra que del total, predominan los animales mestizos y, en segundo término, los criollos. Esta estructura muestra que la ganadería ecuatoriana se apoya principalmente en una base genética adaptada a condiciones locales, mientras que las razas especializadas aparecen como un componente complementario vinculado a sistemas más orientados a carne o leche. En conjunto, esta distribución sugiere una fuerte articulación entre adaptación territorial y funcionalidad productiva del hato (@tbl-razas-bovinas).
+
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-razas-bovinas
@@ -2034,9 +2042,14 @@ ggplot2::ggplot() +
 
 De las 5.629.981 cabezas de ganado registradas en la ESPAC 2022, las especies distintas al ganado bovino muestran configuraciones productivas diferenciadas. El ganado porcino y ovino reúnen la mayor parte de este subconjunto, mientras que las especies caballar, mular, asnal y caprina presentan participaciones menores dentro del total pecuario. En términos territoriales, el ganado porcino se observa con mayor presencia en Santo Domingo de los Tsáchilas, Cotopaxi, Guayas y Manabí, mientras que el ganado ovino se concentra principalmente en Chimborazo, Cotopaxi, Tungurahua y Azuay. Por su parte, las especies caballar, mular y asnal se vinculan con funciones de trabajo y transporte rural en provincias como Manabí, Esmeraldas, Chimborazo y Loja, mientras que el ganado caprino presenta una presencia más localizada, especialmente en Loja (@tbl-caracteristicas-especies-secundarias).
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-caracteristicas-especies-secundarias
 #| tbl-cap: "Características generales de especies pecuarias distintas al ganado bovino"
+#| tbl-pos: H
 #| echo: false
 #| message: false
 #| warning: false
@@ -2515,6 +2528,10 @@ En términos de grandes magnitudes, los resultados muestran que las tierras en p
 
 Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento y aparcería en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-tenencia-sector
 #| tbl-cap: "Distribución de la tenencia de la tierra según sector productivo dominante de la UPA, ESPAC 2022"
@@ -2602,6 +2619,10 @@ Los resultados muestran que las unidades de orientación pecuaria registran la m
 
 En términos analíticos, estos resultados evidencian que la productividad agropecuaria no se distribuye de manera homogénea entre los distintos sistemas productivos del país, sino que refleja diferencias estructurales asociadas al tipo de actividad predominante en las unidades productivas y a los niveles de intensificación en el uso de los factores de producción.
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-productividad-sector
 #| tbl-cap: "Mediana de productividad según sector productivo dominante de la UPA, ESPAC 2022"
@@ -2678,6 +2699,10 @@ La @tbl-productividad-tenencia presenta la mediana de los indicadores de product
 Los resultados muestran que las unidades en las que predomina el arrendamiento y aparcería registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra de 2.486 USD/ha y una mediana de productividad del trabajo de 4.075 USD por persona ocupada. Las unidades donde predomina la tenencia directa presentan medianas de 1.790 USD/ha y 3.275 USD por persona ocupada, respectivamente. Las unidades bajo otros regímenes de tenencia registran las menores medianas de productividad de la tierra (1.503 USD/ha) y del trabajo (2.140 USD por persona ocupada).
 
 En términos analíticos, estos resultados sugieren que las distintas formas de acceso a la tierra se asocian con diferencias en los niveles de productividad observados en las unidades agropecuarias. En particular, la mayor productividad mediana observada en los predios bajo arrendamiento y aparcería podría estar relacionada con estrategias productivas más intensivas o con un uso más eficiente de los factores productivos en contextos donde el acceso a la tierra se realiza a través de mecanismos de mercado.
+
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-productividad-tenencia

@@ -1,22 +1,23 @@
 # Siglas utilizadas {.unnumbered}
 
 \begingroup
-\small
+\scriptsize
 \begin{longtable}{@{}p{2.5cm}p{11.5cm}@{}}
 \textbf{Sigla} & \textbf{Nombre completo o aclaración} \\
 \hline
 AIC & Criterio de información de Akaike (\textit{Akaike Information Criterion}) \\
 BIC & Criterio de información bayesiano (\textit{Bayesian Information Criterion}) \\
+BLUP & Mejor predictor lineal insesgado (\textit{Best Linear Unbiased Predictor}) \\
 BP & Prueba de Breusch-Pagan \\
 CDES & Centro de Derechos Económicos y Sociales \\
 CEPAL & Comisión Económica para América Latina y el Caribe \\
 CESA & Central Ecuatoriana de Servicios Agrícolas \\
 DEA & Análisis envolvente de datos (\textit{Data Envelopment Analysis}) \\
+DFBETA & Cambio estandarizado de un coeficiente al excluir una observación \\
 ECUARUNARI & Ecuador Runacunapac Riccharimui \\
 ESPAC & Encuesta de Superficie y Producción Agropecuaria Continua \\
 FENOC & Federación Nacional de Organizaciones Campesinas \\
 FIDA & Fondo Internacional de Desarrollo Agrícola \\
-gl & Grados de libertad \\
 GPS & Sistema de posicionamiento global (\textit{Global Positioning System}) \\
 ha & Hectárea \\
 HC1 & Corrección tipo 1 de la matriz robusta de varianzas y covarianzas \\
@@ -35,7 +36,7 @@ NA & Valor ausente o no disponible en los datos \\
 OLS & Mínimos cuadrados ordinarios (\textit{Ordinary Least Squares}) \\
 PRAT & Programa de Regularización y Administración de Tierras Rurales \\
 PTF & Productividad total de los factores \\
-REML & Máxima verosimilitud restringida (\textit{Restricted Maximum Likelihood}) \\
+RESET & Prueba de especificación de Ramsey (\textit{Regression Equation Specification Error Test}) \\
 RI & Relación inversa entre el tamaño de la explotación y la productividad de la tierra \\
 SAFER & Sociedades de ordenamiento territorial y establecimiento rural de Francia (\textit{Sociétés d'aménagement foncier et d'établissement rural}) \\
 SFA & Análisis de frontera estocástica (\textit{Stochastic Frontier Analysis}) \\
@@ -44,6 +45,7 @@ SIPA & Sistema de Información Pública Agropecuaria \\
 UPA & Unidad de producción agropecuaria \\
 USD & Dólar de los Estados Unidos \\
 VIF & Factor de inflación de la varianza (\textit{Variance Inflation Factor}) \\
+WLS & Mínimos cuadrados ponderados (\textit{Weighted Least Squares}) \\
 \end{longtable}
 \endgroup
 

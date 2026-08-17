@@ -60,6 +60,11 @@ Base_cap7 <- Base_final |>
     superficie_total_z =
       z_score(sup_ha),
 
+    superficie_log_z =
+      z_score(
+        log1p(sup_ha)
+      ),
+
     edad_z =
       z_score(cg_k101),
 
@@ -119,6 +124,24 @@ Base_cap7 <- Base_final |>
     educacion_z =
       z_score(educacion_num),
 
+    sexo =
+      factor(
+        as.numeric(cg_k100),
+        levels = c(1, 2),
+        labels = c(
+          "Hombre",
+          "Mujer"
+        )
+      ),
+
+    sexo_num =
+      dplyr::if_else(
+        as.numeric(cg_k100) == 2,
+        1,
+        0,
+        missing = NA_real_
+      ),
+
     clase.mayoria =
       factor(clase.mayoria),
 
@@ -168,6 +191,148 @@ stopifnot(
 ```
 
 ```{r}
+#| label: flujo-muestral-cap7
+#| include: FALSE
+
+es_estado_tecnologico_valido <- function(x) {
+  to_si_no(x) %in% c("SI", "NO")
+}
+
+criterio_productividad_tierra <-
+  !is.na(Base_cap7$productividad_superficie)
+
+criterio_dos_productividades <-
+  criterio_productividad_tierra &
+  !is.na(Base_cap7$productividad_trabajo)
+
+criterio_covariables_basicas <-
+  criterio_dos_productividades &
+  stats::complete.cases(
+    Base_cap7 |>
+      dplyr::select(
+        clase.mayoria,
+        sup_ha,
+        cg_k101,
+        cg_dispo_internet,
+        ual_prov
+      )
+  )
+
+criterio_educacion <-
+  criterio_covariables_basicas &
+  Base_cap7$cg_k102 %in% 1:4
+
+criterio_sexo <-
+  criterio_educacion &
+  !is.na(Base_cap7$sexo)
+
+criterio_tecnologias <-
+  criterio_sexo &
+  es_estado_tecnologico_valido(
+    Base_cap7$usa_riego_global
+  ) &
+  es_estado_tecnologico_valido(
+    Base_cap7$usa_fert_global
+  ) &
+  es_estado_tecnologico_valido(
+    Base_cap7$usa_plag_global
+  )
+
+criterio_sfa <-
+  criterio_tecnologias &
+  Base_cap7$productividad_superficie > 0 &
+  Base_cap7$productividad_trabajo > 0
+
+n_flujo <- c(
+  nrow(Base_cap7),
+  sum(criterio_productividad_tierra),
+  sum(criterio_dos_productividades),
+  sum(criterio_covariables_basicas),
+  sum(criterio_educacion),
+  sum(criterio_sexo),
+  sum(criterio_tecnologias),
+  sum(criterio_sfa)
+)
+
+tabla_flujo_muestral <- tibble::tibble(
+  Etapa = c(
+    "Base analítica inicial",
+    "Productividad de la tierra disponible",
+    "Productividad de la tierra y del trabajo disponibles",
+    "Más tenencia, superficie, edad, internet y provincia",
+    "Más educación válida (códigos 1 a 4)",
+    "Más sexo disponible",
+    "Más riego, fertilizantes y plaguicidas en SI/NO",
+    "Más ambas productividades estrictamente positivas (SFA)"
+  ),
+  UPA = n_flujo,
+  `Exclusiones en la etapa` = c(
+    0,
+    head(n_flujo, -1) - tail(n_flujo, -1)
+  ),
+  `% de la base inicial` =
+    100 * UPA / dplyr::first(UPA)
+)
+
+Base_cap7 <- Base_cap7 |>
+  dplyr::mutate(
+    incluida_modelos_cap7 = criterio_tecnologias,
+    incluida_sfa_cap7 = criterio_sfa
+  )
+
+tabla_composicion_muestra <- Base_cap7 |>
+  dplyr::mutate(
+    Estado = dplyr::if_else(
+      incluida_modelos_cap7,
+      "Incluidas",
+      "Excluidas"
+    ),
+    Tenencia = dplyr::recode(
+      as.character(clase.mayoria),
+      "arrendamiento" = "Arrendamiento y aparcería",
+      "dueño" = "Tenencia directa",
+      "especiales" = "Otros regímenes de tenencia"
+    )
+  ) |>
+  dplyr::count(
+    Estado,
+    Tenencia,
+    name = "UPA"
+  ) |>
+  dplyr::group_by(Estado) |>
+  dplyr::mutate(
+    Porcentaje = 100 * UPA / sum(UPA)
+  ) |>
+  dplyr::ungroup()
+
+resumen_composicion_adicional <- Base_cap7 |>
+  dplyr::mutate(
+    Estado = dplyr::if_else(
+      incluida_modelos_cap7,
+      "Incluidas",
+      "Excluidas"
+    )
+  ) |>
+  dplyr::group_by(Estado) |>
+  dplyr::summarise(
+    `Mujeres (%)` = 100 * mean(
+      sexo == "Mujer",
+      na.rm = TRUE
+    ),
+    `Superficie mediana (ha)` = stats::median(
+      sup_ha,
+      na.rm = TRUE
+    ),
+    `Percentil 90 superficie (ha)` = stats::quantile(
+      sup_ha,
+      0.90,
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  )
+```
+
+```{r}
 #| label: importacion-mapa-cap7
 #| include: FALSE
 
@@ -209,25 +374,25 @@ fondo_vecinos <- crear_fondo_vecinos(
 
 ## Introducción
 
-La productividad constituye uno de los principales indicadores para evaluar el desempeño del sector agropecuario debido a que refleja la capacidad de las unidades productivas para transformar recursos en resultados económicos. Sin embargo, las diferencias observadas entre productores no responden únicamente a la disponibilidad de tierra o trabajo, sino también a las distintas formas de tenencia de la tierra, la adopción tecnológica, las características sociodemográficas de los productores, las condiciones de acceso a información y las particularidades territoriales donde se desarrolla la actividad agrícola.
+La productividad permite observar cómo las unidades agropecuarias transforman sus recursos en resultados económicos. Las diferencias entre productores, sin embargo, no dependen únicamente de la tierra y el trabajo disponibles. También intervienen el régimen de tenencia, la adopción tecnológica, las características sociodemográficas, el acceso a información y el territorio en el que se desarrolla la actividad.
 
-La literatura especializada reconoce que la productividad agrícola es un fenómeno multidimensional, asociado simultáneamente con factores estructurales, tecnológicos e institucionales. En este contexto, el análisis de la productividad requiere enfoques que permitan distinguir entre la contribución observada de los recursos productivos disponibles, las condiciones territoriales y los niveles de eficiencia con que dichos recursos son utilizados. Esta necesidad resulta particularmente relevante en economías agrícolas caracterizadas por una elevada heterogeneidad productiva y por importantes diferencias regionales en acceso a infraestructura, mercados y tecnología.
+La literatura la concibe, por ello, como un fenómeno multidimensional en el que confluyen factores estructurales, tecnológicos e institucionales. Su estudio exige distinguir entre las asociaciones vinculadas con los recursos disponibles, las condiciones territoriales y la eficiencia con que se utilizan esos recursos. Esta distinción cobra especial importancia en una agricultura heterogénea, con marcadas diferencias regionales de infraestructura, acceso a mercados y tecnología.
 
 El presente capítulo tiene como objetivo analizar los factores asociados a las diferencias en la productividad agropecuaria de las UPA del Ecuador, a partir de la información proporcionada por la ESPAC 2022, con especial énfasis en el régimen de tenencia de la tierra. Para ello se consideran dos dimensiones complementarias del desempeño productivo: la productividad de la tierra y la productividad del trabajo. Esta diferenciación permite evaluar si las asociaciones observadas para el rendimiento por superficie presentan comportamientos similares o distintos a aquellas relacionadas con el uso del factor trabajo.
 
-Con el propósito de obtener una comprensión integral del fenómeno, se adopta una estrategia econométrica comparativa basada en tres enfoques complementarios. En primer lugar, se estiman modelos lineales ordinarios con errores estándar robustos para identificar asociaciones promedio entre productividad y covariables observables. En segundo lugar, se incorporan modelos multinivel con interceptos aleatorios provinciales para evaluar la existencia de heterogeneidad territorial no observada. Finalmente, se emplean modelos de frontera estocástica con el fin de analizar la contribución relativa de la eficiencia técnica dentro de una especificación paramétrica.
+La estrategia econométrica combina tres enfoques. Los modelos lineales ordinarios con errores estándar robustos estiman asociaciones promedio entre productividad y covariables observables. Los modelos multinivel incorporan interceptos aleatorios provinciales para representar la heterogeneidad territorial no observada. Las fronteras estocásticas, finalmente, permiten examinar la eficiencia técnica relativa dentro de una especificación paramétrica.
 
-La combinación de estos enfoques permite examinar la productividad desde distintas perspectivas analíticas, distinguiendo entre factores asociados a la dotación de recursos, condiciones territoriales e ineficiencia técnica. De esta manera, el capítulo aporta evidencia empírica sobre patrones consistentes con diferentes mecanismos de desempeño entre unidades productivas y proporciona elementos útiles para el diseño de políticas orientadas al fortalecimiento de la productividad agropecuaria.
+Los tres enfoques responden a preguntas distintas y complementarias: qué características se asocian con la productividad media, cuánto de la variación se estructura territorialmente y a qué distancia se sitúan las UPA de una frontera condicionada. El capítulo construye así una cadena de evidencia sobre el papel de la tenencia dentro de una estructura productiva más amplia.
 
 ## Fundamentos conceptuales para la selección de modelos analíticos
 
 La producción es el resultado de la combinación de factores productivos bajo determinadas condiciones tecnológicas. En el ámbito agrícola, esta relación adquiere particular complejidad debido a la interacción entre recursos físicos, capital humano, condiciones ambientales e instituciones que regulan el acceso y uso de la tierra. Por esta razón, la productividad no puede interpretarse exclusivamente como una función de la dotación de factores, sino como un resultado asociado a un conjunto de elementos que condicionan las decisiones de producción y la capacidad de los productores para transformar recursos en resultados económicos.
 
-Como se expuso en capítulos anteriores, la literatura enfocada en los derechos de propiedad argumenta que la certeza jurídica sobre la tierra es un factor que estimula la inversión, facilita la adopción tecnológica y promueve decisiones orientadas al largo plazo [@besley_property_1995]. Diversos estudios señalan que una mayor certidumbre sobre los derechos de propiedad favorece la inversión productiva y genera efectos positivos sobre la productividad agrícola [@deininger_tenure_2006]. No obstante, la influencia de la tenencia no actúa de manera aislada, sino que suele estar asociada a diferencias en acceso a crédito, infraestructura, tecnología y oportunidades productivas.
+Como se expuso en los capítulos anteriores, la teoría de los derechos de propiedad vincula la seguridad sobre la tierra con horizontes de decisión más largos, mayores incentivos para invertir y mejores condiciones para adoptar tecnología [@besley_property_1995; @deininger_tenure_2006]. Esa predicción no equivale a una superioridad necesaria de la tenencia directa. La evidencia revisada en esta tesis también subraya que los resultados dependen del contexto institucional y del acceso complementario a crédito, infraestructura, mercados y tecnología [@lawry_impact_2017].
 
-Bajo este contexto, los modelos de regresión lineal constituyen una herramienta apropiada para identificar relaciones promedio entre productividad y variables explicativas observables, permitiendo cuantificar asociaciones condicionales con factores productivos, tecnológicos y sociodemográficos. Sin embargo, este enfoque asume independencia entre observaciones y no incorpora explícitamente posibles diferencias derivadas del contexto territorial donde operan las unidades productivas [@raudenbush2002].
+Los modelos de regresión lineal permiten cuantificar asociaciones promedio entre la productividad y los factores productivos, tecnológicos y sociodemográficos observados. Su estructura, no obstante, no representa explícitamente la dependencia que puede surgir cuando varias UPA comparten un mismo entorno provincial [@raudenbush2002].
 
-Con el propósito de superar esta limitación, los modelos multinivel permiten descomponer la variabilidad observada en distintos niveles jerárquicos, incorporando efectos asociados al territorio y diferenciándolos de aquellos vinculados a características individuales de las unidades productivas [@raudenbush2002; @gelman2007]. Esta aproximación resulta relevante cuando existen condiciones estructurales compartidas dentro de una misma unidad geográfica que pueden influir en la productividad.
+Los modelos multinivel abordan esa estructura al descomponer la variabilidad entre UPA y provincias [@raudenbush2002; @gelman2007]. Resultan adecuados cuando las unidades de una misma área geográfica comparten condiciones que no se observan de forma individual, sin que el efecto territorial pueda atribuirse de antemano a un mecanismo concreto.
 
 Por otra parte, la teoría de la eficiencia técnica plantea que productores con acceso a recursos similares pueden obtener resultados distintos debido a diferencias en la forma en que dichos recursos son utilizados [@farrell_measurement_1957]. En este marco, la metodología de frontera estocástica permite estimar una frontera de producción potencial y medir la distancia existente entre el desempeño observado y dicho nivel máximo teórico [@aigner_formulation_1977; @battese_model_1995].
 
@@ -241,23 +406,22 @@ Las variables dependientes corresponden a dos medidas complementarias de product
 
 [^log]: Se utiliza la función `log1p` en R, que corresponde matemáticamente a $\ln(1+x)$. Esta transformación permite conservar productividad igual a cero en OLS y multinivel. La restricción adicional de la SFA exige ambas productividades estrictamente positivas, covariables completas y estados `SI` o `NO` en los tres indicadores tecnológicos.
 
-Las variables continuas incluidas como covariables fueron estandarizadas mediante puntuaciones z[^zscore]. Esta transformación proviene de la especificación del modelo, no de una restricción de los datos: expresa las covariables continuas en una escala común, facilita la comparación de magnitudes entre coeficientes asociados a variables con unidades distintas y mejora la estabilidad numérica de las estimaciones. En consecuencia, los coeficientes de covariables continuas representan cambios en la variable dependiente transformada ante incrementos de una desviación estándar en la covariable correspondiente.
+Las covariables continuas fueron estandarizadas mediante puntuaciones z[^zscore]. La estandarización expresa un cambio de una desviación estándar, pero no corrige por sí sola una forma funcional inadecuada. Por esta razón, la superficie se evaluó tanto en niveles como mediante $\ln(1+\text{superficie})$, seguida en ambos casos por la estandarización. Los diagnósticos que se presentan más adelante respaldan conservar la superficie en niveles estandarizados para la productividad de la tierra y utilizar el logaritmo estandarizado, junto con un término cuadrático parsimonioso, para la productividad del trabajo.
 
-[^zscore]: La estandarización se realizó mediante la transformación $z=(x-\bar{x})/s$, donde $\bar{x}$ representa la media muestral y $s$ la desviación estándar. Este procedimiento se aplicó a las variables continuas utilizadas como covariables (superficie del predio, superficie total, edad y educación ordinal), con el fin de facilitar la comparación de magnitudes entre coeficientes, mejorar la estabilidad numérica de las estimaciones y evitar que diferencias de escala influyeran en los resultados de los modelos OLS, multinivel y de frontera estocástica.
+[^zscore]: La estandarización se realizó mediante $z=(x-\bar{x})/s$, donde $\bar{x}$ y $s$ se calcularon sobre la base analítica antes de aplicar los filtros de los modelos. En la ecuación de productividad laboral se estandarizó $\ln(1+\texttt{sup\_ha})$. Un coeficiente asociado a una variable z representa el cambio en la respuesta transformada relacionado con una desviación estándar de la variable previa a la estandarización.
 
 Por otra parte, el acceso a internet se incorporó como indicador dicotómico de conectividad e información. Los indicadores de riego, fertilización y plaguicidas se construyeron a nivel de UPA mediante la regla de al menos un uso afirmativo en cualquiera de los cinco módulos de cultivos. La base oficial distingue `SI`, `NO`, `NO_APLICA` y ausencia real de información. Para estimar asociaciones agronómicas comparables, los modelos se restringieron a las UPA con estados `SI` o `NO` en los tres indicadores; `NO_APLICA` y `NA` se excluyeron, sin recodificarlos como ausencia de uso.
 
-Asimismo, las variables vinculadas con educación, tenencia de la tierra y ubicación territorial fueron tratadas como factores categóricos[^factores], de modo que cada categoría se compara con una categoría de referencia sin imponer una pendiente lineal única entre niveles. Esta decisión proviene de la especificación del modelo y resulta importante en educación y tenencia, donde la relación con la productividad puede variar entre categorías y no necesariamente seguir una progresión lineal.
+Asimismo, educación, sexo, tenencia y ubicación territorial se trataron como factores categóricos[^factores]. La educación se comparó también con su codificación ordinal estandarizada. Los coeficientes de tenencia permanecieron prácticamente invariantes, mientras que la forma categórica evitó imponer distancias iguales entre niveles educativos y mejoró el ajuste del modelo de productividad de la tierra. Por coherencia conceptual se conservó como factor en las especificaciones fortalecidas. El sexo se incorporó como control sociodemográfico observable y como comprobación de sensibilidad del resultado de tenencia.
 
-[^factores]: Las variables categóricas fueron convertidas a factores mediante la función `as.factor()` de R. Este procedimiento permite que los modelos econométricos generen automáticamente las variables indicadoras (dummies) necesarias para representar los distintos niveles de educación, regímenes de tenencia y provincias, utilizando una categoría de referencia para la estimación de los coeficientes.
+[^factores]: Las categorías de referencia son ninguna educación, hombre y arrendamiento y aparcería. Los nombres internos `dueño`, `arrendamiento` y `especiales` se conservan para garantizar reproducibilidad, pero las tablas y la prosa emplean tenencia directa, arrendamiento y aparcería y otros regímenes de tenencia.
 
 La @tbl-variables-analiticas resume las variables utilizadas en los modelos econométricos y presenta la definición conceptual de cada una de ellas.
-
-\newpage
 
 ```{r}
 #| label: tbl-variables-analiticas
 #| tbl-cap: "Variables utilizadas en los modelos de productividad agropecuaria"
+#| tbl-pos: "!htp"
 
 variables_modelo <- tibble::tribble(
   ~Variable,
@@ -277,7 +441,11 @@ variables_modelo <- tibble::tribble(
   "Factor estructural",
 
   "Superficie total (z)",
-  "Área total disponible estandarizada",
+  "Área total disponible estandarizada; especificación de productividad de la tierra",
+  "Recurso productivo",
+
+  "Logaritmo de superficie (z)",
+  "ln(1 + superficie total), posteriormente estandarizada; especificación de productividad del trabajo",
   "Recurso productivo",
 
   "Edad (z)",
@@ -300,9 +468,13 @@ variables_modelo <- tibble::tribble(
   "Uso observado en al menos un cultivo (1 = Sí; 0 = No)",
   "Tecnología productiva",
 
-  "Educación (z)",
-  "Nivel educativo ordinal estandarizado",
+  "Educación",
+  "Nivel educativo como factor: ninguna, primaria, secundaria y superior",
   "Capital humano",
+
+  "Sexo",
+  "Sexo de la persona productora: hombre (referencia) y mujer",
+  "Característica sociodemográfica",
 
   "Provincia",
   "Ubicación territorial de la UPA",
@@ -315,12 +487,64 @@ variables_modelo |>
     strict_position = TRUE
   ) |>
   nota_tabla(
-    nota = "Las variables dependientes se transformaron mediante logaritmos naturales ln(1+x). Las covariables continuas fueron estandarizadas mediante puntuaciones z. Los indicadores tecnológicos se estiman exclusivamente entre UPA clasificadas SI o NO; se excluyen NO_APLICA y NA.",
+    nota = "Las variables dependientes se transformaron mediante ln(1+x). La superficie se modela en niveles estandarizados para productividad de la tierra y como ln(1+superficie) estandarizada, con término cuadrático, para productividad del trabajo. Edad se expresa como z; educación, sexo y tenencia se incorporan como factores. Los indicadores tecnológicos se estiman exclusivamente entre UPA clasificadas SI o NO; se excluyen NO_APLICA y NA.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
 ```
 
-Con base en estas variables se construyó la especificación general utilizada en las distintas estrategias econométricas desarrolladas en el capítulo. Los indicadores de riego, fertilización y plaguicidas presentan ambos estados binarios dentro del universo aplicable y se incorporaron conjuntamente. La muestra común de los modelos OLS y multinivel contiene 22.075 UPA, mientras que la muestra SFA contiene 21.430 UPA después de exigir además productividades estrictamente positivas. En ambas muestras, la matriz de diseño ampliada tiene 10 columnas y rango completo de 10, por lo que los tres coeficientes tecnológicos son estimables. La formulación final integra régimen de tenencia, escala productiva, edad, acceso a internet, educación, uso de insumos y heterogeneidad territorial.
+La muestra econométrica se construyó mediante una secuencia explícita de condiciones comunes (@tbl-flujo-muestral-cap7). La productividad de la tierra está disponible para las 42.444 UPA de la base; la exigencia de disponer también de productividad del trabajo reduce el conjunto a 30.502. Los demás controles básicos no generan pérdidas adicionales. La educación válida en los cuatro niveles analizados reduce la muestra a 26.392 UPA y la exigencia conjunta de estados `SI` o `NO` en riego, fertilizantes y plaguicidas conduce a 22.075 UPA. El sexo está disponible para todas las observaciones que superan el criterio educativo, por lo que su incorporación no altera el tamaño de la muestra. Finalmente, la SFA exige que ambas productividades sean estrictamente positivas y conserva 21.430 UPA.
+
+```{=latex}
+\suppressfloats[b]
+```
+
+```{r}
+#| label: tbl-flujo-muestral-cap7
+#| tbl-cap: "Construcción secuencial de las muestras econométricas"
+
+tabla_flujo_muestral |>
+  dplyr::mutate(
+    UPA = formato_num(UPA, digits = 0),
+    `Exclusiones en la etapa` = formato_num(
+      `Exclusiones en la etapa`,
+      digits = 0
+    ),
+    `% de la base inicial` = formato_pct(
+      `% de la base inicial`,
+      digits = 1
+    )
+  ) |>
+  tabla_usc(
+    font_size = 7.5,
+    scale_down = TRUE
+  ) |>
+  nota_tabla(
+    nota = "La reducción no implica depuración discrecional: establece una muestra común con información completa y estados tecnológicos comparables. La última fila corresponde exclusivamente a SFA.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+La @tbl-composicion-muestra-cap7 muestra que la composición también cambia de forma observable. Arrendamiento y aparcería representa el 2,4 % de las UPA excluidas y el 5,4 % de las incluidas; tenencia directa, el 87,5 % y el 82,7 %; y otros regímenes de tenencia, el 10,2 % y el 11,9 %. Entre las UPA incluidas, las mujeres representan el 27,2 %, frente al 24,3 % entre las excluidas. La superficie mediana es de 5 ha en la muestra econométrica y 1,42 ha entre las UPA excluidas. Estas diferencias delimitan el dominio de inferencia: los modelos describen asociaciones dentro de la muestra completa y tecnológicamente aplicable, no corrigen selección por características no observadas.
+
+```{r}
+#| label: tbl-composicion-muestra-cap7
+#| tbl-cap: "Composición de las UPA incluidas y excluidas según régimen de tenencia"
+
+tabla_composicion_muestra |>
+  dplyr::mutate(
+    UPA = formato_num(UPA, digits = 0),
+    Porcentaje = formato_pct(Porcentaje, digits = 1)
+  ) |>
+  tabla_usc(
+    font_size = 8
+  ) |>
+  nota_tabla(
+    nota = "Incluidas corresponde a las 22.075 UPA de los modelos OLS y multinivel. Los porcentajes se calculan dentro de cada estado de inclusión.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+Con base en estas variables se construyó la especificación utilizada en las tres estrategias econométricas. Los indicadores de riego, fertilización y plaguicidas presentan ambos estados binarios dentro del universo aplicable y se incorporaron conjuntamente. La muestra común de OLS y multinivel contiene 22.075 UPA, mientras que la muestra SFA contiene 21.430 UPA después de exigir ambas productividades estrictamente positivas. Las matrices de diseño tienen rango completo, por lo que todos los parámetros incluidos son estimables.
 
 Por tanto, la especificación econométrica general utilizada en esta investigación puede expresarse de la siguiente manera, en primera instancia para el modelo lineal múltiple:
 
@@ -328,13 +552,14 @@ $$
 \begin{aligned}
 \ln(1+Y_i) =\;& \beta_0
 + \beta_1 \text{Tenencia}_i
-+ \beta_2 \text{Superficie}_i \\
++ f(\text{Superficie}_i) \\
   &+ \beta_3 \text{Edad}_i
   + \beta_4 \text{Internet}_i
-  + \beta_5 \text{Educación}_i \\
-  &+ \beta_6 \text{Riego}_i
-  + \beta_7 \text{Fertilizantes}_i
-  + \beta_8 \text{Plaguicidas}_i
+  + \beta_5 \text{Educación}_i
+  + \beta_6 \text{Sexo}_i \\
+  &+ \beta_7 \text{Riego}_i
+  + \beta_8 \text{Fertilizantes}_i
+  + \beta_9 \text{Plaguicidas}_i
 + \varepsilon_i
 \end{aligned}
 $$
@@ -371,13 +596,15 @@ $\ln(1+Y_i)$: Representa el logaritmo natural de uno más la productividad agrop
 
 $\text{Tenencia}_i$: Régimen predominante de tenencia de la tierra de la unidad productiva agropecuaria.
 
-$\text{Superficie}_i$: Superficie total estandarizada mediante puntuaciones z.
+$f(\text{Superficie}_i)$: Superficie total en niveles estandarizados para productividad de la tierra. Para productividad del trabajo se usa $z[\ln(1+\text{superficie})]$ y su término cuadrático, lo que permite una relación cóncava sin recurrir a polinomios de orden alto.
 
 $\text{Edad}_i$: Edad del productor estandarizada mediante puntuaciones z.
 
 $\text{Internet}_i$: Variable dicotómica que identifica el acceso a internet (1 = Sí; 0 = No).
 
-$\text{Educación}_i$: Nivel educativo ordinal estandarizado del productor.
+$\text{Educación}_i$: Nivel educativo categórico de la persona productora; ninguna educación es la referencia.
+
+$\text{Sexo}_i$: Sexo de la persona productora; hombre es la referencia.
 
 $\text{Riego}_i$, $\text{Fertilizantes}_i$ y $\text{Plaguicidas}_i$: Indicadores dicotómicos de uso observado en al menos un cultivo (1 = Sí; 0 = No). Las UPA clasificadas `NO_APLICA` o con información faltante se excluyen de las muestras econométricas.
 
@@ -412,9 +639,11 @@ vars_corr_final <- Base_cap7 |>
     ln_prod_sup,
     ln_prod_trab,
     superficie_total_z,
+    superficie_log_z,
     edad_z,
     internet,
-    educacion_z,
+    educacion_num,
+    sexo_num,
     riego,
     fertilizante,
     plaguicida
@@ -423,9 +652,11 @@ vars_corr_final <- Base_cap7 |>
     `Prod. tierra` = ln_prod_sup,
     `Prod. trabajo` = ln_prod_trab,
     `Superficie total` = superficie_total_z,
+    `Log superficie` = superficie_log_z,
     Edad = edad_z,
     Internet = internet,
-    Educación = educacion_z,
+    Educación = educacion_num,
+    Mujer = sexo_num,
     Riego = riego,
     Fertilizantes = fertilizante,
     Plaguicidas = plaguicida
@@ -544,21 +775,13 @@ ggplot2::ggplot(
   )
 ```
 
-La inspección del mapa de correlaciones permite identificar, en primer lugar, una asociación positiva alta entre la productividad de la tierra y la productividad del trabajo ($r = 0,75$). Este resultado indica que las unidades agropecuarias que alcanzan mayores niveles de productividad por unidad de superficie también tienden a presentar una mayor productividad laboral. No obstante, ambas variables representan dimensiones distintas del desempeño productivo, por lo que esta relación debe interpretarse como una asociación estadística y no como evidencia de causalidad.
-
-Respecto de los posibles factores condicionantes, la productividad de la tierra presenta una correlación negativa moderada con la edad del productor ($r = -0,36$). Asimismo, mantiene correlaciones positivas débiles con fertilizantes ($r = 0,22$), internet ($r = 0,20$), riego ($r = 0,16$) y plaguicidas ($r = 0,15$), mientras que su asociación con la educación es prácticamente nula ($r = 0,02$) y con la superficie total es ligeramente negativa ($r = -0,02$). Estas asociaciones son descriptivas y no controlan simultáneamente los demás factores.
-
-En el caso de la productividad del trabajo, las correlaciones con las variables explicativas son, en general, débiles. Las asociaciones positivas más relevantes se observan con la educación ($r = 0,19$), los plaguicidas ($r = 0,16$) y el acceso a internet ($r = 0,13$). La productividad laboral presenta correlaciones reducidas con la superficie total ($r = 0,05$), la edad ($r = 0,05$), el riego ($r = -0,05$) y los fertilizantes ($r = -0,01$).
-
-Entre las características sociodemográficas, el acceso a internet muestra una correlación positiva con la educación ($r = 0,28$), lo que indica que los productores con mayores niveles educativos tienden a disponer en mayor medida de conectividad. La edad, en cambio, se relaciona negativamente con el acceso a internet ($r = -0,20$) y con la educación ($r = -0,15$), lo que podría reflejar brechas generacionales en el acceso a la formación y a las tecnologías de la información. La superficie total mantiene asociaciones débiles con las demás variables, aunque presenta una correlación positiva de $r = 0,13$ con la educación.
-
-Desde el punto de vista econométrico, las correlaciones entre las variables explicativas son reducidas y ninguna se aproxima al umbral de $0,70$. La correlación más elevada entre los regresores corresponde a riego y fertilizantes ($r = 0,39$), seguida por fertilizantes y plaguicidas ($r = 0,37$). Por tanto, la matriz no evidencia problemas severos de redundancia lineal. Estas correlaciones simples constituyen solo una aproximación descriptiva inicial.
+El mapa confirma una asociación positiva elevada entre ambas productividades, aunque cada indicador conserva un significado económico distinto. Entre los regresores, las asociaciones son moderadas o bajas. La relación más alta se observa entre riego y fertilizantes y no alcanza niveles que indiquen redundancia lineal severa. La comparación entre superficie en niveles y superficie logarítmica también muestra que la transformación cambia la representación de la escala; por ello, su elección se evalúa mediante ajuste y diagnósticos formales, no a partir de la correlación aislada.
 
 ### Diagnóstico de multicolinealidad
 
 Si bien la matriz de correlaciones proporciona una evaluación preliminar de la asociación entre las covariables, resulta necesario complementarla mediante una prueba formal de multicolinealidad. Con este propósito, se emplea el VIF, indicador que cuantifica el incremento de la varianza de los coeficientes estimados derivado de la correlación entre variables explicativas.
 
-Los resultados de la @tbl-vif-modelo-cap7 muestran valores VIF entre 1,031 y 1,364, con tolerancias entre 0,733 y 0,970. Estos valores se sitúan ampliamente por debajo del umbral de cinco utilizado como referencia práctica para identificar multicolinealidad severa [@montgomery2021]. En consecuencia, la incorporación conjunta de riego, fertilizantes y plaguicidas no compromete la estabilidad numérica de las estimaciones.
+Los resultados de la @tbl-vif-modelo-cap7 muestran valores inferiores al umbral de cinco utilizado como referencia práctica para identificar multicolinealidad severa [@montgomery2021]. En consecuencia, la incorporación conjunta de los controles y del término cuadrático de superficie no compromete la estabilidad numérica de las estimaciones.
 
 ```{r}
 #| label: tbl-vif-modelo-cap7
@@ -568,37 +791,67 @@ Los resultados de la @tbl-vif-modelo-cap7 muestran valores VIF entre 1,031 y 1,3
 base_vif_cap7 <- Base_cap7 |>
   dplyr::select(
     ln_prod_sup,
+    ln_prod_trab,
     clase.mayoria,
     superficie_total_z,
+    superficie_log_z,
     edad_z,
     internet,
+    educacion,
     educacion_z,
+    sexo,
     riego,
     fertilizante,
-    plaguicida
+    plaguicida,
+    fact_exp_fin
   ) |>
   tidyr::drop_na()
 
-modelo_vif <- stats::lm(
+modelo_vif_sup <- stats::lm(
   ln_prod_sup ~
     clase.mayoria +
     superficie_total_z +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida,
   data = base_vif_cap7
 )
 
-vif_modelo_final <- performance::check_collinearity(
-  modelo_vif
-) |>
-  as.data.frame()
+modelo_vif_trab <- stats::lm(
+  ln_prod_trab ~
+    clase.mayoria +
+    superficie_log_z +
+    I(superficie_log_z^2) +
+    edad_z +
+    internet +
+    educacion +
+    sexo +
+    riego +
+    fertilizante +
+    plaguicida,
+  data = base_vif_cap7
+)
+
+vif_modelo_final <- dplyr::bind_rows(
+  performance::check_collinearity(
+    modelo_vif_sup
+  ) |>
+    as.data.frame() |>
+    dplyr::mutate(Modelo = "Productividad de la tierra"),
+  performance::check_collinearity(
+    modelo_vif_trab
+  ) |>
+    as.data.frame() |>
+    dplyr::mutate(Modelo = "Productividad del trabajo")
+)
 
 tabla_vif <- vif_modelo_final |>
   dplyr::transmute(
+    Modelo,
     Variable = Term,
     VIF = round(
       VIF,
@@ -654,27 +907,32 @@ tabla_vif |>
 
 Tras no encontrar evidencia de multicolinealidad severa bajo los criterios anteriores, se evaluó el supuesto de homocedasticidad mediante la prueba de Breusch-Pagan, ampliamente utilizada para detectar heterocedasticidad en modelos de regresión [@breusch1979simple; @wooldridge_introductory_2020]. Esta verificación resulta relevante en estudios agropecuarios, donde la heterogeneidad en el tamaño de las explotaciones, la dotación de recursos y las condiciones productivas puede generar patrones de variabilidad no constantes en los errores.
 
-Los resultados de la prueba de Breusch-Pagan (BP) presentados en la @tbl-breusch-pagan-cap7 permiten rechazar la hipótesis nula de homocedasticidad (BP = 234; grados de libertad (gl) = 9; p < 0,001). Este resultado indica que la varianza de los errores no permanece constante entre observaciones. En consecuencia, las estimaciones lineales reportadas posteriormente incorporan errores estándar robustos tipo HC1[^hc1].
+Los resultados de la prueba de Breusch-Pagan (BP) presentados en la @tbl-breusch-pagan-cap7 permiten rechazar la hipótesis nula de homocedasticidad en ambas respuestas. En consecuencia, todas las estimaciones lineales reportadas posteriormente incorporan errores estándar robustos tipo HC1[^hc1]. La comparación exploratoria con HC2 y HC3 produjo errores estándar prácticamente idénticos, por lo que HC1 ofrece una corrección suficiente y parsimoniosa.
 
 ```{r}
 #| label: tbl-breusch-pagan-cap7
 #| tbl-cap: "Prueba de heterocedasticidad de Breusch-Pagan"
 #| tbl-pos: htbp
 
-bp_test <- lmtest::bptest(
-  modelo_vif
-)
+bp_sup <- lmtest::bptest(modelo_vif_sup)
+bp_trab <- lmtest::bptest(modelo_vif_trab)
 
 tabla_bp <- tibble::tibble(
-  Prueba = "Breusch-Pagan",
-  Estadístico = unname(
-    bp_test$statistic
+  Modelo = c(
+    "Productividad de la tierra",
+    "Productividad del trabajo"
   ),
-  `Grados de libertad` = unname(
-    bp_test$parameter
+  Estadístico = c(
+    unname(bp_sup$statistic),
+    unname(bp_trab$statistic)
   ),
-  `Valor p` = formatear_pvalor(
-    bp_test$p.value
+  `Grados de libertad` = c(
+    unname(bp_sup$parameter),
+    unname(bp_trab$parameter)
+  ),
+  `Valor p` = c(
+    formatear_pvalor(bp_sup$p.value),
+    formatear_pvalor(bp_trab$p.value)
   )
 )
 
@@ -697,7 +955,7 @@ tabla_bp |>
 
 Aunque en muestras de gran tamaño los supuestos distribucionales adquieren menor relevancia debido a las propiedades asintóticas de los estimadores[^asintotico], resulta útil examinar gráficamente el comportamiento de los residuos para identificar posibles desviaciones importantes respecto a la normalidad teórica.
 
-La @fig-qqplot-residuos-cap7 presenta el gráfico cuantil-cuantil (Q-Q) de los residuos del modelo lineal de referencia. En términos generales, los cuantiles observados muestran una alineación cercana con la recta teórica de normalidad en la región central de la distribución, lo que sugiere un ajuste razonable a este supuesto para la mayor parte de las observaciones. Sin embargo, se observan desviaciones progresivas en los extremos inferior y superior, indicando la presencia de colas más pesadas que las esperadas bajo una distribución normal estricta.
+La @fig-qqplot-residuos-cap7 presenta los gráficos cuantil-cuantil de ambos modelos lineales. La región central sigue razonablemente la referencia teórica, mientras que las colas muestran desviaciones asociadas con la elevada heterogeneidad productiva de las UPA.
 
 Este patrón es frecuente en bases de datos agropecuarias de gran tamaño, donde la heterogeneidad productiva y la existencia de unidades con desempeños muy bajos o muy altos generan observaciones extremas. No obstante, dado el tamaño muestral empleado y la ausencia de desviaciones pronunciadas en la parte central de la distribución, la evidencia gráfica no muestra una desviación que invalide la lectura inferencial basada en propiedades asintóticas de los estimadores [@wooldridge_introductory_2020].
 
@@ -710,14 +968,19 @@ Este patrón es frecuente en bases de datos agropecuarias de gran tamaño, donde
 #| fig-width: 4
 #| fig-height: 3
 
-residuos_ols <- stats::residuals(
-  modelo_vif
+residuos_ols <- dplyr::bind_rows(
+  tibble::tibble(
+    residuos = stats::residuals(modelo_vif_sup),
+    Modelo = "Productividad de la tierra"
+  ),
+  tibble::tibble(
+    residuos = stats::residuals(modelo_vif_trab),
+    Modelo = "Productividad del trabajo"
+  )
 )
 
 ggplot2::ggplot(
-  data.frame(
-    residuos = residuos_ols
-  ),
+  residuos_ols,
   ggplot2::aes(
     sample = residuos
   )
@@ -731,10 +994,163 @@ ggplot2::ggplot(
     color = paleta_figuras_tesis["acento"],
     linewidth = 0.8
   ) +
+  ggplot2::facet_wrap(~ Modelo, scales = "free") +
   ggplot2::labs(
     x = "Cuantiles teóricos",
     y = "Cuantiles observados"
   ) +
+  tema_figura_tesis
+```
+
+### Forma funcional de la superficie
+
+La superficie presenta una distribución muy asimétrica: mediana de 5 ha, percentil 90 de 89,6 ha, percentil 99 de 885,64 ha y máximo de 42.000 ha. Estandarizar los niveles no elimina esa asimetría. Por ello se compararon tres alternativas sobre las mismas 22.075 UPA: niveles estandarizados (A), $z[\ln(1+\text{superficie})]$ (B) y esta última transformación acompañada por un término cuadrático (C). La @tbl-forma-superficie-cap7 reúne sus medidas de ajuste y la prueba RESET. La alternativa C solo se consideró porque A y B mantuvieron evidencia de error funcional y porque añade una única curvatura económicamente interpretable.
+
+```{r}
+#| label: modelos-forma-superficie-cap7
+#| include: FALSE
+
+formula_controles_comunes <-
+  ~ clase.mayoria + edad_z + educacion + sexo + internet +
+    riego + fertilizante + plaguicida
+
+modelos_forma_superficie <- list(
+  "Tierra: A, niveles z" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_sup ~ . + superficie_total_z
+    ),
+    data = base_vif_cap7
+  ),
+  "Tierra: B, log z" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_sup ~ . + superficie_log_z
+    ),
+    data = base_vif_cap7
+  ),
+  "Tierra: C, log z cuadrático" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_sup ~ . + superficie_log_z + I(superficie_log_z^2)
+    ),
+    data = base_vif_cap7
+  ),
+  "Trabajo: A, niveles z" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_trab ~ . + superficie_total_z
+    ),
+    data = base_vif_cap7
+  ),
+  "Trabajo: B, log z" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_trab ~ . + superficie_log_z
+    ),
+    data = base_vif_cap7
+  ),
+  "Trabajo: C, log z cuadrático" = stats::lm(
+    update(
+      formula_controles_comunes,
+      ln_prod_trab ~ . + superficie_log_z + I(superficie_log_z^2)
+    ),
+    data = base_vif_cap7
+  )
+)
+
+extraer_forma_funcional <- function(modelo, nombre) {
+  reset <- lmtest::resettest(
+    modelo,
+    power = 2:3,
+    type = "fitted"
+  )
+
+  tibble::tibble(
+    Especificación = nombre,
+    R2 = summary(modelo)$r.squared,
+    `R2 ajustado` = summary(modelo)$adj.r.squared,
+    AIC = stats::AIC(modelo),
+    BIC = stats::BIC(modelo),
+    RESET = unname(reset$statistic),
+    `p RESET` = reset$p.value
+  )
+}
+
+tabla_forma_superficie <- purrr::imap_dfr(
+  modelos_forma_superficie,
+  extraer_forma_funcional
+)
+```
+
+```{r}
+#| label: tbl-forma-superficie-cap7
+#| tbl-cap: "Comparación de formas funcionales para la superficie"
+
+tabla_forma_superficie |>
+  dplyr::mutate(
+    dplyr::across(
+      c(R2, `R2 ajustado`),
+      ~ formato_num(.x, digits = 3)
+    ),
+    dplyr::across(
+      c(AIC, BIC, RESET),
+      ~ formato_num(.x, digits = 1)
+    ),
+    `p RESET` = vapply(
+      `p RESET`,
+      formatear_pvalor,
+      character(1)
+    )
+  ) |>
+  tabla_usc(
+    font_size = 7.5,
+    scale_down = TRUE
+  ) |>
+  nota_tabla(
+    nota = "Todas las alternativas utilizan la misma muestra y los mismos controles. A: z(superficie); B: z[ln(1+superficie)]; C: B más su término cuadrático.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+Para productividad de la tierra, los niveles estandarizados ofrecen el mejor equilibrio entre ajuste y parsimonia; las alternativas logarítmicas no mejoran AIC, BIC ni RESET de forma suficiente. Para productividad laboral, en cambio, el modelo en niveles explica solo el 11,1 % de la variación. La transformación logarítmica eleva el R² a 37,2 %, y el término cuadrático lo sitúa en 39,3 %, reduce el AIC en más de 700 puntos frente a la alternativa B y disminuye sustancialmente el estadístico RESET. La prueba continúa rechazando la forma global en una muestra muy grande, de modo que no se interpreta como especificación perfecta; sí constituye una representación mucho más coherente, parsimoniosa y explicativa de la relación entre escala y productividad laboral. En adelante se utiliza A para productividad de la tierra y C para productividad del trabajo. La @fig-residuos-ajustados-cap7 permite examinar visualmente el comportamiento residual de ambas especificaciones finales.
+
+```{r}
+#| label: fig-residuos-ajustados-cap7
+#| fig-cap: "Residuos frente a valores ajustados en las especificaciones finales"
+#| fig-width: 6.5
+#| fig-height: 3.4
+
+datos_residuos_ajuste <- dplyr::bind_rows(
+  tibble::tibble(
+    Ajustado = stats::fitted(modelo_vif_sup),
+    Residuo = stats::residuals(modelo_vif_sup),
+    Modelo = "Productividad de la tierra"
+  ),
+  tibble::tibble(
+    Ajustado = stats::fitted(modelo_vif_trab),
+    Residuo = stats::residuals(modelo_vif_trab),
+    Modelo = "Productividad del trabajo"
+  )
+)
+
+ggplot2::ggplot(
+  datos_residuos_ajuste,
+  ggplot2::aes(Ajustado, Residuo)
+) +
+  ggplot2::geom_point(
+    alpha = 0.10,
+    size = 0.45,
+    color = paleta_figuras_tesis["principal"]
+  ) +
+  ggplot2::geom_smooth(
+    method = "loess",
+    se = FALSE,
+    linewidth = 0.7,
+    color = paleta_figuras_tesis["acento"]
+  ) +
+  ggplot2::facet_wrap(~ Modelo, scales = "free") +
+  ggplot2::labs(x = "Valor ajustado", y = "Residuo") +
   tema_figura_tesis
 ```
 
@@ -746,11 +1162,11 @@ La especificación incorpora variables asociadas al régimen de tenencia, tamañ
 
 ### Productividad de la tierra
 
-Los resultados de la @tbl-ols-superficie-cap7 indican asociaciones positivas con la productividad de la tierra para fertilizantes (β = 0,576; p < 0,001), internet (β = 0,415; p < 0,001), plaguicidas (β = 0,299; p < 0,001), riego (β = 0,286; p < 0,001) y educación estandarizada (β = 0,076; p < 0,001). El patrón tecnológico es compatible con evidencia sectorial del café colombiano, donde el uso de insumos y las condiciones tecnológicas y productivas de las explotaciones se relacionan con diferencias de eficiencia técnica [@perdomo_factores_2007]. En Ecuador, también puede distinguir a UPA con mayor capitalización, orientación comercial o capacidad de gestión; por ello, los coeficientes comparan usuarios y no usuarios dentro del universo aplicable, condicionados por las demás covariables, pero no identifican el efecto causal de adoptar cada tecnología. La asociación de internet es compatible con menores costos de acceso a información técnica y comercial, aunque la variable solo registra disponibilidad y no la calidad ni el uso productivo de la conexión.
+La @tbl-ols-superficie-cap7 muestra una asociación sistemática entre tenencia y productividad de la tierra. Frente a arrendamiento y aparcería, la tenencia directa registra un coeficiente de `r formato_num(coef(modelo_vif_sup)["clase.mayoriadueño"], 3)`, equivalente a una diferencia de `r formato_pct(100 * (exp(coef(modelo_vif_sup)["clase.mayoriadueño"]) - 1), 1)` en $1+Y$. Para otros regímenes de tenencia, el coeficiente es `r formato_num(coef(modelo_vif_sup)["clase.mayoriaespeciales"], 3)` y la diferencia alcanza `r formato_pct(100 * (exp(coef(modelo_vif_sup)["clase.mayoriaespeciales"]) - 1), 1)`. Los dos intervalos excluyen cero. El resultado contradice la expectativa de una ventaja productiva automática de la tenencia directa: entre UPA comparables en las covariables del modelo, arrendamiento y aparcería presenta el mayor nivel de productividad por hectárea.
 
-La tenencia ofrece el hallazgo central y menos convencional del modelo. Frente a las UPA donde predomina el arrendamiento o aparcería, categoría de referencia, las unidades con tenencia directa (β = -0,255; p < 0,001) y las sujetas a otros regímenes de tenencia (β = -0,448; p < 0,001) presentan menor productividad de la tierra en la escala transformada, manteniendo constantes las covariables incluidas. El resultado matiza la expectativa de la teoría de los derechos de propiedad, según la cual una tenencia segura favorece inversiones de largo plazo [@besley_property_1995; @deininger_tenure_2006]. No constituye evidencia de que la tenencia directa reduzca la productividad: la categoría de tenencia directa de ESPAC identifica el régimen predominante de acceso y uso, pero no mide por sí sola titulación, seguridad jurídica, duración del derecho ni capacidad efectiva para invertir. A su vez, el arrendamiento o aparcería puede seleccionar UPA que explotan la tierra con mayor intensidad o trasladar temporalmente el recurso hacia productores con mejores oportunidades productivas, mecanismo cuya operación depende de contratos, mercados y costos de transacción [@otsuka_efficiency_2007]. Estas posibilidades no se observan directamente en el modelo y deben entenderse como interpretaciones plausibles, no como mecanismos demostrados.
+La superficie en niveles estandarizados presenta una asociación negativa: un incremento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con menor producción total. Este resultado es coherente con la relación inversa entre escala y productividad de la tierra documentada para explotaciones familiares [@saini1971holding; @hossain1977farm]. La educación muestra un gradiente concentrado en secundaria y superior frente a ninguna educación, mientras que el sexo y la edad no presentan diferencias estadísticamente discernibles en esta respuesta.
 
-La superficie total estandarizada mantiene una asociación negativa (β = -0,461; p < 0,001): un aumento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con una reducción del producto total. Este signo respalda la relación inversa entre tamaño y productividad de la tierra documentada para explotaciones familiares, donde la supervisión cercana y el uso intensivo del trabajo pueden elevar el rendimiento por unidad de superficie [@saini1971holding; @hossain1977farm]. La evidencia, sin embargo, no permite atribuir el patrón a un único mecanismo ni descartar diferencias de cultivos o calidad de la tierra. La edad estandarizada no resulta significativa (β = -0,006; p = 0,760); dentro de esta especificación no existe evidencia estadística suficiente de una asociación con la productividad de la tierra, lo que es distinto de afirmar que la edad carece de toda relación productiva.
+En el bloque tecnológico, fertilizantes, internet, plaguicidas y riego se asocian con niveles más elevados de productividad de la tierra. Sus diferencias exactas en $1+Y$ son, respectivamente, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["fertilizante"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["internet"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["plaguicida"]) - 1), 1)` y `r formato_pct(100 * (exp(coef(modelo_vif_sup)["riego"]) - 1), 1)`. La comparación se refiere a UPA usuarias y no usuarias dentro del universo aplicable. Económicamente, el patrón es compatible con una producción más intensiva por superficie y coincide con la literatura que relaciona las condiciones tecnológicas y el uso de insumos con diferencias de productividad y eficiencia agrícola [@perdomo_factores_2007]. Dado el diseño transversal, las estimaciones no separan el efecto de la adopción de la selección de UPA con mejores condiciones para utilizar estas tecnologías.
 
 ```{r}
 #| label: modelos-ols-cap7
@@ -762,23 +1178,27 @@ base_ols_cap7 <- Base_cap7 |>
     ln_prod_trab,
     clase.mayoria,
     superficie_total_z,
+    superficie_log_z,
     edad_z,
     internet,
+    educacion,
     educacion_z,
+    sexo,
     territorio,
     riego,
     fertilizante,
-    plaguicida
+    plaguicida,
+    fact_exp_fin
   ) |>
   tidyr::drop_na()
 
 matriz_ols_base <- stats::model.matrix(
-  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion_z,
+  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion + sexo,
   data = base_ols_cap7
 )
 
 matriz_ols_insumos <- stats::model.matrix(
-  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion_z +
+  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion + sexo +
     riego + fertilizante + plaguicida,
   data = base_ols_cap7
 )
@@ -795,7 +1215,8 @@ ols_sup <- stats::lm(
     superficie_total_z +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida,
@@ -805,10 +1226,12 @@ ols_sup <- stats::lm(
 ols_trab <- stats::lm(
   ln_prod_trab ~
     clase.mayoria +
-    superficie_total_z +
+    superficie_log_z +
+    I(superficie_log_z^2) +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida,
@@ -823,6 +1246,275 @@ vcov_sup <- sandwich::vcovHC(
 vcov_trab <- sandwich::vcovHC(
   ols_trab,
   type = "HC1"
+)
+
+modelos_progresivos_sup <- list(
+  M1 = stats::lm(
+    ln_prod_sup ~ clase.mayoria,
+    data = base_ols_cap7
+  ),
+  M2 = stats::lm(
+    ln_prod_sup ~ clase.mayoria + superficie_total_z,
+    data = base_ols_cap7
+  ),
+  M3 = stats::lm(
+    ln_prod_sup ~ clase.mayoria + superficie_total_z + edad_z +
+      educacion + sexo + internet,
+    data = base_ols_cap7
+  ),
+  M4 = ols_sup
+)
+
+modelos_progresivos_trab <- list(
+  M1 = stats::lm(
+    ln_prod_trab ~ clase.mayoria,
+    data = base_ols_cap7
+  ),
+  M2 = stats::lm(
+    ln_prod_trab ~ clase.mayoria + superficie_log_z +
+      I(superficie_log_z^2),
+    data = base_ols_cap7
+  ),
+  M3 = stats::lm(
+    ln_prod_trab ~ clase.mayoria + superficie_log_z +
+      I(superficie_log_z^2) + edad_z + educacion + sexo + internet,
+    data = base_ols_cap7
+  ),
+  M4 = ols_trab
+)
+
+extraer_tenencia_progresiva <- function(modelo, etapa, resultado) {
+  vcov_modelo <- sandwich::vcovHC(modelo, type = "HC1")
+
+  broom::tidy(
+    lmtest::coeftest(
+      modelo,
+      vcov. = vcov_modelo
+    )
+  ) |>
+    dplyr::filter(
+      stringr::str_starts(term, "clase.mayoria")
+    ) |>
+    dplyr::mutate(
+      Etapa = etapa,
+      Resultado = resultado,
+      Tenencia = dplyr::recode(
+        term,
+        "clase.mayoriadueño" = "Tenencia directa",
+        "clase.mayoriaespeciales" = "Otros regímenes de tenencia"
+      ),
+      R2 = summary(modelo)$r.squared,
+      conf.low = estimate - 1.96 * std.error,
+      conf.high = estimate + 1.96 * std.error
+    )
+}
+
+resultados_progresivos <- dplyr::bind_rows(
+  purrr::imap_dfr(
+    modelos_progresivos_sup,
+    ~ extraer_tenencia_progresiva(
+      .x,
+      .y,
+      "Productividad de la tierra"
+    )
+  ),
+  purrr::imap_dfr(
+    modelos_progresivos_trab,
+    ~ extraer_tenencia_progresiva(
+      .x,
+      .y,
+      "Productividad del trabajo"
+    )
+  )
+)
+
+ols_sup_ponderado <- stats::lm(
+  formula(ols_sup),
+  data = base_ols_cap7,
+  weights = as.numeric(fact_exp_fin)
+)
+
+ols_trab_ponderado <- stats::lm(
+  formula(ols_trab),
+  data = base_ols_cap7,
+  weights = as.numeric(fact_exp_fin)
+)
+
+ols_sup_educacion_ordinal <- stats::lm(
+  update(formula(ols_sup), . ~ . - educacion + educacion_z),
+  data = base_ols_cap7
+)
+
+ols_trab_educacion_ordinal <- stats::lm(
+  update(formula(ols_trab), . ~ . - educacion + educacion_z),
+  data = base_ols_cap7
+)
+
+ols_sup_sin_sexo <- stats::lm(
+  update(formula(ols_sup), . ~ . - sexo),
+  data = base_ols_cap7
+)
+
+ols_trab_sin_sexo <- stats::lm(
+  update(formula(ols_trab), . ~ . - sexo),
+  data = base_ols_cap7
+)
+
+extraer_sensibilidad_tenencia <- function(
+    modelo,
+    nombre,
+    resultado,
+    vcov_modelo = sandwich::vcovHC(modelo, type = "HC1")) {
+  broom::tidy(
+    lmtest::coeftest(modelo, vcov. = vcov_modelo)
+  ) |>
+    dplyr::filter(
+      stringr::str_starts(term, "clase.mayoria")
+    ) |>
+    dplyr::mutate(
+      Sensibilidad = nombre,
+      Resultado = resultado,
+      Tenencia = dplyr::recode(
+        term,
+        "clase.mayoriadueño" = "Tenencia directa",
+        "clase.mayoriaespeciales" = "Otros regímenes de tenencia"
+      ),
+      conf.low = estimate - 1.96 * std.error,
+      conf.high = estimate + 1.96 * std.error
+    )
+}
+
+resultados_sensibilidad_ols <- dplyr::bind_rows(
+  extraer_sensibilidad_tenencia(
+    ols_sup,
+    "Principal",
+    "Productividad de la tierra",
+    vcov_sup
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_sup_sin_sexo,
+    "Sin sexo",
+    "Productividad de la tierra"
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_sup_educacion_ordinal,
+    "Educación ordinal z",
+    "Productividad de la tierra"
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_sup_ponderado,
+    "Ponderado",
+    "Productividad de la tierra"
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_trab,
+    "Principal",
+    "Productividad del trabajo",
+    vcov_trab
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_trab_sin_sexo,
+    "Sin sexo",
+    "Productividad del trabajo"
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_trab_educacion_ordinal,
+    "Educación ordinal z",
+    "Productividad del trabajo"
+  ),
+  extraer_sensibilidad_tenencia(
+    ols_trab_ponderado,
+    "Ponderado",
+    "Productividad del trabajo"
+  )
+)
+
+resumen_influencia <- function(modelo, resultado) {
+  cook <- stats::cooks.distance(modelo)
+  dfb <- stats::dfbetas(modelo)
+  columnas_tenencia <- grep(
+    "^clase.mayoria",
+    colnames(dfb)
+  )
+
+  tibble::tibble(
+    Resultado = resultado,
+    `Cook > 4/n` = sum(cook > 4 / stats::nobs(modelo)),
+    `Cook máximo` = max(cook),
+    `Máx. |DFBETA| tenencia` = max(
+      abs(dfb[, columnas_tenencia]),
+      na.rm = TRUE
+    )
+  )
+}
+
+tabla_influencia <- dplyr::bind_rows(
+  resumen_influencia(
+    ols_sup,
+    "Productividad de la tierra"
+  ),
+  resumen_influencia(
+    ols_trab,
+    "Productividad del trabajo"
+  )
+)
+
+predecir_promedio_ajustado <- function(
+    modelo,
+    vcov_modelo,
+    datos,
+    resultado) {
+  niveles_tenencia <- levels(datos$clase.mayoria)
+
+  purrr::map_dfr(
+    niveles_tenencia,
+    function(nivel) {
+      nuevos <- datos
+      nuevos$clase.mayoria <- factor(
+        nivel,
+        levels = niveles_tenencia
+      )
+      X <- stats::model.matrix(
+        stats::delete.response(stats::terms(modelo)),
+        nuevos
+      )
+      x_bar <- colMeans(X)
+      estimacion <- sum(x_bar * stats::coef(modelo))
+      error <- sqrt(
+        as.numeric(
+          t(x_bar) %*% vcov_modelo %*% x_bar
+        )
+      )
+
+      tibble::tibble(
+        Resultado = resultado,
+        Tenencia = dplyr::recode(
+          nivel,
+          "arrendamiento" = "Arrendamiento y aparcería",
+          "dueño" = "Tenencia directa",
+          "especiales" = "Otros regímenes de tenencia"
+        ),
+        Predicción = estimacion,
+        conf.low = estimacion - 1.96 * error,
+        conf.high = estimacion + 1.96 * error
+      )
+    }
+  )
+}
+
+predicciones_tenencia <- dplyr::bind_rows(
+  predecir_promedio_ajustado(
+    ols_sup,
+    vcov_sup,
+    base_ols_cap7,
+    "Productividad de la tierra"
+  ),
+  predecir_promedio_ajustado(
+    ols_trab,
+    vcov_trab,
+    base_ols_cap7,
+    "Productividad del trabajo"
+  )
 )
 ```
 
@@ -846,6 +1538,8 @@ tabla_ols_sup <- broom::tidy(
     Sig. = estrellas_significancia(
       p.value
     ),
+    conf.low = estimate - 1.96 * std.error,
+    conf.high = estimate + 1.96 * std.error,
     p.value = formatear_pvalor(
       p.value
     ),
@@ -853,6 +1547,8 @@ tabla_ols_sup <- broom::tidy(
       estimate,
       3
     ),
+    conf.low = round(conf.low, 3),
+    conf.high = round(conf.high, 3),
     std.error = round(
       std.error,
       3
@@ -869,9 +1565,14 @@ tabla_ols_sup <- broom::tidy(
       "clase.mayoriadueño" = "Tenencia directa",
       "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
       "superficie_total_z" = "Superficie (z)",
+      "superficie_log_z" = "ln(1 + superficie) (z)",
+      "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
       "edad_z" = "Edad (z)",
       "internet" = "Internet",
-      "educacion_z" = "Educación (z)",
+      "educacionPrimaria" = "Educación: primaria",
+      "educacionSecundaria" = "Educación: secundaria",
+      "educacionSuperior" = "Educación: superior",
+      "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
       "plaguicida" = "Plaguicidas"
@@ -881,6 +1582,8 @@ tabla_ols_sup <- broom::tidy(
     Variable = term,
     Coeficiente = estimate,
     `Error estándar` = std.error,
+    `IC 95%` = conf.low,
+    `IC 95% sup.` = conf.high,
     Estadístico = statistic,
     `Valor p` = p.value,
     Sig.
@@ -901,11 +1604,11 @@ tabla_ols_sup |>
 
 ### Productividad del trabajo
 
-La productividad del trabajo presenta una configuración distinta (@tbl-ols-trabajo-cap7). Los plaguicidas se asocian positivamente con el producto por trabajador (β = 0,779; p < 0,001), mientras que riego (β = -0,417; p < 0,001) y fertilizantes (β = -0,339; p < 0,001) muestran signos negativos. Estos últimos no prueban que las tecnologías reduzcan el desempeño laboral. Pueden reflejar que su utilización se concentra en cultivos o sistemas que requieren más jornadas por unidad producida, o que las UPA recurren a ellos precisamente ante restricciones productivas. La adopción, la especialización y la intensidad laboral se determinan conjuntamente y la información transversal no permite separar esas vías. El contraste con los signos positivos obtenidos para productividad de la tierra muestra, por tanto, que una práctica puede acompañar la intensificación por hectárea sin elevar en igual medida el producto por trabajador.
+La productividad del trabajo ofrece la misma ordenación de los regímenes de tenencia (@tbl-ols-trabajo-cap7). Frente a arrendamiento y aparcería, la tenencia directa presenta un coeficiente de `r formato_num(coef(ols_trab)["clase.mayoriadueño"], 3)`, equivalente a `r formato_pct(100 * (exp(coef(ols_trab)["clase.mayoriadueño"]) - 1), 1)` en $1+Y$; para otros regímenes de tenencia, el coeficiente es `r formato_num(coef(ols_trab)["clase.mayoriaespeciales"], 3)` y la diferencia alcanza `r formato_pct(100 * (exp(coef(ols_trab)["clase.mayoriaespeciales"]) - 1), 1)`. La coincidencia con el modelo de productividad de la tierra muestra que el hallazgo central no depende de medir el desempeño exclusivamente por hectárea.
 
-La superficie (β = 0,570), la educación (β = 0,473), la edad (β = 0,434) e internet (β = 0,375) registran asociaciones positivas (p < 0,001). Como las tres variables continuas están estandarizadas, sus coeficientes expresan cambios vinculados con una desviación estándar; no son porcentajes ni resultan directamente comparables con los indicadores binarios. El signo positivo de la superficie es compatible con economías de organización, especialización o mecanización parcial que favorecen el producto por trabajador en unidades mayores. Junto con su signo negativo en productividad de la tierra, reproduce el intercambio descrito por la literatura: las UPA pequeñas pueden usar intensivamente la superficie y, al mismo tiempo, alcanzar menor productividad laboral [@gollin2018farm]. Educación e internet son coherentes con el papel del capital humano y del acceso a información en la organización productiva, sin que la conexión equivalga automáticamente a innovación. La edad puede recoger experiencia acumulada, pero también características generacionales no observadas; el coeficiente no permite identificar cuál de ellas predomina.
+La superficie logarítmica estandarizada registra una asociación positiva y su término cuadrático es negativo. La productividad laboral aumenta con la escala, pero a un ritmo decreciente dentro del rango observado. Esta curvatura es coherente con economías de organización y mecanización parcial que elevan el producto por trabajador, acompañadas por rendimientos progresivamente menores de la expansión de escala [@gollin2018farm]. Debido al término cuadrático, los dos coeficientes deben interpretarse conjuntamente y no como efectos constantes aislados.
 
-La tenencia directa (β = -0,354; p < 0,001) y los otros regímenes de tenencia (β = -0,725; p < 0,001) vuelven a situarse por debajo del arrendamiento o aparcería. La mayor distancia de los otros regímenes de tenencia, y el hecho de que ambas diferencias aparezcan también en productividad de la tierra, indican un patrón estable dentro de la especificación OLS. Aun así, las categorías pueden condensar diferencias en orientación productiva, intensidad de trabajo, localización y acceso a mercados. En consecuencia, la evidencia contradice una lectura automática de superioridad productiva de la tenencia directa, pero no demuestra que sustituir un régimen por otro modifique por sí solo la productividad.
+Una vez representada la escala, fertilizantes y plaguicidas mantienen asociaciones positivas con la productividad laboral, mientras riego no presenta una diferencia estadísticamente discernible. Internet conserva una asociación positiva, aunque menor que en la productividad de la tierra. Esto sugiere que las tecnologías e insumos no se relacionan del mismo modo con la intensificación por hectárea y con el producto obtenido por trabajador. Las UPA encabezadas por mujeres muestran una diferencia condicionada de `r formato_pct(100 * (exp(coef(ols_trab)["sexoMujer"]) - 1), 1)` frente a las encabezadas por hombres. Educación secundaria presenta una asociación negativa frente a ninguna educación, mientras primaria y superior no ofrecen evidencia concluyente al 5 %. Estos patrones pueden reflejar diferencias de actividad, organización y acceso a recursos, pero el modelo no identifica los mecanismos que las originan.
 
 ```{r}
 #| label: tbl-ols-trabajo-cap7
@@ -921,6 +1624,8 @@ tabla_ols_trab <- broom::tidy(
     Sig. = estrellas_significancia(
       p.value
     ),
+    conf.low = estimate - 1.96 * std.error,
+    conf.high = estimate + 1.96 * std.error,
     p.value = formatear_pvalor(
       p.value
     ),
@@ -928,6 +1633,8 @@ tabla_ols_trab <- broom::tidy(
       estimate,
       3
     ),
+    conf.low = round(conf.low, 3),
+    conf.high = round(conf.high, 3),
     std.error = round(
       std.error,
       3
@@ -944,9 +1651,14 @@ tabla_ols_trab <- broom::tidy(
       "clase.mayoriadueño" = "Tenencia directa",
       "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
       "superficie_total_z" = "Superficie (z)",
+      "superficie_log_z" = "ln(1 + superficie) (z)",
+      "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
       "edad_z" = "Edad (z)",
       "internet" = "Internet",
-      "educacion_z" = "Educación (z)",
+      "educacionPrimaria" = "Educación: primaria",
+      "educacionSecundaria" = "Educación: secundaria",
+      "educacionSuperior" = "Educación: superior",
+      "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
       "plaguicida" = "Plaguicidas"
@@ -956,6 +1668,8 @@ tabla_ols_trab <- broom::tidy(
     Variable = term,
     Coeficiente = estimate,
     `Error estándar` = std.error,
+    `IC 95%` = conf.low,
+    `IC 95% sup.` = conf.high,
     Estadístico = statistic,
     `Valor p` = p.value,
     Sig.
@@ -975,9 +1689,95 @@ tabla_ols_trab |>
   )
 ```
 
+### Evolución de la asociación de tenencia
+
+La @tbl-modelos-progresivos-cap7 mantiene las mismas 22.075 UPA en todas las etapas. M1 incorpora solo tenencia; M2 añade escala con la forma funcional seleccionada para cada respuesta; M3 agrega edad, educación, sexo e internet; y M4 incorpora riego, fertilizantes y plaguicidas. Los movimientos de los coeficientes describen cambios en la asociación condicionada y no una descomposición causal.
+
+```{r}
+#| label: tbl-modelos-progresivos-cap7
+#| tbl-cap: "Evolución de los coeficientes de tenencia en modelos progresivos"
+
+resultados_progresivos |>
+  dplyr::transmute(
+    Resultado,
+    Modelo = Etapa,
+    Tenencia,
+    Coeficiente = formato_num(estimate, digits = 3),
+    `IC 95%` = paste0(
+      "[",
+      formato_num(conf.low, digits = 3),
+      "; ",
+      formato_num(conf.high, digits = 3),
+      "]"
+    ),
+    `Valor p` = vapply(
+      p.value,
+      formatear_pvalor,
+      character(1)
+    ),
+    R2 = formato_num(R2, digits = 3)
+  ) |>
+  tabla_usc(
+    font_size = 7.2,
+    scale_down = TRUE
+  ) |>
+  nota_tabla(
+    nota = "M1: tenencia; M2: + escala; M3: + edad, educación, sexo e internet; M4: + riego, fertilizantes y plaguicidas. Errores estándar HC1. Referencia: arrendamiento y aparcería. N = 22.075 en todos los modelos.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+En productividad de la tierra, la diferencia de tenencia directa pasa de `r formato_num(coef(modelos_progresivos_sup$M1)["clase.mayoriadueño"], 3)` en M1 a `r formato_num(coef(ols_sup)["clase.mayoriadueño"], 3)` en M4. La mayor atenuación ocurre al añadir las tecnologías: parte de la brecha bruta coincide, por tanto, con diferencias observadas de adopción, sin que ello constituya una descomposición causal. En productividad del trabajo, la incorporación de escala cambia el coeficiente de `r formato_num(coef(modelos_progresivos_trab$M1)["clase.mayoriadueño"], 3)` a `r formato_num(coef(modelos_progresivos_trab$M2)["clase.mayoriadueño"], 3)` y los controles restantes lo estabilizan en `r formato_num(coef(ols_trab)["clase.mayoriadueño"], 3)`. Las diferencias de otros regímenes de tenencia permanecen negativas en todas las etapas y en ambas respuestas. La persistencia del signo después de incorporar bloques conceptualmente distintos es más informativa que cualquiera de las estimaciones aisladas; la @fig-coeficientes-progresivos-cap7 representa esta evolución con sus intervalos de confianza.
+
+```{r}
+#| label: fig-coeficientes-progresivos-cap7
+#| fig-cap: "Estabilidad de los coeficientes de tenencia entre modelos progresivos"
+#| fig-width: 6.5
+#| fig-height: 4.4
+#| fig-pos: htbp
+
+ggplot2::ggplot(
+  resultados_progresivos,
+  ggplot2::aes(
+    x = Etapa,
+    y = estimate,
+    color = Tenencia,
+    group = Tenencia
+  )
+) +
+  ggplot2::geom_hline(
+    yintercept = 0,
+    color = "grey55",
+    linewidth = 0.4
+  ) +
+  ggplot2::geom_errorbar(
+    ggplot2::aes(
+      ymin = conf.low,
+      ymax = conf.high
+    ),
+    width = 0.08,
+    linewidth = 0.55
+  ) +
+  ggplot2::geom_point(size = 2) +
+  ggplot2::geom_line(linewidth = 0.6) +
+  ggplot2::facet_wrap(~ Resultado, scales = "free_y") +
+  ggplot2::scale_color_manual(
+    values = c(
+      "Tenencia directa" = paleta_figuras_tesis["principal"],
+      "Otros regímenes de tenencia" = paleta_figuras_tesis["acento"]
+    )
+  ) +
+  ggplot2::labs(
+    x = "Especificación",
+    y = "Coeficiente e IC 95 %",
+    color = "Comparación frente a\narrendamiento y aparcería"
+  ) +
+  tema_figura_tesis
+```
+
 ### Evaluación del ajuste de los modelos lineales
 
-Los indicadores de ajuste de la @tbl-ajuste-ols-cap7 muestran que el conjunto de covariables explica el 7,1 % de la variación de la productividad de la tierra y el 9,8 % de la productividad del trabajo. Estos valores no invalidan las asociaciones estimadas, pero delimitan su alcance: la mayor parte de las diferencias entre UPA permanece fuera de la especificación. El marco teórico permite considerar la calidad del suelo, la composición de cultivos, la infraestructura, la asistencia técnica y las condiciones agroclimáticas como posibles fuentes de esa heterogeneidad; al no estar incorporadas de manera explícita, no puede cuantificarse su contribución ni asignárseles el residuo.
+Los indicadores de la @tbl-ajuste-ols-cap7 muestran que las covariables explican `r formato_pct(100 * summary(ols_sup)$r.squared, 1)` de la variación de la productividad de la tierra y `r formato_pct(100 * summary(ols_trab)$r.squared, 1)` de la productividad del trabajo. El primer valor confirma que una proporción amplia de la heterogeneidad por hectárea permanece asociada con composición productiva, calidad del suelo, infraestructura y otras dimensiones no observadas explícitamente. El segundo aumenta de forma sustantiva al representar la escala laboral con logaritmo y curvatura cuadrática. El objetivo de los modelos continúa siendo estimar asociaciones condicionadas, no predecir completamente la productividad de cada UPA.
 
 Los criterios AIC y BIC se reportan como indicadores de ajuste dentro de cada familia de modelos. Ambos modelos OLS fueron estimados sobre 22.075 observaciones con estados `SI` o `NO` en los tres indicadores y covariables completas. La comparación directa entre productividad de la tierra y productividad del trabajo no es metodológicamente equivalente porque corresponden a variables dependientes distintas.
 
@@ -1030,19 +1830,126 @@ tabla_ajuste_ols |>
   )
 ```
 
+### Sensibilidades prioritarias e influencia
+
+La @tbl-sensibilidad-ols-cap7 resume tres comprobaciones sin modificar la muestra maestra. Omitir sexo casi no altera productividad de la tierra, pero modifica parcialmente las brechas laborales. La educación ordinal estandarizada produce coeficientes de tenencia cercanos a la forma categórica; se conserva esta última porque evita imponer una pendiente uniforme entre niveles. La ponderación por `fact_exp_fin` mantiene signos y significancia, aunque modifica magnitudes. El modelo principal estima asociaciones dentro de la muestra analítica; la versión ponderada aproxima una asociación orientada a la población representada por el factor, pero no reproduce por sí sola todo el diseño complejo de encuesta.
+
+```{r}
+#| label: tbl-sensibilidad-ols-cap7
+#| tbl-cap: "Sensibilidad de los coeficientes de tenencia en los modelos OLS"
+
+resultados_sensibilidad_ols |>
+  dplyr::transmute(
+    Resultado,
+    Sensibilidad,
+    Tenencia,
+    Coeficiente = formato_num(estimate, digits = 3),
+    `IC 95%` = paste0(
+      "[",
+      formato_num(conf.low, digits = 3),
+      "; ",
+      formato_num(conf.high, digits = 3),
+      "]"
+    ),
+    `Valor p` = vapply(
+      p.value,
+      formatear_pvalor,
+      character(1)
+    )
+  ) |>
+  tabla_usc(
+    font_size = 7.2,
+    scale_down = TRUE
+  ) |>
+  nota_tabla(
+    nota = "Principal: educación categórica y sexo. Ponderado: mínimos cuadrados ponderados (WLS) con fact_exp_fin y HC1; no equivale a la reconstrucción integral del diseño complejo. Referencia: arrendamiento y aparcería. N = 22.075.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+La @tbl-influencia-ols-cap7 sintetiza los diagnósticos de influencia. Estos identifican observaciones con leverage y residuos inusuales, como es esperable en una base agropecuaria heterogénea. El umbral Cook > 4/n señala casos para inspección, no para eliminación. Los DFBETAs muestran que ninguna observación individual domina por sí sola los coeficientes de tenencia; por tanto, se conserva íntegramente la muestra validada y se interpreta la sensibilidad como incertidumbre sobre la magnitud, no como justificación para depurar casos.
+
+```{r}
+#| label: tbl-influencia-ols-cap7
+#| tbl-cap: "Diagnóstico sintético de influencia en los modelos OLS"
+
+tabla_influencia |>
+  dplyr::mutate(
+    `Cook > 4/n` = formato_num(`Cook > 4/n`, digits = 0),
+    `Cook máximo` = formato_num(`Cook máximo`, digits = 3),
+    `Máx. |DFBETA| tenencia` = formato_num(
+      `Máx. |DFBETA| tenencia`,
+      digits = 3
+    )
+  ) |>
+  tabla_usc(font_size = 8) |>
+  nota_tabla(
+    nota = "Los umbrales son diagnósticos. No se excluyó ninguna UPA ni se alteró la base maestra.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+La @fig-predicciones-tenencia-cap7 traduce los coeficientes a medias ajustadas de $\ln(1+Y)$. Para cada régimen se asignó esa categoría a todas las UPA y se mantuvo la distribución observada de las restantes covariables. La figura confirma que arrendamiento y aparcería presenta el nivel ajustado más alto en ambas productividades, seguido por tenencia directa y otros regímenes de tenencia.
+
+```{r}
+#| label: fig-predicciones-tenencia-cap7
+#| fig-cap: "Productividad ajustada por régimen predominante de tenencia"
+#| fig-width: 6.5
+#| fig-height: 4.2
+
+ggplot2::ggplot(
+  predicciones_tenencia,
+  ggplot2::aes(
+    x = Tenencia,
+    y = Predicción,
+    color = Tenencia
+  )
+) +
+  ggplot2::geom_errorbar(
+    ggplot2::aes(
+      ymin = conf.low,
+      ymax = conf.high
+    ),
+    width = 0.10,
+    linewidth = 0.6
+  ) +
+  ggplot2::geom_point(size = 2.4) +
+  ggplot2::facet_wrap(~ Resultado, scales = "free_y") +
+  ggplot2::scale_color_manual(
+    values = c(
+      "Arrendamiento y aparcería" = colores_tenencia_tesis[1],
+      "Tenencia directa" = colores_tenencia_tesis[2],
+      "Otros regímenes de tenencia" = colores_tenencia_tesis[3]
+    )
+  ) +
+  ggplot2::labs(
+    x = NULL,
+    y = "Media ajustada de ln(1 + productividad)",
+    color = NULL
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      angle = 20,
+      hjust = 1
+    ),
+    legend.position = "none"
+  ) +
+  tema_figura_tesis
+```
+
 ## Modelos multinivel y heterogeneidad territorial
 
 Las actividades agropecuarias se desarrollan dentro de contextos territoriales específicos caracterizados por diferencias en infraestructura, acceso a mercados, disponibilidad de servicios, condiciones agroecológicas e instituciones locales. Estas características pueden generar similitudes entre productores ubicados dentro de una misma provincia y producir dependencia entre observaciones, situación que no es considerada por los modelos lineales convencionales.
 
-Con el propósito de incorporar esta dimensión espacial, se estimaron modelos multinivel con interceptos aleatorios provinciales[^intercepto]. Esta estrategia proviene de la estructura jerárquica de los datos: las UPA se agrupan dentro de provincias. El modelo descompone la variabilidad de la respuesta transformada en dos componentes: uno asociado a diferencias entre UPA dentro de provincias y otro asociado a diferencias promedio entre provincias.
+Para representar esta dimensión espacial se estimaron modelos multinivel con interceptos aleatorios provinciales[^intercepto]. La estructura responde al agrupamiento de las UPA dentro de provincias y descompone la variabilidad de la respuesta transformada en dos componentes: diferencias entre UPA de una misma provincia y diferencias promedio entre provincias.
 
 [^intercepto]: Los interceptos aleatorios provinciales permiten que cada provincia tenga un nivel inicial propio de productividad transformada. Esta estructura captura heterogeneidad territorial no observada que no se encuentra explícitamente incluida como covariable, sin atribuir causalidad a la provincia por sí misma.
 
 Como paso inicial, se estimaron modelos nulos sin variables explicativas para calcular el ICC. Este indicador mide la proporción de la varianza total de la respuesta transformada atribuible al nivel provincial antes de incorporar covariables.
 
-Los resultados reportados en la @tbl-icc-multinivel-cap7 muestran que el ICC alcanza 0,150 para la productividad de la tierra y 0,092 para la productividad del trabajo. Esto indica que aproximadamente el 15,0 % y el 9,2 % de la variabilidad total, respectivamente, se asocia a diferencias entre provincias antes de incorporar covariables dentro de la muestra tecnológica aplicable.
+Los resultados de la @tbl-icc-multinivel-cap7 muestran un ICC de 0,150 para la productividad de la tierra y de 0,092 para la productividad del trabajo. Antes de incorporar covariables, las diferencias promedio entre provincias reúnen así el 15,0 % y el 9,2 % de la variabilidad total de cada respuesta, respectivamente, dentro de la muestra tecnológica aplicable.
 
-El ICC de 0,150 para la productividad de la tierra representa una concentración territorial mayor que el 0,092 estimado para la productividad del trabajo. Aunque la mayor parte de la variabilidad se encuentra entre UPA de una misma provincia, ambas proporciones son sustantivamente relevantes: incluso un ICC de 0,092 implica que unidades ubicadas en una misma provincia comparten parte de su comportamiento y que la independencia completa asumida por una especificación exclusivamente OLS resulta incompleta. Los valores no atribuyen la variación a factores provinciales concretos. Infraestructura, acceso a mercados, condiciones agroecológicas, especialización e instituciones locales constituyen mecanismos contextuales plausibles según los capítulos precedentes, pero no fueron identificados separadamente por estos modelos.
+La concentración territorial es mayor para la productividad de la tierra, pero en ambas respuestas las UPA de una misma provincia comparten una fracción apreciable de su comportamiento. Esto justifica representar el agrupamiento que OLS deja fuera de su estructura de varianza. Los capítulos precedentes describen diferencias provinciales de infraestructura, acceso a mercados, condiciones agroecológicas, especialización e instituciones; el ICC indica que existe un componente territorial compartido, aunque no permite repartirlo entre esos factores.
 
 ```{r}
 #| label: modelos-multinivel-cap7
@@ -1070,7 +1977,8 @@ ml_sup <- lme4::lmer(
     superficie_total_z +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida +
@@ -1082,10 +1990,12 @@ ml_sup <- lme4::lmer(
 ml_trab <- lme4::lmer(
   ln_prod_trab ~
     clase.mayoria +
-    superficie_total_z +
+    superficie_log_z +
+    I(superficie_log_z^2) +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida +
@@ -1093,11 +2003,32 @@ ml_trab <- lme4::lmer(
   data = base_ml_cap7,
   REML = FALSE
 )
+
+fe_sup <- stats::lm(
+  update(
+    formula(ols_sup),
+    . ~ . + territorio
+  ),
+  data = base_ml_cap7
+)
+
+fe_trab <- stats::lm(
+  update(
+    formula(ols_trab),
+    . ~ . + territorio
+  ),
+  data = base_ml_cap7
+)
+```
+
+```{=latex}
+\suppressfloats[t]
 ```
 
 ```{r}
 #| label: tbl-icc-multinivel-cap7
 #| tbl-cap: "ICC de los modelos nulos"
+#| tbl-pos: t
 
 extraer_icc <- function(modelo, nombre_modelo) {
   icc_modelo <- performance::icc(modelo)
@@ -1140,9 +2071,9 @@ tabla_icc |>
 
 Con base en esta evidencia, se estimaron modelos multinivel con interceptos aleatorios provinciales. Esta especificación permite analizar asociaciones condicionales entre las covariables y la productividad transformada, controlando simultáneamente la variabilidad atribuible al nivel provincial. El fundamento metodológico es que, si existen unidades agrupadas territorialmente, ignorar esa dependencia puede producir una representación incompleta de la estructura de varianza.
 
-Al incorporar el intercepto provincial, fertilizantes (β = 0,397), plaguicidas (β = 0,383), internet (β = 0,382), riego (β = 0,200) y educación (β = 0,095) conservan asociaciones positivas con la productividad de la tierra (p < 0,001; @tbl-ml-superficie-cap7). La continuidad de los signos indica que estos vínculos no dependen únicamente de diferencias promedio entre provincias. La atenuación de riego y fertilizantes respecto de OLS sugiere, con cautela, que una parte de sus asociaciones estaba relacionada con el contexto territorial compartido; plaguicidas y educación, en cambio, no se atenúan de la misma manera. Esta comparación es válida porque ambos enfoques utilizan la misma respuesta y muestra, aunque los coeficientes siguen representando asociaciones condicionadas.
+Al incorporar el intercepto provincial, la tenencia directa (`r formato_num(lme4::fixef(ml_sup)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(lme4::fixef(ml_sup)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería (@tbl-ml-superficie-cap7). La proximidad con OLS indica que la diferencia de tenencia no se explica por completo mediante la distribución provincial de las UPA.
 
-La superficie estandarizada mantiene el signo inverso (β = -0,328; p < 0,001), por lo que la relación entre mayor escala y menor producto por hectárea persiste después de reconocer la agrupación provincial. La edad continúa sin evidencia suficiente de asociación (β = -0,019; p = 0,282). En el eje de tenencia, la tenencia directa (β = -0,256; p < 0,001) y los otros regímenes de tenencia (β = -0,398; p < 0,001) permanecen por debajo del arrendamiento o aparcería. La práctica invariancia del coeficiente de la tenencia directa frente a OLS refuerza la estabilidad estadística de la diferencia, pero no resuelve la posible selección de las UPA en cada régimen ni convierte la asociación en un efecto de la titularidad.
+La superficie conserva el signo negativo. Riego, fertilizantes, plaguicidas e internet mantienen asociaciones positivas, aunque riego y fertilizantes se atenúan al reconocer el contexto provincial compartido. Educación secundaria y superior conservan diferencias positivas frente a ninguna educación; edad y sexo no aportan diferencias concluyentes. El modelo confirma así una asociación conjunta entre régimen institucional, escala, tecnologías y productividad por hectárea, con un componente territorial adicional.
 
 ```{r}
 #| label: tbl-ml-superficie-cap7
@@ -1178,9 +2109,14 @@ tabla_ml_sup <- broom.mixed::tidy(
         "clase.mayoriadueño" = "Tenencia directa",
         "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
         "superficie_total_z" = "Superficie (z)",
+        "superficie_log_z" = "ln(1 + superficie) (z)",
+        "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
         "edad_z" = "Edad (z)",
         "internet" = "Internet",
-        "educacion_z" = "Educación (z)",
+        "educacionPrimaria" = "Educación: primaria",
+        "educacionSecundaria" = "Educación: secundaria",
+        "educacionSuperior" = "Educación: superior",
+        "sexoMujer" = "Sexo: mujer",
         "riego" = "Riego",
         "fertilizante" = "Fertilizantes",
         "plaguicida" = "Plaguicidas"
@@ -1211,9 +2147,9 @@ tabla_ml_sup |>
   )
 ```
 
-En productividad del trabajo, plaguicidas (β = 0,433), superficie (β = 0,550), educación (β = 0,427), edad (β = 0,380) e internet (β = 0,325) mantienen signos positivos (p < 0,001; @tbl-ml-trabajo-cap7). Riego (β = -0,185; p < 0,001) y fertilizantes (β = -0,107; p = 0,004) conservan signos negativos, pero sus magnitudes se reducen de forma marcada frente a OLS. El cambio señala que la distribución provincial explica parte, aunque no toda, de la asociación entre estas prácticas y el producto por trabajador. No permite afirmar qué característica provincial interviene ni que el vínculo restante sea causal.
+En productividad del trabajo, la forma cóncava de la superficie se mantiene con alta precisión (@tbl-ml-trabajo-cap7). Fertilizantes y plaguicidas conservan asociaciones positivas; riego e internet dejan de ser estadísticamente discernibles al incorporar el intercepto provincial. El sexo femenino mantiene una diferencia negativa moderada, y educación secundaria continúa por debajo de ninguna educación dentro de esta especificación condicionada.
 
-La tenencia directa (β = -0,272; p < 0,001) y los otros regímenes de tenencia (β = -0,648; p < 0,001) continúan por debajo del arrendamiento o aparcería. La persistencia de signo y significancia en ambas productividades indica que el patrón no desaparece al introducir heterogeneidad provincial; su menor magnitud en productividad laboral sí muestra que una parte de la diferencia coincide con la composición territorial de los regímenes. En términos de la pregunta de investigación, la tenencia está asociada con el desempeño aun después de controlar características observables y contexto provincial, pero el diseño transversal no permite distinguir un efecto propio del régimen de las condiciones productivas no observadas que este representa.
+La tenencia directa (`r formato_num(lme4::fixef(ml_trab)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(lme4::fixef(ml_trab)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería. La atenuación respecto de OLS muestra que una parte de las brechas laborales coincide con la composición provincial, pero su persistencia confirma que el patrón central no desaparece al reconocer la estructura territorial.
 
 ```{r}
 #| label: tbl-ml-trabajo-cap7
@@ -1249,9 +2185,14 @@ tabla_ml_trab <- broom.mixed::tidy(
         "clase.mayoriadueño" = "Tenencia directa",
         "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
         "superficie_total_z" = "Superficie (z)",
+        "superficie_log_z" = "ln(1 + superficie) (z)",
+        "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
         "edad_z" = "Edad (z)",
         "internet" = "Internet",
-        "educacion_z" = "Educación (z)",
+        "educacionPrimaria" = "Educación: primaria",
+        "educacionSecundaria" = "Educación: secundaria",
+        "educacionSuperior" = "Educación: superior",
+        "sexoMujer" = "Sexo: mujer",
         "riego" = "Riego",
         "fertilizante" = "Fertilizantes",
         "plaguicida" = "Plaguicidas"
@@ -1282,15 +2223,15 @@ tabla_ml_trab |>
   )
 ```
 
-Si bien los modelos multinivel permiten identificar asociaciones condicionales entre covariables y productividad agropecuaria, también proporcionan información sobre la magnitud de la variabilidad territorial que permanece una vez incorporadas las covariables de interés. En este contexto, resulta pertinente volver a examinar el ICC, aunque su interpretación difiere de la realizada a partir de los modelos nulos.
+Además de estimar asociaciones condicionadas, los modelos multinivel muestran cuánta variabilidad territorial permanece después de incorporar las covariables. Por ello se examina nuevamente el ICC, ahora con una interpretación distinta de la correspondiente a los modelos nulos.
 
 Mientras que el ICC de los modelos nulos cuantifica la proporción de variabilidad atribuible a provincias antes de considerar covariables, el ICC de los modelos completos refleja la variabilidad territorial residual después de controlar por tenencia, escala, edad, educación, internet, riego, fertilizantes y plaguicidas.
 
-Los resultados de la @tbl-varianza-multinivel-cap7 muestran que la varianza entre UPA dentro de las provincias alcanza 3,376 en el modelo de tierra y 5,012 en el laboral, por encima de la varianza entre provincias (0,450 y 0,390). Tras incluir las covariables, el componente provincial representa el 11,8 % y el 7,2 % de la variación residual, respectivamente. La reducción desde los modelos nulos indica que las características observadas explican una fracción de las diferencias territoriales, pero no las agotan. Al mismo tiempo, el predominio de la varianza intraprovincial confirma la fuerte heterogeneidad de las UPA aun dentro de un mismo territorio.
+La @tbl-varianza-multinivel-cap7 muestra que la mayor parte de la variabilidad residual permanece entre UPA de una misma provincia. El ICC completo alcanza `r formato_num(performance::icc(ml_sup)$ICC_adjusted, 3)` en productividad de la tierra y `r formato_num(performance::icc(ml_trab)$ICC_adjusted, 3)` en productividad del trabajo. En ambas respuestas persiste, por tanto, una fracción territorial sustantiva después de incorporar las covariables.
 
-Como resultado, el ICC residual se sitúa en 0,118 para la productividad de la tierra y en 0,072 para la productividad del trabajo[^varianza]. La incorporación de covariables reduce la heterogeneidad territorial inicial, pero no la elimina.
-
-[^varianza]: El ICC se calcula como $ICC = \sigma^2_{territorial}/(\sigma^2_{territorial} + \sigma^2_{residual})$. En los modelos estimados, $ICC = 0,450/(0,450 + 3,376) = 0,118$ para la productividad de la tierra y $ICC = 0,390/(0,390 + 5,012) = 0,072$ para la productividad del trabajo.
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-varianza-multinivel-cap7
@@ -1351,19 +2292,18 @@ tabla_var |>
   )
 ```
 
-Si bien los componentes de varianza y los valores del ICC muestran heterogeneidad territorial residual, estos indicadores no permiten determinar por sí solos si la incorporación de interceptos aleatorios provinciales mejora el ajuste relativo de los modelos. Por esta razón, resulta pertinente complementar el análisis mediante una comparación formal del ajuste alcanzado por las especificaciones lineales convencionales y los modelos multinivel.
+Los componentes de varianza y el ICC documentan heterogeneidad territorial residual, pero no establecen por sí solos si los interceptos provinciales mejoran el ajuste. La comparación siguiente contrasta, por ello, las especificaciones lineales y multinivel estimadas para una misma respuesta y muestra.
 
 Con este propósito, se examinan los AIC y BIC, así como la log-verosimilitud, indicadores ampliamente utilizados para evaluar la calidad relativa del ajuste entre modelos estimados sobre la misma variable dependiente y la misma muestra analítica. En términos generales, valores inferiores de AIC y BIC, junto con mayores niveles de log-verosimilitud, sugieren un mejor equilibrio entre ajuste y parsimonia dentro de ese marco de comparación.
 
-Los resultados reportados en la @tbl-comparacion-ols-multinivel-cap7 muestran valores inferiores de AIC y BIC en los modelos multinivel. En productividad de la tierra, el AIC disminuye de 91.108 a 89.633 y el BIC de 91.196 a 89.729. Para productividad del trabajo, el AIC se reduce de 99.555 a 98.342 y el BIC de 99.643 a 98.438.
-
-Asimismo, la log-verosimilitud[^verosimilitud] aumenta de -45.543 a -44.805 para productividad de la tierra y de -49.766 a -49.159 para productividad del trabajo. En conjunto, los interceptos aleatorios provinciales mejoran el ajuste relativo dentro de cada respuesta y de la misma muestra.
+La @tbl-comparacion-ols-multinivel-cap7 registra AIC y BIC inferiores en los modelos multinivel para ambas respuestas, junto con una mayor log-verosimilitud[^verosimilitud]. Dentro de cada variable dependiente y sobre la misma muestra, la representación del intercepto provincial ofrece un mejor ajuste que OLS.
 
 [^verosimilitud]: La log-verosimilitud mide el grado en que un modelo reproduce los datos observados. Valores más altos (o menos negativos) indican un mejor ajuste relativo cuando se comparan modelos estimados sobre la misma muestra.
 
 ```{r}
 #| label: tbl-comparacion-ols-multinivel-cap7
 #| tbl-cap: "Comparación de ajuste entre modelos OLS y multinivel"
+#| tbl-pos: "!htp"
 
 tabla_comp_ols_ml <- tibble::tibble(
   Modelo = c(
@@ -1407,7 +2347,8 @@ tabla_comp_ols_ml <- tibble::tibble(
 tabla_comp_ols_ml |>
   tabla_usc(
     digits = 3,
-    font_size = 8
+    font_size = 8,
+    hold_position = FALSE
   ) |>
   nota_tabla(
     nota =
@@ -1417,13 +2358,182 @@ tabla_comp_ols_ml |>
   )
 ```
 
-Una vez constatado que la incorporación de interceptos aleatorios provinciales mejora el ajuste de los modelos, resulta pertinente examinar la distribución espacial de dichos efectos territoriales. Aunque los coeficientes estimados permiten resumir asociaciones promedio con la productividad agropecuaria, los efectos aleatorios recogen heterogeneidad territorial no observada que diferencia sistemáticamente a unas provincias de otras.
+Como sensibilidad territorial, se sustituyó el intercepto aleatorio por indicadores fijos provinciales. Los coeficientes de tenencia permanecieron prácticamente iguales (@tbl-robustez-territorial-cap7). Esta convergencia respalda el resultado principal y permite mantener el multinivel como especificación preferida, dado que cuantifica explícitamente la varianza territorial y aplica contracción parcial a las estimaciones provinciales.
 
-En este contexto, la representación cartográfica de los efectos territoriales estimados permite visualizar la heterogeneidad espacial residual que permanece después de controlar por las características de los productores y de las unidades productivas. Efectos territoriales estimados mayores que cero indican provincias con niveles de productividad superiores a los esperados según las variables incluidas en el modelo, mientras que efectos menores que cero reflejan un desempeño inferior al previsto por dichas características.
+```{=latex}
+\suppressfloats[b]
+```
 
-La @fig-multinivel-tierra-cap7 evidencia heterogeneidad espacial en los efectos territoriales de productividad de la tierra. Pastaza, Orellana, Napo, Santa Elena y Sucumbíos presentan los efectos negativos más marcados una vez controladas las covariables observables.
+```{r}
+#| label: tbl-robustez-territorial-cap7
+#| tbl-cap: "Robustez de los coeficientes de tenencia a la estructura territorial"
 
-Por el contrario, Cotopaxi, Tungurahua, Manabí, Chimborazo, Pichincha y Santo Domingo presentan los efectos positivos más altos. Estos resultados son consistentes con factores territoriales no observados potencialmente relacionados con condiciones agroecológicas, infraestructura, mercados o especialización productiva.
+tabla_robustez_territorial <- tibble::tibble(
+  Resultado = rep(
+    c(
+      "Productividad de la tierra",
+      "Productividad del trabajo"
+    ),
+    each = 2
+  ),
+  Tenencia = rep(
+    c(
+      "Tenencia directa",
+      "Otros regímenes de tenencia"
+    ),
+    times = 2
+  ),
+  Multinivel = c(
+    lme4::fixef(ml_sup)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )],
+    lme4::fixef(ml_trab)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )]
+  ),
+  `Efectos fijos provinciales` = c(
+    stats::coef(fe_sup)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )],
+    stats::coef(fe_trab)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )]
+  )
+)
+
+tabla_robustez_territorial |>
+  dplyr::mutate(
+    dplyr::across(
+      c(Multinivel, `Efectos fijos provinciales`),
+      ~ formato_num(.x, digits = 3)
+    )
+  ) |>
+  tabla_usc(font_size = 8) |>
+  nota_tabla(
+    nota = "Ambos modelos utilizan la misma muestra y controles. Referencia: arrendamiento y aparcería.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+```{r}
+#| label: efectos-provinciales-intervalos-cap7
+#| include: FALSE
+
+extraer_efectos_intervalos <- function(modelo, resultado) {
+  efectos <- lme4::ranef(
+    modelo,
+    condVar = TRUE
+  )$territorio
+  varianzas <- attr(efectos, "postVar")
+
+  tibble::tibble(
+    territorio = rownames(efectos),
+    efecto = efectos[["(Intercept)"]],
+    error = sqrt(varianzas[1, 1, ]),
+    conf.low = efecto - 1.96 * error,
+    conf.high = efecto + 1.96 * error,
+    Resultado = resultado
+  )
+}
+
+efectos_provinciales_intervalos <- dplyr::bind_rows(
+  extraer_efectos_intervalos(
+    ml_sup,
+    "Productividad de la tierra"
+  ),
+  extraer_efectos_intervalos(
+    ml_trab,
+    "Productividad del trabajo"
+  )
+) |>
+  dplyr::left_join(
+    mapa_provincias |>
+      sf::st_drop_geometry() |>
+      dplyr::distinct(
+        territorio,
+        Provincia = DPA_DESPRO
+      ),
+    by = "territorio"
+  ) |>
+  dplyr::left_join(
+    base_ml_cap7 |>
+      dplyr::count(
+        territorio,
+        name = "UPA"
+      ),
+    by = "territorio"
+  ) |>
+  dplyr::mutate(
+    Provincia_muestra = paste0(
+      Provincia,
+      " (n = ",
+      UPA,
+      ")"
+    )
+  ) |>
+  dplyr::group_by(Resultado) |>
+  dplyr::mutate(
+    Provincia_orden = forcats::fct_reorder(
+      Provincia_muestra,
+      efecto
+    )
+  ) |>
+  dplyr::ungroup()
+```
+
+La @fig-caterpillar-provincial-cap7 muestra los efectos provinciales con sus intervalos de confianza condicionales. La contracción hacia el promedio y la amplitud de los intervalos impiden interpretar el orden como un ranking exacto. Los efectos resumen heterogeneidad territorial residual; no identifican qué característica de cada provincia la origina.
+
+```{r}
+#| label: fig-caterpillar-provincial-cap7
+#| fig-cap: "Efectos provinciales estimados e intervalos de confianza condicionales"
+#| fig-width: 7
+#| fig-height: 6.2
+
+ggplot2::ggplot(
+  efectos_provinciales_intervalos,
+  ggplot2::aes(
+    x = efecto,
+    y = Provincia_orden
+  )
+) +
+  ggplot2::geom_vline(
+    xintercept = 0,
+    color = "grey55",
+    linewidth = 0.4
+  ) +
+  ggplot2::geom_errorbarh(
+    ggplot2::aes(
+      xmin = conf.low,
+      xmax = conf.high
+    ),
+    height = 0.12,
+    linewidth = 0.45,
+    color = paleta_figuras_tesis["secundario"]
+  ) +
+  ggplot2::geom_point(
+    size = 1.7,
+    color = paleta_figuras_tesis["principal"]
+  ) +
+  ggplot2::facet_wrap(
+    ~ Resultado,
+    scales = "free_x"
+  ) +
+  ggplot2::labs(
+    x = "Efecto provincial e IC 95 %",
+    y = NULL
+  ) +
+  tema_figura_tesis
+```
+
+Comprobada la mejora de ajuste, el análisis se dirige a la distribución de los efectos territoriales. Mientras los coeficientes resumen asociaciones promedio, los interceptos aleatorios recogen diferencias provinciales residuales después de considerar las covariables del modelo.
+
+La representación cartográfica permite visualizar esa heterogeneidad espacial residual. Efectos estimados mayores que cero corresponden a provincias cuya productividad transformada supera el nivel previsto por las características incluidas; valores menores que cero indican el patrón opuesto.
+
+La @fig-multinivel-tierra-cap7 evidencia una distribución espacial definida de los efectos sobre productividad de la tierra. Los valores positivos identifican provincias cuyo intercepto condicionado se sitúa por encima del promedio nacional de la muestra, y los negativos indican la situación inversa. La figura complementa, pero no sustituye, los intervalos de la @fig-caterpillar-provincial-cap7.
 
 ```{r}
 #| label: mapa_sin_galapagos
@@ -1512,11 +2622,9 @@ ggplot2::ggplot() +
   )
 ```
 
-Aunque los efectos territoriales asociados a la productividad de la tierra permiten identificar provincias con ventajas o desventajas persistentes una vez controladas las características observables de las explotaciones agropecuarias, resulta pertinente examinar si estos patrones espaciales se reproducen cuando la productividad se evalúa en función del factor trabajo. Este análisis permite determinar si la influencia del contexto territorial se manifiesta de manera similar sobre distintas dimensiones del desempeño productivo o si, por el contrario, existen diferencias en función del indicador considerado.
+El mapa de productividad de la tierra no anticipa necesariamente el patrón laboral. Comparar ambas respuestas permite establecer si las diferencias provinciales residuales se reproducen cuando el resultado se expresa por trabajador o si cada dimensión del desempeño presenta una geografía propia.
 
-La @fig-multinivel-trabajo-cap7 muestra un patrón parcialmente distinto. Pastaza, Imbabura, Napo, Tungurahua, Chimborazo y Orellana presentan los efectos negativos más pronunciados después de controlar las covariables observables.
-
-Los efectos positivos más altos corresponden a Manabí, Zamora Chinchipe, El Oro, Santo Domingo, Esmeraldas y Carchi. Estas diferencias territoriales no observadas se asocian con el aprovechamiento del trabajo, sin permitir atribuciones causales.
+La @fig-multinivel-trabajo-cap7 muestra una configuración parcialmente distinta para productividad laboral. Esta diferencia confirma que el contexto provincial no se relaciona de la misma forma con el aprovechamiento de la superficie y del trabajo. Los mapas deben leerse como heterogeneidad residual condicionada y no como efectos causales de la provincia.
 
 ```{r}
 #| label: fig-multinivel-trabajo-cap7
@@ -1621,9 +2729,11 @@ base_sfa_cap7 <- Base_cap7 |>
     ln_prod_trab,
     clase.mayoria,
     superficie_total_z,
+    superficie_log_z,
     edad_z,
     internet,
-    educacion_z,
+    educacion,
+    sexo,
     riego,
     fertilizante,
     plaguicida
@@ -1631,12 +2741,12 @@ base_sfa_cap7 <- Base_cap7 |>
   tidyr::drop_na()
 
 matriz_sfa_base <- stats::model.matrix(
-  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion_z,
+  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion + sexo,
   data = base_sfa_cap7
 )
 
 matriz_sfa_insumos <- stats::model.matrix(
-  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion_z +
+  ~ clase.mayoria + superficie_total_z + edad_z + internet + educacion + sexo +
     riego + fertilizante + plaguicida,
   data = base_sfa_cap7
 )
@@ -1653,7 +2763,8 @@ sfa_sup <- frontier::sfa(
     superficie_total_z +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida,
@@ -1663,24 +2774,46 @@ sfa_sup <- frontier::sfa(
 sfa_trab <- frontier::sfa(
   ln_prod_trab ~
     clase.mayoria +
-    superficie_total_z +
+    superficie_log_z +
+    I(superficie_log_z^2) +
     edad_z +
     internet +
-    educacion_z +
+    educacion +
+    sexo +
     riego +
     fertilizante +
     plaguicida,
   data = base_sfa_cap7
 )
+
+ols_sup_muestra_sfa <- stats::lm(
+  formula(ols_sup),
+  data = base_sfa_cap7
+)
+
+ols_trab_muestra_sfa <- stats::lm(
+  formula(ols_trab),
+  data = base_sfa_cap7
+)
+
+sfa_sup_truncada <- frontier::sfa(
+  formula(ols_sup),
+  data = base_sfa_cap7,
+  truncNorm = TRUE
+)
+
+sfa_trab_truncada <- frontier::sfa(
+  formula(ols_trab),
+  data = base_sfa_cap7,
+  truncNorm = TRUE
+)
 ```
 
 Con base en esta especificación, se estimó la frontera estocástica para la productividad de la tierra, cuyos resultados se presentan en la @tbl-sfa-superficie-cap7.
 
-En la frontera de productividad de la tierra, fertilizantes (β = 0,435), riego (β = 0,370), plaguicidas (β = 0,193), internet (β = 0,381) y educación (β = 0,141) se relacionan positivamente con el nivel de la frontera condicionada (p < 0,001). Estos coeficientes pertenecen a la ecuación de frontera: describen desplazamientos asociados con las covariables en la productividad transformada potencial, bajo la forma funcional y los supuestos distributivos del modelo. No son coeficientes de una ecuación separada de ineficiencia ni permiten afirmar que cada factor reduzca directamente la ineficiencia técnica.
+En la frontera de la productividad de la tierra, la tenencia directa (`r formato_num(stats::coef(sfa_sup)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(stats::coef(sfa_sup)["clase.mayoriaespeciales"], 3)`) se sitúan por debajo de arrendamiento y aparcería (@tbl-sfa-superficie-cap7). La superficie conserva una asociación negativa, mientras riego, fertilizantes, plaguicidas e internet desplazan la frontera condicionada hacia niveles más elevados. Los coeficientes pertenecen a la ecuación de frontera y no a una ecuación separada de determinantes de ineficiencia.
 
-La superficie conserva una asociación negativa (β = -0,494; p < 0,001), en línea con la relación inversa observada en OLS y multinivel. La tenencia directa (β = -0,173; p < 0,001) y los otros regímenes de tenencia (β = -0,399; p < 0,001) también se sitúan por debajo del arrendamiento o aparcería. La estabilidad direccional entre las tres familias de modelos fortalece la evidencia de una diferencia condicionada por régimen de tenencia, pero no su interpretación causal; además, la SFA excluye las UPA sin productividades estrictamente positivas, por lo que las magnitudes no deben equipararse mecánicamente con las estimadas sobre la muestra OLS y multinivel.
-
-La edad cambia respecto de los modelos anteriores: registra una asociación negativa pequeña (β = -0,074; p < 0,001), mientras que en OLS y multinivel no fue significativa para productividad de la tierra. Esta falta de robustez aconseja no sostener una relación general entre edad y rendimiento por hectárea. El cambio podría vincularse con la selección de la muestra positiva y con la separación paramétrica entre ruido e ineficiencia, aunque el modelo no permite aislar cuál de estas razones explica la diferencia.
+La dirección del resultado de tenencia coincide con OLS y multinivel. La comparación específica con OLS sobre las mismas 21.430 UPA, presentada más adelante, muestra además que el cambio de muestra explica una parte de la variación de magnitud entre familias. La conclusión sustantiva es estable: arrendamiento y aparcería mantiene una posición condicionada superior dentro de la frontera paramétrica estimada.
 
 ```{r}
 #| label: tbl-sfa-superficie-cap7
@@ -1711,9 +2844,14 @@ tabla_sfa_sup <- as.data.frame(res_sup) |>
       "clase.mayoriadueño" = "Tenencia directa",
       "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
       "superficie_total_z" = "Superficie (z)",
+      "superficie_log_z" = "ln(1 + superficie) (z)",
+      "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
       "edad_z" = "Edad (z)",
       "internet" = "Internet",
-      "educacion_z" = "Educación (z)",
+      "educacionPrimaria" = "Educación: primaria",
+      "educacionSecundaria" = "Educación: secundaria",
+      "educacionSuperior" = "Educación: superior",
+      "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
       "plaguicida" = "Plaguicidas"
@@ -1744,9 +2882,9 @@ tabla_sfa_sup |>
 
 De manera complementaria, se estimó la frontera estocástica para la productividad del trabajo, cuyos resultados se presentan en la @tbl-sfa-trabajo-cap7.
 
-En la frontera laboral, plaguicidas (β = 0,684), superficie (β = 0,564), educación (β = 0,549), edad (β = 0,381) e internet (β = 0,307) desplazan positivamente la productividad condicionada, mientras que riego (β = -0,391) y fertilizantes (β = -0,535) lo hacen en sentido negativo (p < 0,001; @tbl-sfa-trabajo-cap7). El patrón reproduce la diferencia ya observada entre tecnologías: riego y fertilización acompañan un mayor producto por hectárea, pero no un mayor producto por trabajador. La frontera no demuestra que estas prácticas originen la diferencia; la especialización en cultivos intensivos en trabajo, la adopción ante necesidades productivas y otras características no observadas siguen siendo explicaciones posibles.
+En la frontera de la productividad laboral, la superficie mantiene una relación positiva y cóncava con la productividad condicionada. Fertilizantes y plaguicidas desplazan la frontera hacia niveles más elevados, mientras que riego presenta una asociación de menor magnitud. La tenencia directa (`r formato_num(stats::coef(sfa_trab)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(stats::coef(sfa_trab)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería (@tbl-sfa-trabajo-cap7).
 
-La tenencia directa (β = -0,286; p < 0,001) y los otros regímenes de tenencia (β = -0,699; p < 0,001) permanecen por debajo del arrendamiento o aparcería. Su dirección coincide con OLS y multinivel, al igual que los signos de superficie, educación, edad e internet. Esta convergencia aporta robustez cualitativa al patrón, no equivalencia cuantitativa: OLS estima una media condicionada, el multinivel incorpora agrupación provincial y SFA estima una frontera sobre una muestra más restringida. Los coeficientes, por tanto, no deben ordenarse como si midieran el mismo parámetro.
+La convergencia de signos entre OLS, multinivel y SFA confirma la robustez relativa del patrón institucional. Las magnitudes no representan el mismo parámetro: OLS estima una media condicionada, el multinivel incorpora la agrupación provincial y SFA estima una frontera paramétrica sobre la submuestra positiva.
 
 ```{r}
 #| label: tbl-sfa-trabajo-cap7
@@ -1777,9 +2915,14 @@ tabla_sfa_trab <- as.data.frame(res_trab) |>
       "clase.mayoriadueño" = "Tenencia directa",
       "clase.mayoriaespeciales" = "Otros regímenes de tenencia",
       "superficie_total_z" = "Superficie (z)",
+      "superficie_log_z" = "ln(1 + superficie) (z)",
+      "I(superficie_log_z^2)" = "[ln(1 + superficie) (z)]²",
       "edad_z" = "Edad (z)",
       "internet" = "Internet",
-      "educacion_z" = "Educación (z)",
+      "educacionPrimaria" = "Educación: primaria",
+      "educacionSecundaria" = "Educación: secundaria",
+      "educacionSuperior" = "Educación: superior",
+      "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
       "plaguicida" = "Plaguicidas"
@@ -1808,13 +2951,15 @@ tabla_sfa_trab |>
   )
 ```
 
-Una vez identificados los factores asociados a la productividad, resulta pertinente examinar los parámetros de varianza de los modelos de frontera estocástica, ya que estos permiten evaluar la importancia relativa de la ineficiencia técnica dentro del término compuesto de error.
+Los parámetros de varianza completan la lectura de las fronteras al mostrar el peso relativo de la ineficiencia técnica dentro del término compuesto de error.
 
-Los resultados de la @tbl-parametros-sfa-cap7 muestran que gamma alcanza 0,6572 para productividad de la tierra y 0,5114 para productividad del trabajo. Así, aproximadamente el 65,7 % y el 51,1 % de la varianza compuesta estimada se atribuye al componente de ineficiencia bajo los supuestos de cada frontera.
+Los resultados de la @tbl-parametros-sfa-cap7 muestran que gamma alcanza `r formato_num(stats::coef(sfa_sup)["gamma"], 4)` para la productividad de la tierra y `r formato_num(stats::coef(sfa_trab)["gamma"], 4)` para la productividad del trabajo. Gamma informa qué proporción de la varianza compuesta se atribuye al componente unilateral de ineficiencia dentro de cada modelo. Un valor mayor implica un mayor peso relativo de ese componente frente al ruido simétrico; no significa que un factor productivo esté necesariamente peor administrado.
 
-Sigma cuadrado ($\sigma^2$) alcanza 3,5946 en la frontera de tierra y 5,1332 en la laboral. Ambos modelos se estimaron sobre 21.430 UPA con productividades positivas, covariables completas y estados tecnológicos `SI` o `NO`; sus indicadores de ajuste no deben compararse directamente con OLS o multinivel.
+Sigma cuadrado resume la varianza total del error compuesto. Ambas fronteras se estiman sobre 21.430 UPA con productividades positivas, covariables completas y estados tecnológicos `SI` o `NO`. Como las respuestas y formas funcionales difieren, gamma y sigma cuadrado deben interpretarse dentro de cada frontera y no como una comparación directa de cuál productividad es intrínsecamente más eficiente o variable.
 
-La evidencia respalda la separación entre ruido e ineficiencia bajo los supuestos paramétricos de cada frontera. Gamma es mayor para tierra que para trabajo, por lo que el componente unilateral tiene más peso relativo en el error compuesto del primer modelo. Esto no prueba que factores específicos como organización laboral, escala o composición productiva integren el ruido; tales elementos son mecanismos posibles que la especificación no identifica. Tampoco corresponde comparar directamente sigma cuadrado entre fronteras con respuestas distintas para concluir cuál productividad es intrínsecamente más variable.
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-parametros-sfa-cap7
@@ -1864,13 +3009,15 @@ tabla_param |>
   )
 ```
 
-Una vez estimados los parámetros de varianza de los modelos de frontera estocástica, se analizó la magnitud del componente asociado a ineficiencia técnica a nivel de las unidades productivas incluidas en la muestra analítica SFA. Por esa razón, se estimaron los índices de eficiencia técnica individuales y se resumió su distribución mediante medidas de tendencia central y dispersión. Estos indicadores permiten evaluar qué tan próximas se encuentran las explotaciones agropecuarias a la frontera estimada bajo los supuestos del modelo y, por tanto, identificar el potencial de mejora dentro de esa especificación.
+Los índices individuales de eficiencia traducen ese componente de varianza a la posición relativa de cada UPA frente a su frontera estimada. Su distribución resume cuán próximas se encuentran las unidades productivas al máximo condicionado por la especificación, sin convertir la distancia estimada en una medida automática de producción recuperable.
 
-Los resultados de la @tbl-eficiencia-sfa-cap7 muestran eficiencias medias de 0,406 para productividad de la tierra y 0,391 para productividad del trabajo. En términos del modelo, una UPA con eficiencia uno se ubica sobre la frontera estimada y valores menores expresan una mayor distancia relativa. Las medias indican una separación considerable dentro de la muestra SFA, pero su complemento no representa producción recuperable de manera automática: acercarse a la frontera puede requerir cambios de gestión, tecnología, recursos e infraestructura que el índice no cuantifica.
+Los resultados de la @tbl-eficiencia-sfa-cap7 muestran eficiencias medias de `r formato_num(mean(frontier::efficiencies(sfa_sup)), 3)` para la productividad de la tierra y `r formato_num(mean(frontier::efficiencies(sfa_trab)), 3)` para la productividad del trabajo. Una UPA con eficiencia relativa igual a uno se ubica sobre su frontera estimada; valores menores indican una mayor distancia dentro de esa especificación. Las medianas, `r formato_num(stats::median(frontier::efficiencies(sfa_sup)), 3)` y `r formato_num(stats::median(frontier::efficiencies(sfa_trab)), 3)`, confirman que la separación no se origina únicamente en unas pocas observaciones.
 
-La mediana se sitúa en 0,412 para productividad de la tierra y 0,401 para productividad del trabajo. El primer cuartil alcanza 0,295 y 0,307, mientras que el tercero alcanza 0,530 y 0,482, respectivamente.
+Las eficiencias describen posiciones relativas frente a dos fronteras distintas. Por ello, no corresponde interpretar la diferencia entre sus medias como evidencia de que el trabajo se administra peor que la superficie. Tampoco el complemento de cada índice equivale automáticamente a producción recuperable: aproximarse a la frontera puede requerir recursos, infraestructura y cambios organizativos que el indicador no cuantifica.
 
-La distribución revela heterogeneidad dentro de la muestra y evita reducir el diagnóstico a un único promedio. La eficiencia media laboral es algo menor, pero su gamma también es inferior; en consecuencia, esa diferencia no basta para afirmar que el trabajo se administra peor que la tierra. Cada índice depende de su propia frontera, variable dependiente y supuestos, y ambos se estiman únicamente para UPA con productividades positivas y covariables completas.
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-eficiencia-sfa-cap7
@@ -1929,7 +3076,149 @@ tabla_ef |>
   )
 ```
 
-Si bien los indicadores descriptivos permiten caracterizar la distribución general de la eficiencia técnica, estos no muestran cómo se distribuyen espacialmente las diferencias observadas entre territorios. Por esta razón, es necesario examinar la eficiencia técnica promedio a nivel provincial, lo que permite identificar posibles patrones geográficos en el aprovechamiento de los recursos productivos y evaluar la existencia de territorios con desempeños sistemáticamente superiores o inferiores respecto a la frontera eficiente estimada.
+### Comparabilidad de muestra y sensibilidad distributiva
+
+Para separar el cambio de muestra del cambio de estimador, la @tbl-comparacion-muestra-sfa-cap7 presenta OLS y SFA sobre las mismas 21.430 UPA. Los coeficientes se aproximan de forma apreciable dentro de esa muestra. Esto muestra que parte de la diferencia frente al OLS de 22.075 UPA se debe a la exclusión de productividades iguales a cero y no exclusivamente a la estructura de frontera.
+
+```{=latex}
+\suppressfloats[t]
+```
+
+```{r}
+#| label: tbl-comparacion-muestra-sfa-cap7
+#| tbl-cap: "Coeficientes de tenencia en OLS y SFA sobre la muestra positiva común"
+
+tabla_comparacion_muestra_sfa <- tibble::tibble(
+  Resultado = rep(
+    c(
+      "Productividad de la tierra",
+      "Productividad del trabajo"
+    ),
+    each = 2
+  ),
+  Tenencia = rep(
+    c(
+      "Tenencia directa",
+      "Otros regímenes de tenencia"
+    ),
+    times = 2
+  ),
+  `OLS, muestra SFA` = c(
+    stats::coef(ols_sup_muestra_sfa)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )],
+    stats::coef(ols_trab_muestra_sfa)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )]
+  ),
+  `SFA half-normal` = c(
+    stats::coef(sfa_sup)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )],
+    stats::coef(sfa_trab)[c(
+      "clase.mayoriadueño",
+      "clase.mayoriaespeciales"
+    )]
+  )
+)
+
+tabla_comparacion_muestra_sfa |>
+  dplyr::mutate(
+    dplyr::across(
+      c(`OLS, muestra SFA`, `SFA half-normal`),
+      ~ formato_num(.x, digits = 3)
+    )
+  ) |>
+  tabla_usc(font_size = 8) |>
+  nota_tabla(
+    nota = "Ambos estimadores usan las mismas 21.430 UPA y los mismos regresores. Referencia: arrendamiento y aparcería.",
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+La @tbl-sensibilidad-distributiva-sfa-cap7 compara la especificación half-normal con una distribución truncated-normal. Los signos y coeficientes de tenencia cambian poco y las eficiencias individuales mantienen correlaciones superiores a 0,98. En cambio, las medias aumentan alrededor de una décima y gamma también cambia. La robustez es, por tanto, mayor para el orden relativo de las UPA y la dirección de las asociaciones que para el nivel absoluto de eficiencia.
+
+```{=latex}
+\suppressfloats[t]
+```
+
+```{r}
+#| label: tbl-sensibilidad-distributiva-sfa-cap7
+#| tbl-cap: "Sensibilidad de la eficiencia y la tenencia al supuesto distributivo de SFA"
+
+ef_sup_truncada <- frontier::efficiencies(
+  sfa_sup_truncada
+)
+ef_trab_truncada <- frontier::efficiencies(
+  sfa_trab_truncada
+)
+
+tabla_sensibilidad_sfa <- tibble::tibble(
+  Resultado = rep(
+    c(
+      "Productividad de la tierra",
+      "Productividad del trabajo"
+    ),
+    each = 2
+  ),
+  Distribución = rep(
+    c("Half-normal", "Truncated-normal"),
+    times = 2
+  ),
+  `Tenencia directa` = c(
+    stats::coef(sfa_sup)["clase.mayoriadueño"],
+    stats::coef(sfa_sup_truncada)["clase.mayoriadueño"],
+    stats::coef(sfa_trab)["clase.mayoriadueño"],
+    stats::coef(sfa_trab_truncada)["clase.mayoriadueño"]
+  ),
+  `Otros regímenes de tenencia` = c(
+    stats::coef(sfa_sup)["clase.mayoriaespeciales"],
+    stats::coef(sfa_sup_truncada)["clase.mayoriaespeciales"],
+    stats::coef(sfa_trab)["clase.mayoriaespeciales"],
+    stats::coef(sfa_trab_truncada)["clase.mayoriaespeciales"]
+  ),
+  Gamma = c(
+    stats::coef(sfa_sup)["gamma"],
+    stats::coef(sfa_sup_truncada)["gamma"],
+    stats::coef(sfa_trab)["gamma"],
+    stats::coef(sfa_trab_truncada)["gamma"]
+  ),
+  `Eficiencia media` = c(
+    mean(ef_sup),
+    mean(ef_sup_truncada),
+    mean(ef_trab),
+    mean(ef_trab_truncada)
+  )
+) |>
+  dplyr::mutate(
+    dplyr::across(
+      where(is.numeric),
+      ~ round(.x, 3)
+    )
+  )
+
+tabla_sensibilidad_sfa |>
+  tabla_usc(
+    digits = 3,
+    font_size = 7.5,
+    scale_down = TRUE
+  ) |>
+  nota_tabla(
+    nota = paste0(
+      "Correlación de eficiencias half-normal/truncated-normal: ",
+      formato_num(cor(ef_sup, ef_sup_truncada), 3),
+      " para productividad de la tierra y ",
+      formato_num(cor(ef_trab, ef_trab_truncada), 3),
+      " para productividad del trabajo."
+    ),
+    fuente = "Elaboración propia a partir de ESPAC 2022."
+  )
+```
+
+La distribución general de la eficiencia oculta su dimensión geográfica. Los promedios provinciales permiten observar si la distancia respecto de cada frontera se concentra territorialmente y si ambas medidas de productividad dibujan patrones espaciales similares.
 
 ```{r}
 #| label: data-eficiencia-mapas-cap7
@@ -2001,11 +3290,7 @@ limites_eff <- range(
 )
 ```
 
-La @fig-eficiencia-tierra-cap7 evidencia heterogeneidad territorial. Los mayores promedios se observan en Tungurahua (0,495), Cotopaxi (0,473), Manabí (0,449), Chimborazo (0,443), Pichincha (0,436) y Santo Domingo (0,427).
-
-Los menores promedios corresponden a Pastaza (0,257), Napo (0,260), Orellana (0,278), Morona Santiago (0,304), Santa Elena (0,307) y Sucumbíos (0,320). Este patrón conserva una concentración de menores niveles en la Amazonía.
-
-En términos generales, la distribución espacial observada indica que las diferencias de eficiencia no se encuentran distribuidas aleatoriamente en el territorio nacional. Por el contrario, se aprecia una concentración de mayores niveles de eficiencia en provincias de la Sierra y parte de la Costa, mientras que los menores niveles se localizan principalmente en la región Amazónica. Estos resultados sugieren que factores territoriales relacionados con la infraestructura, el acceso a mercados, la asistencia técnica, las condiciones agroecológicas y la integración productiva podrían influir en la capacidad de las unidades agropecuarias para utilizar eficientemente los recursos disponibles.
+La @fig-eficiencia-tierra-cap7 evidencia heterogeneidad territorial en la distancia media respecto de la frontera de la productividad de la tierra. Los valores más bajos mantienen una presencia importante en provincias amazónicas, mientras niveles superiores aparecen en partes de la Sierra y la Costa. El mapa resume promedios provinciales de eficiencias individuales y no controla su distinta precisión muestral; por ello se interpreta como patrón descriptivo complementario.
 
 ```{r}
 #| label: fig-eficiencia-tierra-cap7
@@ -2071,11 +3356,7 @@ ggplot2::ggplot() +
 
 Un patrón similar se observa al analizar la eficiencia técnica de la productividad del trabajo, aunque con algunas diferencias en la distribución territorial de los niveles de desempeño.
 
-La @fig-eficiencia-trabajo-cap7 muestra que los mayores promedios corresponden a Zamora Chinchipe (0,449), Manabí (0,442), El Oro (0,429), Esmeraldas (0,420), Santo Domingo (0,414) y Carchi (0,407).
-
-Los menores promedios se observan en Napo (0,307), Pastaza (0,338), Chimborazo (0,347), Imbabura (0,354), Orellana (0,357) y Tungurahua (0,360). El patrón laboral es, por tanto, menos exclusivamente amazónico que el de productividad de la tierra.
-
-En términos generales, la distribución espacial es consistente con la evidencia obtenida para la productividad de la tierra, ya que las provincias amazónicas tienden a presentar mayores dificultades para aproximarse a la frontera eficiente. No obstante, se observan diferencias territoriales más marcadas en determinadas provincias de la Costa y del sur del país, lo que sugiere que los factores asociados al aprovechamiento eficiente del trabajo no necesariamente coinciden con aquellos vinculados a la productividad de la tierra. Los resultados refuerzan la importancia del contexto territorial para interpretar las brechas de eficiencia agropecuaria observadas en Ecuador.
+La @fig-eficiencia-trabajo-cap7 muestra una distribución territorial parcialmente distinta. El patrón de la productividad del trabajo resulta menos marcadamente amazónico en cuanto a la concentración territorial de los valores más bajos que el observado para la productividad de la tierra. Esta diferencia refuerza que cada eficiencia pertenece a una frontera específica y que las condiciones relacionadas con el aprovechamiento del trabajo no coinciden necesariamente con las asociadas a la superficie.
 
 ```{r}
 #| label: fig-eficiencia-trabajo-cap7
@@ -2139,39 +3420,154 @@ ggplot2::ggplot() +
   )
 ```
 
-Los resultados obtenidos permiten caracterizar los niveles de eficiencia técnica de las explotaciones agropecuarias ecuatorianas y su distribución territorial. No obstante, para dimensionar adecuadamente su magnitud, resulta pertinente contrastar estos hallazgos con la evidencia reportada en estudios similares a nivel internacional.
+Para situar la magnitud de estas eficiencias, la sección siguiente las contrasta con estudios agrícolas internacionales que también emplean fronteras estocásticas.
 
 ## Comparación de los niveles de eficiencia técnica con la evidencia internacional
 
-La evidencia empírica obtenida mediante SFA muestra que las UPA incluidas en la muestra analítica operan, en promedio, a una distancia considerable de la frontera estimada. Las eficiencias medias alcanzan 0,406 para productividad de la tierra y 0,391 para productividad del trabajo. La lectura es más robusta para la frontera de tierra, cuyo gamma es mayor; en la frontera laboral, el gamma menor exige una interpretación complementaria.
+La evidencia obtenida mediante la especificación half-normal muestra que las UPA incluidas en la muestra analítica se sitúan, en promedio, a una distancia considerable de sus fronteras estimadas. Las eficiencias medias alcanzan `r formato_num(mean(ef_sup), 3)` para la productividad de la tierra y `r formato_num(mean(ef_trab), 3)` para la productividad del trabajo. La sensibilidad truncated-normal eleva ambos niveles, pero conserva en gran medida el orden relativo de las UPA.
 
 Al contrastar estos hallazgos con la evidencia internacional, se observa que los niveles de eficiencia identificados para Ecuador se sitúan por debajo de los reportados en estudios aplicados mediante modelos de frontera estocástica. Por ejemplo, @tenaye2020 encuentra una eficiencia técnica promedio de 0,59 para pequeños productores agrícolas en Etiopía, mientras que @abate2019 reportan valores cercanos a 0,788 en explotaciones dedicadas al cultivo de pimiento. De forma similar, @trujillo2013 estiman niveles de eficiencia próximos a 0,76 para productores de piña en Colombia.
 
 Si bien las comparaciones internacionales deben realizarse con cautela debido a las diferencias en cultivos analizados, escalas territoriales, características de las explotaciones, disponibilidad de información y especificaciones econométricas empleadas, la evidencia disponible sitúa los resultados de Ecuador dentro de un patrón observado en estudios agrícolas de países en desarrollo: existen brechas de eficiencia potencialmente asociadas con acceso a tecnología, asistencia técnica, infraestructura, financiamiento y capital humano [@bravoureta2007]. Esta comparación no implica equivalencia directa entre contextos ni permite inferir que las mismas intervenciones producirían efectos similares.
 
-Las brechas estimadas son compatibles con oportunidades de mejora en gestión y adopción tecnológica, pero no permiten calcular cuánto podría recuperarse mediante una intervención concreta. Las distancias también están condicionadas por recursos, infraestructura y entorno productivo; por ello, aproximarse a la frontera no depende exclusivamente de decisiones de la UPA. Esta cautela es especialmente necesaria en la frontera laboral, donde el componente de ineficiencia tiene menor peso relativo en el error compuesto.
+Las brechas estimadas son compatibles con oportunidades de mejora en gestión y adopción tecnológica, pero no permiten calcular cuánto podría recuperarse mediante una intervención concreta. Las distancias también están condicionadas por recursos, infraestructura y entorno productivo; por ello, aproximarse a la frontera no depende exclusivamente de decisiones de la UPA. Esta cautela se aplica a ambas fronteras y, en particular, a la interpretación de sus niveles absolutos de eficiencia.
 
 ## Discusión de los hallazgos
 
-La evidencia del capítulo muestra una estructura multidimensional de asociaciones entre productividad, capacidades individuales, conectividad, escala, régimen de tenencia y territorio. La SFA añade una medición condicionada de la distancia respecto de la frontera, sin convertir esos factores en determinantes observados de la ineficiencia. Esta lectura coincide con la literatura revisada, que sitúa el desempeño agropecuario en la interacción de capital humano, tecnología y condiciones institucionales y territoriales, antes que en un único atributo de la explotación [@bravoureta2007; @tenaye2020].
+La evidencia describe una estructura multidimensional: tenencia, escala, tecnología, características sociodemográficas y provincia se relacionan con el desempeño de las UPA, aunque de manera distinta según el indicador. La superficie presenta una relación inversa con la productividad por hectárea y una asociación positiva, cóncava y mucho más explicativa con la productividad por trabajador. Lejos de ser resultados contradictorios, ambos reproducen la tensión desarrollada en el marco teórico. Las unidades pequeñas pueden concentrar trabajo y cuidados sobre una superficie limitada, mientras una mayor escala permite distribuir el trabajo y ciertos costos organizativos o mecánicos sobre un producto más amplio [@hossain1977farm; @gollin2018farm]. Los modelos muestran ese patrón, pero no permiten aislar cuál de esos mecanismos predomina en Ecuador.
 
-El acceso a internet mantiene una asociación positiva en OLS, multinivel y SFA. El mecanismo plausible es informacional: la conectividad reduce costos de búsqueda, facilita acceso a precios, asistencia técnica, redes comerciales y conocimiento sobre prácticas productivas. Sin embargo, la variable disponible mide acceso, no intensidad ni calidad de uso; por tanto, el resultado no permite concluir que internet cause directamente mayor productividad. La implicación de política es fortalecer conectividad rural junto con capacitación y servicios de extensión, porque el acceso aislado puede no traducirse en mejoras productivas si no existe capacidad para convertir información en decisiones técnicas.
+Las asociaciones tecnológicas también dependen de la medida de productividad. Riego, fertilizantes y plaguicidas acompañan mayores niveles de producto por hectárea; fertilizantes y plaguicidas conservan una relación positiva con el producto por trabajador después de representar adecuadamente la escala, pero riego no muestra una diferencia precisa en OLS o multinivel. La evidencia previa vincula insumos y condiciones tecnológicas con diferencias de productividad y eficiencia, sin exigir que su importancia sea idéntica por hectárea y por trabajador [@perdomo_factores_2007]. Internet se asocia con mayor productividad de la tierra y con una diferencia laboral menor, atenuada al incorporar provincia. La especificación definitiva tampoco sostiene la lectura anterior de una asociación laboral negativa de fertilizantes, que respondía a una representación insuficiente de la escala.
 
-Los indicadores tecnológicos aportan asociaciones diferenciadas y consistentes en signo entre las tres familias de modelos. Riego, fertilizantes y plaguicidas se asocian positivamente con productividad de la tierra. Para productividad del trabajo, plaguicidas presenta una asociación positiva, mientras que riego y fertilizantes muestran asociaciones negativas. Estas relaciones comparan uso frente a no uso observado dentro del universo aplicable; no prueban efectos causales y pueden reflejar composición de cultivos, intensidad laboral, escala de tratamiento o adopción tecnológica endógena.
+Las variables sociodemográficas tampoco siguen un patrón uniforme. El sexo apenas diferencia la productividad de la tierra, mientras las UPA encabezadas por mujeres presentan menor productividad laboral condicionada. La educación no dibuja un gradiente lineal, lo que respalda su tratamiento categórico y desaconseja interpretar la escolaridad como una escala de rendimientos constantes. Las brechas pueden condensar diferencias de acceso a recursos, tipo de actividad y organización del trabajo; no representan efectos intrínsecos del sexo o la escolaridad.
 
-La educación se relaciona especialmente con la productividad del trabajo, resultado coherente con la capacidad del capital humano para organizar tareas, evaluar información y adoptar prácticas. La edad, en cambio, no admite una lectura única: carece de significancia para productividad de la tierra en OLS y multinivel, es negativa en su frontera SFA y positiva en las tres especificaciones laborales. La experiencia acumulada podría favorecer la organización del trabajo, pero edad y experiencia no son equivalentes; las diferencias generacionales y la selección de la muestra SFA también pueden intervenir. La base no observa experiencia específica por cultivo, calidad de la capacitación ni adopción efectiva de innovaciones, de modo que esos mecanismos no pueden distinguirse.
+El resultado central corresponde a la tenencia. Tenencia directa y otros regímenes de tenencia presentan coeficientes negativos frente a arrendamiento y aparcería en los modelos progresivos, OLS finales, multinivel, efectos fijos provinciales, la sensibilidad ponderada y ambas distribuciones SFA. Cambian las magnitudes cuando se incorporan escala, tecnologías, provincia o la submuestra positiva, pero no la ordenación. La evidencia respalda una asociación sistemática entre tenencia y productividad y contradice la expectativa de que la tenencia directa deba ocupar necesariamente la posición superior.
 
-La superficie presenta signos opuestos y estables según el indicador. La relación negativa con productividad de la tierra respalda, de manera condicionada, la literatura sobre la relación inversa entre tamaño y rendimiento por hectárea; la asociación positiva con productividad laboral concuerda con la menor productividad del trabajo que puede acompañar al uso intensivo de mano de obra familiar en unidades pequeñas [@gollin2018farm]. La divergencia no es contradictoria: expresa dos dimensiones del desempeño y puede reflejar economías de organización, mecanización parcial o especialización en las UPA mayores. El diseño observacional no permite decidir entre esos mecanismos ni generalizar la relación fuera de las muestras analíticas.
+Este hallazgo matiza, más que refuta, la teoría de los derechos de propiedad. La seguridad y un horizonte estable pueden favorecer la inversión [@besley_property_1995; @deininger_tenure_2006], pero la literatura revisada también encuentra efectos heterogéneos según el contexto institucional y productivo [@lawry_impact_2017]. A su vez, los mercados de arrendamiento pueden facilitar que la tierra sea operada por productores con mayor capacidad o intensidad productiva [@otsuka_efficiency_2007]. El desempeño condicionado de arrendamiento y aparcería es compatible con esta función asignativa, aunque ESPAC 2022 no observa directamente la selección de productores ni permite identificar el mecanismo causal.
 
-La tenencia mantiene el resultado más relevante para el objetivo central. En las seis especificaciones, la tenencia directa y los otros regímenes de tenencia presentan coeficientes negativos frente al arrendamiento o aparcería, incluso después de incorporar características productivas y un intercepto provincial. La regularidad contradice la expectativa simple de que la tenencia directa, por sí sola, garantiza mejores resultados mediante mayores incentivos de inversión [@besley_property_1995; @deininger_tenure_2006]. Sin embargo, no contradice necesariamente el mecanismo más amplio de seguridad de la tenencia: ESPAC no permite equiparar la categoría de tenencia directa con titulación plenamente segura ni observar duración contractual, calidad del derecho o capacidad de financiar inversiones. Del lado del grupo de referencia, el arrendamiento o aparcería puede facilitar la reasignación de tierra hacia productores que buscan explotarla de forma más intensiva [@otsuka_efficiency_2007]. La evidencia ecuatoriana sugiere así que la titularidad formal o declarada no basta para explicar el desempeño cuando la estructura agraria combina pequeñas UPA, fragmentación y accesos desiguales a tecnología, infraestructura y mercados. Estas son vías interpretativas compatibles con el marco de la tesis; el modelo no identifica cuál origina las diferencias.
+La dimensión provincial conserva relevancia. Los interceptos aleatorios mejoran el ajuste, los ICC completos muestran heterogeneidad territorial residual y los efectos fijos producen coeficientes de tenencia casi idénticos. Infraestructura, mercados, condiciones agroecológicas e instituciones son interpretaciones plausibles del contexto compartido, pero los mejores predictores lineales insesgados (BLUP) provinciales no identifican esas causas.
 
-La dimensión territorial conserva relevancia después de controlar las covariables observables: el 11,8 % de la variación residual de la productividad de la tierra y el 7,2 % de la laboral permanece entre provincias. La mayor parte continúa situada entre UPA de una misma provincia, pero el componente contextual mejora el ajuste y modifica, sobre todo, las magnitudes de riego y fertilizantes en el modelo laboral. Infraestructura, mercados, clima, suelos, especialización e instituciones son explicaciones plausibles según la caracterización territorial de la tesis, no factores probados por el intercepto aleatorio. El hallazgo respalda un análisis territorialmente diferenciado sin atribuir causalidad a la provincia.
-
-Finalmente, la frontera estocástica muestra distancias técnicas relevantes dentro de 21.430 UPA con ambas productividades estrictamente positivas, covariables completas y estados tecnológicos `SI` o `NO`. La eficiencia observada no equivale a productividad: una UPA puede registrar un nivel productivo bajo y hallarse relativamente cerca de su frontera condicionada, o presentar alta productividad y conservar una brecha técnica. Tampoco se estimó una ecuación específica de determinantes de ineficiencia. En consecuencia, la SFA complementa las asociaciones de OLS y multinivel para su muestra analítica, pero no autoriza atribuir las puntuaciones de eficiencia a la tenencia ni generalizarlas a todas las UPA de la base oficial.
+La SFA sitúa a cada UPA respecto de una frontera paramétrica de productividad monetaria condicionada. El signo de las asociaciones de tenencia y el orden relativo de las eficiencias apenas cambian entre las distribuciones half-normal y truncated-normal; los niveles medios y gamma sí dependen del supuesto distributivo. La frontera aporta, de este modo, evidencia sobre posiciones relativas y sobre la composición de su error, pero las covariables de la ecuación principal desplazan la frontera condicionada y no constituyen una ecuación separada de determinantes de ineficiencia.
 
 ## Síntesis comparativa de los modelos econométricos estimados
 
-Con el propósito de evaluar la consistencia y complementariedad de los enfoques econométricos empleados, la @tbl-comparacion-final-modelos-cap7 presenta una síntesis de los principales indicadores de ajuste correspondientes a los modelos OLS, multinivel y SFA estimados para las productividades de la tierra y del trabajo.
+La @tbl-comparacion-final-modelos-cap7 sintetiza los indicadores de ajuste de OLS, multinivel y SFA para las productividades de la tierra y del trabajo. Su lectura permite valorar la complementariedad de los enfoques sin tratar como equivalentes medidas calculadas con distintas respuestas, muestras o funciones de verosimilitud.
+
+```{r}
+#| label: datos-coefplot-tenencia-cap7
+#| include: FALSE
+
+extraer_tenencia_modelo <- function(
+    estimaciones,
+    errores,
+    modelo,
+    resultado) {
+  terminos <- c(
+    "clase.mayoriadueño",
+    "clase.mayoriaespeciales"
+  )
+
+  tibble::tibble(
+    Resultado = resultado,
+    Modelo = modelo,
+    Tenencia = c(
+      "Tenencia directa",
+      "Otros regímenes de tenencia"
+    ),
+    estimate = estimaciones[terminos],
+    std.error = errores[terminos],
+    conf.low = estimate - 1.96 * std.error,
+    conf.high = estimate + 1.96 * std.error
+  )
+}
+
+coefplot_tenencia <- dplyr::bind_rows(
+  extraer_tenencia_modelo(
+    stats::coef(ols_sup),
+    sqrt(diag(vcov_sup)),
+    "OLS",
+    "Productividad de la tierra"
+  ),
+  extraer_tenencia_modelo(
+    lme4::fixef(ml_sup),
+    sqrt(diag(stats::vcov(ml_sup))),
+    "Multinivel",
+    "Productividad de la tierra"
+  ),
+  extraer_tenencia_modelo(
+    stats::coef(sfa_sup),
+    summary(sfa_sup)$mleParam[, "Std. Error"],
+    "SFA",
+    "Productividad de la tierra"
+  ),
+  extraer_tenencia_modelo(
+    stats::coef(ols_trab),
+    sqrt(diag(vcov_trab)),
+    "OLS",
+    "Productividad del trabajo"
+  ),
+  extraer_tenencia_modelo(
+    lme4::fixef(ml_trab),
+    sqrt(diag(stats::vcov(ml_trab))),
+    "Multinivel",
+    "Productividad del trabajo"
+  ),
+  extraer_tenencia_modelo(
+    stats::coef(sfa_trab),
+    summary(sfa_trab)$mleParam[, "Std. Error"],
+    "SFA",
+    "Productividad del trabajo"
+  )
+)
+```
+
+La @fig-coefplot-tenencia-cap7 concentra la evidencia principal. Los seis intervalos se sitúan por debajo de cero para tenencia directa y otros regímenes de tenencia. La figura no presupone equivalencia entre parámetros de familias distintas; muestra la estabilidad direccional de las comparaciones frente a arrendamiento y aparcería.
+
+```{r}
+#| label: fig-coefplot-tenencia-cap7
+#| fig-cap: "Coeficientes de tenencia e intervalos de confianza en los modelos principales"
+#| fig-width: 6.7
+#| fig-height: 4.5
+
+ggplot2::ggplot(
+  coefplot_tenencia,
+  ggplot2::aes(
+    x = estimate,
+    y = Modelo,
+    color = Tenencia
+  )
+) +
+  ggplot2::geom_vline(
+    xintercept = 0,
+    color = "grey55",
+    linewidth = 0.4
+  ) +
+  ggplot2::geom_errorbarh(
+    ggplot2::aes(
+      xmin = conf.low,
+      xmax = conf.high
+    ),
+    height = 0.12,
+    position = ggplot2::position_dodge(width = 0.35),
+    linewidth = 0.55
+  ) +
+  ggplot2::geom_point(
+    position = ggplot2::position_dodge(width = 0.35),
+    size = 2
+  ) +
+  ggplot2::facet_wrap(~ Resultado, scales = "free_x") +
+  ggplot2::scale_color_manual(
+    values = c(
+      "Tenencia directa" = paleta_figuras_tesis["principal"],
+      "Otros regímenes de tenencia" = paleta_figuras_tesis["acento"]
+    )
+  ) +
+  ggplot2::labs(
+    x = "Coeficiente e IC 95 %",
+    y = NULL,
+    color = "Comparación frente a\narrendamiento y aparcería"
+  ) +
+  tema_figura_tesis
+```
 
 ```{r}
 #| label: tbl-comparacion-final-modelos-cap7
@@ -2242,23 +3638,21 @@ tabla_comp_final |>
   )
 ```
 
-Los modelos multinivel mejoran el ajuste frente a OLS cuando la comparación se realiza dentro de la misma respuesta y muestra. Para productividad de la tierra, el AIC disminuye de 91.108 a 89.633 y el BIC de 91.196 a 89.729. Para productividad del trabajo, el AIC disminuye de 99.555 a 98.342 y el BIC de 99.643 a 98.438.
+Los modelos multinivel mejoran el ajuste frente a OLS cuando la comparación se realiza dentro de la misma respuesta y muestra. Los ICC nulos muestran que el `r formato_pct(100 * performance::icc(ml_sup_nulo)$ICC_adjusted, 1)` de la variabilidad de productividad de la tierra y el `r formato_pct(100 * performance::icc(ml_trab_nulo)$ICC_adjusted, 1)` de la productividad laboral se sitúan entre provincias antes de incorporar controles. En los modelos completos, las proporciones alcanzan `r formato_pct(100 * performance::icc(ml_sup)$ICC_adjusted, 1)` y `r formato_pct(100 * performance::icc(ml_trab)$ICC_adjusted, 1)`.
 
-Los ICC de los modelos nulos muestran que el 15,0 % de la variabilidad de productividad de la tierra y el 9,2 % de la laboral se asocian a provincias. Tras incorporar covariables, el componente territorial residual se mantiene en 11,8 % y 7,2 %, respectivamente.
-
-Las fronteras estocásticas se estiman sobre 21.430 UPA y sus indicadores se reportan como ajuste interno, sin compararlos directamente con OLS o multinivel. Para productividad de la tierra, la SFA registra AIC de 76.378, BIC de 76.474 y log-verosimilitud de -38.177. Para productividad del trabajo, los valores son 87.380, 87.476 y -43.678.
-
-Gamma alcanza 0,6572 para productividad de la tierra y 0,5114 para productividad del trabajo, mientras que las eficiencias medias son 0,406 y 0,391. En conjunto, los signos de tenencia, superficie, internet y tecnologías se mantienen en las tres familias, con la salvedad de la edad para productividad de la tierra. La estabilidad direccional constituye evidencia de robustez cualitativa; las diferencias de magnitud también responden al enfoque econométrico y, en SFA, a una muestra distinta. Por ello, no corresponde comparar los coeficientes ni los criterios de ajuste como si fueran equivalentes.
+Las fronteras estocásticas se estiman sobre 21.430 UPA y sus indicadores se reportan como medidas de ajuste interno. La sensibilidad distributiva conserva el patrón de tenencia, aunque no los niveles absolutos de eficiencia. La evidencia más sólida del capítulo reside en esa estabilidad direccional: la comparación frente a arrendamiento y aparcería mantiene el mismo signo en la media condicionada, la estructura multinivel y la frontera paramétrica.
 
 ## Síntesis del capítulo
 
-El capítulo aporta evidencia consistente con una estructura multidimensional de la productividad agropecuaria. Riego, fertilizantes y plaguicidas se asocian positivamente con productividad de la tierra; en productividad laboral, plaguicidas presenta signo positivo y riego y fertilizantes signos negativos. Estas asociaciones pertenecen al universo `SI/NO`, son condicionadas y no causales. La conectividad y la educación mantienen signos positivos, mientras que la superficie respalda una relación inversa con el rendimiento por hectárea y una relación directa con el producto por trabajador.
+El capítulo permite extraer una conclusión económica clara: el régimen predominante de tenencia se asocia de manera sistemática con la productividad agropecuaria. Arrendamiento y aparcería presenta el mayor desempeño condicionado; tenencia directa y otros regímenes de tenencia se sitúan por debajo en productividad de la tierra y del trabajo. El patrón permanece al incorporar covariables por bloques, sexo, educación categórica, ponderación, provincia, la submuestra positiva y dos distribuciones de ineficiencia. La evidencia respalda, por tanto, la hipótesis general de una asociación entre tenencia y productividad, pero no respalda la expectativa simple de superioridad productiva de la tenencia directa.
 
-Respecto del planteamiento central de la tesis, no se obtiene respaldo para la expectativa simple de que las UPA con tenencia directa presenten mayor productividad que aquellas donde predomina el arrendamiento o aparcería. La tenencia directa y los otros regímenes de tenencia se sitúan sistemáticamente por debajo de esa referencia en tierra y trabajo, tanto en OLS como en multinivel y SFA. La evidencia sí respalda que el régimen de tenencia está asociado con el desempeño condicionado, pero solo de forma parcial permite relacionar esa diferencia con los mecanismos teóricos: las categorías disponibles no miden directamente seguridad jurídica, inversión ni funcionamiento contractual. Por tanto, el hallazgo matiza la teoría de los derechos de propiedad y concede relevancia empírica a la reasignación mediante arrendamiento o aparcería, sin probar ninguno de los dos mecanismos.
+La superficie se relaciona negativamente con productividad por hectárea y positivamente, con una curvatura cóncava, con productividad por trabajador. Esta diferencia sintetiza dos formas de desempeño: las UPA pequeñas pueden explotar intensivamente la superficie, mientras las de mayor escala alcanzan ventajas laborales que crecen a un ritmo decreciente. La mejora funcional eleva de forma sustantiva la capacidad explicativa del modelo laboral y evita atribuir a tecnologías o capital humano patrones que antes recogía una representación insuficiente de la escala.
 
-La incorporación de interceptos aleatorios provinciales mejora el ajuste frente a los modelos lineales bajo comparaciones válidas entre especificaciones de la misma variable dependiente y muestra. Las diferencias provinciales no desaparecen al controlar por características observables, lo que sugiere que infraestructura, condiciones agroecológicas, mercados y capacidades institucionales siguen siendo componentes relevantes de las brechas productivas.
+Riego, fertilizantes y plaguicidas acompañan mayores niveles de productividad de la tierra. En productividad laboral, fertilizantes y plaguicidas mantienen asociaciones positivas, mientras riego no presenta una diferencia robusta una vez corregida la forma funcional e incorporado el territorio. Internet conserva una asociación clara con productividad de la tierra y más débil con productividad laboral. Educación y sexo muestran asociaciones diferenciadas entre respuestas, lo que confirma que capital humano y estructura sociodemográfica no actúan de manera uniforme.
 
-La frontera estocástica muestra que una parte del error compuesto se relaciona con ineficiencia técnica dentro de la muestra aplicable con productividades positivas. El gamma laboral menor exige una lectura más prudente, y las eficiencias medias no representan porcentajes de producción recuperables sin cambios en recursos o condiciones estructurales. En términos científicos, los resultados requieren integrar asociaciones promedio, estructura territorial y distancia respecto de fronteras específicas, evitando interpretaciones causales no sustentadas por el diseño transversal.
+La provincia aporta heterogeneidad residual y mejora el ajuste; la similitud entre efectos aleatorios y fijos refuerza la estabilidad de tenencia. Las fronteras paramétricas sitúan a las UPA a distancias heterogéneas de sus niveles condicionados. El orden relativo es estable frente al supuesto distributivo, aunque la eficiencia media y gamma cambian entre half-normal y truncated-normal.
+
+La tenencia aparece, en suma, como una pieza relevante de una estructura productiva más amplia. El desempeño condicionado superior de arrendamiento y aparcería es compatible con una función de asignación de la tierra, pero no puede reducirse a una explicación institucional única. Puesto que la evidencia procede de una encuesta transversal, la conclusión se limita a asociaciones. Dentro de ese alcance, la consistencia entre especificaciones permite afirmar que la expectativa de una ventaja automática de la tenencia directa no describe los patrones observados en las UPA analizadas.
 
 ```{=latex}
 \flushbottom

@@ -37,8 +37,8 @@ format:
 
     link-citations: true
 
-    tbl-pos: H
-    fig-pos: H
+    tbl-pos: "!htbp"
+    fig-pos: "!htbp"
 
     kable-dependencies: false
 

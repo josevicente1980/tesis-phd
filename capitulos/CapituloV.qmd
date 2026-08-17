@@ -21,9 +21,9 @@ La unidad de análisis es la UPA, definida como el conjunto de terrenos y medios
 
 ## Fuente de información
 
-La fuente principal es la ESPAC 2022, elaborada por el INEC. La encuesta reúne información sobre personas productoras, superficie y uso de la tierra, cultivos, producción pecuaria, empleo, tecnologías y localización. Su estructura modular permite integrar características institucionales, productivas, sociodemográficas y territoriales a nivel de UPA [@espac_encuesta_2013].
+La fuente principal es la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, elaborada por el Instituto Nacional de Estadística y Censos (INEC). La encuesta reúne información sobre personas productoras, superficie y uso de la tierra, cultivos, producción pecuaria, empleo, tecnologías y localización. Su estructura modular permite integrar características institucionales, productivas, sociodemográficas y territoriales a nivel de UPA [@espac_encuesta_2013].
 
-La investigación se circunscribe al Ecuador continental. Galápagos se excluye por sus condiciones ecológicas, normativas y productivas particulares. Para la construcción de la base se utilizaron los módulos necesarios para obtener el identificador de la UPA, superficie, regímenes de tenencia, producción física y su valorización, trabajo, edad y educación de la persona productora, acceso a internet, provincia y uso de riego, fertilizantes y plaguicidas.
+La investigación se circunscribe al Ecuador continental. Galápagos se excluye por sus condiciones ecológicas, normativas y productivas particulares. Para la construcción de la base se utilizaron los módulos necesarios para obtener el identificador de la UPA, superficie, regímenes de tenencia, producción física y su valorización, trabajo, edad, educación y sexo de la persona productora, acceso a internet, provincia y uso de riego, fertilizantes y plaguicidas.
 
 La ESPAC presenta ventajas importantes: cobertura nacional, levantamiento oficial y disponibilidad simultánea de variables de tenencia y producción. También impone restricciones. La información es transversal y parcialmente declarativa; no contiene con igual detalle la calidad del suelo, las condiciones microclimáticas, las cláusulas contractuales de cada forma de acceso, la inversión acumulada ni toda la composición tecnológica de las UPA. Estas limitaciones se incorporan a la interpretación y descartan afirmaciones causales.
 
@@ -39,9 +39,9 @@ El pipeline completo utilizado para la importación, depuración, homologación,
 
 Una UPA puede contener terrenos sujetos a regímenes diferentes. Para obtener una variable analítica única se agregaron las superficies de cada modalidad dentro de la UPA y se calculó su participación en el área total registrada por tenencia. Luego se asignó como predominante la categoría con mayor proporción de superficie. Las modalidades originales se consolidaron en tres grupos:
 
-- **Propiedad:** conjunto operacional de modalidades agrupadas en la base bajo la variable `dueño`.
-- **Arrendamiento o aparcería:** superficies obtenidas mediante estas modalidades de acceso; constituye la categoría de referencia de los modelos.
-- **Tenencias especiales:** formas comunales y otras situaciones especiales, incluidas posesiones sin título o tierras en conflicto según la clasificación consolidada.
+- **Tenencia directa:** conjunto operacional de modalidades agrupadas internamente en la base bajo la variable `dueño`.
+- **Arrendamiento y aparcería:** superficies obtenidas mediante estas modalidades de acceso; constituye la categoría de referencia de los modelos.
+- **Otros regímenes de tenencia:** formas comunales y otras situaciones, incluidas posesiones sin título o tierras en conflicto según la clasificación consolidada.
 
 La variable resultante, `clase.mayoria`, simplifica arreglos múltiples y permite estimar contrastes homogéneos. No debe interpretarse como una descripción exhaustiva de la seguridad jurídica ni de las condiciones contractuales de cada UPA [@deininger_tenure_2006; @fenske_land_2011].
 
@@ -60,8 +60,6 @@ En los casos en que no se encontró información completa en las fuentes oficial
 La relación completa de los precios utilizados, sus fuentes, las unidades originales, los factores de conversión y los criterios de selección se presenta en el [Anexo I](#sec-anexo-precios). A partir de esta información, las cantidades físicas reportadas por la ESPAC se multiplicaron por sus respectivos precios de referencia. Posteriormente, los valores de los diferentes componentes agrícolas y pecuarios se agregaron a nivel de UPA para construir la variable `produccion_ec`.
 
 Esta variable representa el valor bruto estimado de la producción, no el ingreso neto ni el beneficio obtenido por cada UPA. Por tanto, no descuenta costos de producción, transporte o comercialización. Su construcción permite expresar productos heterogéneos en una unidad monetaria común y utilizarla posteriormente en el cálculo de los indicadores de productividad de la tierra y del trabajo.
-.
-
 ### Indicadores de productividad
 
 La productividad de la tierra se calculó cuando la superficie declarada (`cg_superficie`) fue estrictamente positiva:
@@ -82,7 +80,11 @@ En OLS y multinivel, ambas respuestas se transformaron mediante $\ln(1+x)$, lo q
 
 ## Operacionalización de variables
 
-Las covariables continuas se estandarizaron mediante puntuaciones $z=(x-\bar{x})/s$. Esta transformación facilita la estabilidad numérica y permite interpretar cada coeficiente continuo como el cambio asociado con una desviación estándar de la covariable, manteniendo constantes las demás variables. La tenencia y la provincia se trataron como factores; internet, riego, fertilizantes y plaguicidas, como indicadores dicotómicos. La educación se incorporó en la especificación final como variable ordinal estandarizada, en coherencia con los modelos ejecutados en el Capítulo VII.
+Las covariables continuas se estandarizaron mediante puntuaciones $z=(x-\bar{x})/s$. Esta operación facilita la estabilidad numérica y permite interpretar el coeficiente como el cambio asociado con una desviación estándar de la variable previa a la estandarización, manteniendo constantes las demás covariables. La estandarización no corrige por sí misma una relación funcional inadecuada. Por ello, en la ecuación de productividad de la tierra se empleó la superficie en niveles y luego estandarizada; en la ecuación de productividad del trabajo se calculó primero $\ln(1+\text{superficie})$, se estandarizó esa transformación y se añadió su término cuadrático. La forma laboral permite una asociación cóncava sin recurrir a polinomios de orden elevado.
+
+La tenencia, la educación, el sexo y la provincia se trataron como factores. Ninguna educación y hombre constituyen las referencias sociodemográficas. La educación categórica evita imponer distancias iguales entre niveles de escolaridad; su codificación ordinal estandarizada se conservó únicamente como sensibilidad. Internet, riego, fertilizantes y plaguicidas se incorporaron como indicadores dicotómicos.
+
+La Tabla \ref{tbl-operacionalizacion-resultados-cap5} presenta las variables de resultado, la tenencia, las dos formas funcionales de superficie y el nivel territorial utilizado en los modelos.
 
 \clearpage
 
@@ -102,13 +104,16 @@ Las covariables continuas se estandarizaron mediante puntuaciones $z=(x-\bar{x})
 Producción económica & \texttt{produccion\_ec} & Valor bruto agregado de los componentes agropecuarios valorizados a nivel de UPA. \\
 Productividad de la tierra & \texttt{productividad\_superficie}; \texttt{ln\_prod\_sup} & Producción económica por hectárea de \texttt{cg\_superficie}; en modelos, $\ln(1+x)$. \\
 Productividad del trabajo & \texttt{productividad\_trabajo}; \texttt{ln\_prod\_trab} & Producción económica por trabajador de \texttt{eu\_k1301}; en modelos, $\ln(1+x)$. \\
-Tenencia predominante & \texttt{clase.mayoria} & Categoría con la mayor proporción de superficie: arrendamiento/aparcería, propiedad o tenencia especial. \\
-Superficie total & \texttt{superficie\_total\_z} & Área total utilizada por la especificación, estandarizada mediante puntuación z. \\
+Tenencia predominante & \texttt{clase.mayoria} & Categoría con la mayor proporción de superficie: arrendamiento y aparcería, tenencia directa u otros regímenes de tenencia. \\
+Superficie total, modelo de tierra & \texttt{superficie\_total\_z} & Área total en niveles, posteriormente estandarizada mediante puntuación z. \\
+Superficie total, modelo de trabajo & \texttt{superficie\_log\_z} y su cuadrado & Transformación $\ln(1+\text{superficie})$, posteriormente estandarizada; se incorpora también su término cuadrático. \\
 Provincia & \texttt{territorio} & Provincia de ubicación; nivel de agrupación del intercepto aleatorio. \\
 \hline
 \multicolumn{3}{p{14cm}}{\footnotesize Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
 \end{longtable}
 \endgroup
+
+La Tabla \ref{tbl-operacionalizacion-controles-cap5} completa la operacionalización con las covariables sociodemográficas, tecnológicas y el factor de expansión.
 
 \begingroup
 \small
@@ -124,7 +129,8 @@ Provincia & \texttt{territorio} & Provincia de ubicación; nivel de agrupación 
 \hline
 \endhead
 Edad & \texttt{edad\_z} & Edad de la persona productora o responsable, estandarizada. \\
-Educación & \texttt{educacion\_z} & Nivel educativo ordinal, estandarizado. \\
+Educación & \texttt{educacion} & Nivel educativo categórico: ninguna educación, primaria, secundaria y superior. \\
+Sexo & \texttt{sexo} & Sexo de la persona productora; hombre es la categoría de referencia. \\
 Internet & \texttt{internet} & Indicador de acceso a internet. \\
 Riego & \texttt{riego} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
 Fertilizantes & \texttt{fertilizante} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
@@ -141,7 +147,7 @@ La división en dos tablas evita un escalado que reduzca la legibilidad y permit
 
 La base analítica inicial estuvo conformada por 42.444 UPA del Ecuador continental. A partir de esta base se construyeron muestras específicas para la estimación econométrica, de acuerdo con la disponibilidad y validez de las variables requeridas por cada familia de modelos.
 
-Los modelos OLS y multinivel se estimaron con una muestra común de 22.075 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
+Los modelos OLS y multinivel se estimaron con una muestra común de 22.075 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el sexo, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
 
 La reducción de 42.444 a 22.075 UPA responde, por tanto, a la aplicación conjunta de los criterios de completitud y comparabilidad de las variables. No representa una selección discrecional de casos, aunque implica que los resultados econométricos corresponden a las UPA que disponen de información completa en todas las variables incluidas y no necesariamente a la totalidad de la muestra original de la ESPAC.
 
@@ -159,18 +165,20 @@ La primera etapa caracteriza la distribución de las UPA según tenencia, superf
 
 ### Modelos OLS
 
-Para cada productividad se estima la siguiente especificación:
+Para cada productividad se estima una especificación común en tenencia y controles, con una forma de superficie adaptada a cada respuesta:
 
 $$
 \begin{aligned}
-\ln(1+Y_i)={}&\beta_0+\beta_1 Tenencia_i+\beta_2 Superficie_{zi}
+\ln(1+Y_i)={}&\beta_0+\beta_1 Tenencia_i+f(Superficie_i)
 +\beta_3 Edad_{zi}\\
-&+\beta_4 Internet_i+\beta_5 Educacion_{zi}+\beta_6 Riego_i\\
-&+\beta_7 Fertilizante_i+\beta_8 Plaguicida_i+\varepsilon_i.
+&+\beta_4 Internet_i+\beta_5 Educacion_i+\beta_6 Sexo_i\\
+&+\beta_7 Riego_i+\beta_8 Fertilizante_i+\beta_9 Plaguicida_i+\varepsilon_i.
 \end{aligned}
 $$
 
-$Y_i$ representa alternativamente productividad de la tierra o del trabajo. Arrendamiento/aparcería es la referencia de tenencia. El diagnóstico de Breusch-Pagan documentado en el Capítulo VII rechaza la homocedasticidad; por ello, la inferencia OLS utiliza errores estándar robustos HC1. Los coeficientes de las variables dicotómicas y de tenencia son diferencias condicionadas respecto de sus categorías de referencia, no efectos causales.
+$Y_i$ representa alternativamente productividad de la tierra o del trabajo. Para la primera respuesta, $f(Superficie_i)$ corresponde a la superficie en niveles estandarizados. Para la segunda, corresponde a $z[\ln(1+Superficie_i)]$ y su cuadrado. Arrendamiento y aparcería es la referencia de tenencia. El diagnóstico de Breusch-Pagan documentado en el Capítulo VII rechaza la homocedasticidad; por ello, la inferencia OLS utiliza errores estándar robustos HC1. Los coeficientes de las variables dicotómicas y de tenencia son diferencias condicionadas respecto de sus categorías de referencia, no efectos causales.
+
+Los modelos se estiman progresivamente sobre la misma muestra: tenencia; tenencia y escala; incorporación del bloque sociodemográfico y de conectividad; y adición del bloque tecnológico. Esta secuencia permite observar la estabilidad de la asociación de tenencia cuando cambia el conjunto de covariables, sin interpretar los movimientos como una descomposición causal.
 
 ### Modelos multinivel
 
@@ -190,13 +198,13 @@ El ICC del modelo nulo cuantifica la proporción de variabilidad asociada a dife
 
 ### Fronteras estocásticas y eficiencia técnica
 
-La tercera familia aplica una frontera estocástica separada a cada indicador transformado:
+La tercera familia aplica un análisis de frontera estocástica (SFA) separado a cada indicador transformado:
 
 $$
 \ln(1+Y_i)=\beta_0+\sum_{k=1}^{K}\beta_kX_{ki}+v_i-u_i,
 $$
 
-donde $v_i$ es un término simétrico de ruido y $u_i\geq0$ representa ineficiencia técnica. La especificación mantiene las mismas covariables centrales empleadas en los modelos comparativos y se estima sobre 21.430 UPA con ambas productividades positivas. Su forma es análoga a una frontera Cobb-Douglas log-lineal por la linealidad en los regresores transformados, pero la respuesta empírica es un indicador de productividad monetaria; por ello, sus coeficientes no se presentan como elasticidades de una función física de producción completa.
+donde $v_i$ es un término simétrico de ruido y $u_i\geq0$ representa ineficiencia técnica. La especificación mantiene las mismas covariables y formas funcionales de superficie de los modelos comparativos y se estima sobre 21.430 UPA con ambas productividades positivas. La respuesta empírica es un indicador de productividad monetaria; por ello, la SFA se interpreta como frontera paramétrica de productividad condicionada y sus coeficientes no se presentan como elasticidades de una función física de producción completa. La distribución half-normal constituye la especificación principal y la truncated-normal se utiliza para evaluar la sensibilidad del orden relativo de las UPA, los coeficientes de tenencia, la eficiencia media y gamma al supuesto distributivo.
 
 La eficiencia técnica individual se obtiene como
 
@@ -214,9 +222,11 @@ expresa la proporción de la varianza compuesta atribuida al componente de inefi
 
 ## Diagnóstico, comparación e interpretación
 
-Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad y heterocedasticidad. El Capítulo VII reporta el factor de inflación de la varianza (VIF), prueba de Breusch-Pagan y evaluación gráfica de residuos. La significancia se acompaña de magnitud y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
+Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad, heterocedasticidad, forma funcional e influencia. El Capítulo VII reporta el factor de inflación de la varianza (VIF), la prueba de Breusch-Pagan (BP), la prueba de especificación de Ramsey (RESET), residuos frente a valores ajustados y diagnósticos sintéticos de leverage, distancia de Cook y cambios estandarizados DFBETA para los coeficientes de tenencia. Las observaciones influyentes se examinan como sensibilidad y no se eliminan automáticamente. La significancia se acompaña de magnitud, intervalos de confianza y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
 
-Las comparaciones de AIC, BIC y log-verosimilitud se realizan solo entre modelos estimados sobre la misma respuesta, muestra y función de verosimilitud. No se comparan directamente los criterios de ajuste de OLS, multinivel y SFA cuando sus universos o supuestos difieren. Del mismo modo, las eficiencias técnicas de las fronteras de tierra y trabajo son medidas específicas de cada respuesta y no indicadores intercambiables.
+Las comparaciones del criterio de información de Akaike (AIC), el criterio de información bayesiano (BIC) y la log-verosimilitud se realizan solo entre modelos estimados sobre la misma respuesta, muestra y función de verosimilitud. No se comparan directamente los criterios de ajuste de OLS, multinivel y SFA cuando sus universos o supuestos difieren. Del mismo modo, las eficiencias técnicas de las fronteras de tierra y trabajo son medidas específicas de cada respuesta y no indicadores intercambiables.
+
+Las sensibilidades se concentran en decisiones con incidencia interpretativa: omisión o inclusión de sexo, educación categórica frente a ordinal estandarizada, ponderación mediante `fact_exp_fin`, estructura territorial con interceptos aleatorios frente a efectos fijos provinciales, OLS sobre la muestra positiva de SFA y distribución half-normal frente a truncated-normal. La estimación ponderada aproxima asociaciones para la población representada por el factor de expansión, pero no equivale por sí sola a reproducir el diseño complejo de la encuesta; por ello se utiliza como contraste y no sustituye al modelo principal no ponderado.
 
 ## Consideraciones éticas y reproducibilidad
 

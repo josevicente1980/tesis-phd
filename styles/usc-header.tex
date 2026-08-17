@@ -279,6 +279,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{placeins}
+\usepackage{flafter}
 
 \setcounter{topnumber}{3}
 \setcounter{bottomnumber}{2}
@@ -291,9 +292,6 @@
 % Impide que un flotante pendiente invada la sección siguiente.
 % Se conserva la colocación natural de LaTeX dentro de cada apartado.
 \pretocmd{\section}{\FloatBarrier}{}{}
-\pretocmd{\subsection}{\FloatBarrier}{}{}
-\pretocmd{\subsubsection}{\FloatBarrier}{}{}
-\pretocmd{\paragraph}{\FloatBarrier}{}{}
 
 % -------------------------------------------------
 % APÉNDICES

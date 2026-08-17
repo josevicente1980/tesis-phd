@@ -738,6 +738,10 @@ La @tbl-base-estratos muestra que la evolución de la estructura agraria refleja
 
 Los estratos intermedios muestran una recomposición progresiva, con una mayor presencia relativa tanto en número de unidades como en superficie, lo que sugiere procesos de ajuste y redistribución parcial sin alterar de manera sustantiva la estructura concentrada del sistema agrario. Por su parte, las explotaciones de mayor tamaño mantienen un control significativo sobre la superficie, a pesar de una disminución relativa de su peso, lo que indica que la concentración de la tierra persiste como rasgo estructural [@magap_politica_2016].
 
+```{=latex}
+\suppressfloats[t]
+```
+
 ```{r}
 #| label: tbl-base-estratos
 #| tbl-cap: "Número de UPA y superficie total por estrato, 1954, 1974 y 2000"
@@ -776,6 +780,10 @@ tabla_usc(
 ```
 
 La @tbl-calculos-estratos se construye a partir de los valores absolutos presentados en la @tbl-base-estratos, mediante el cálculo de la participación relativa de cada estrato en el número total de UPA y en la superficie, así como de la superficie media por unidad productiva. Esta transformación permite analizar con mayor claridad los cambios estructurales de la agricultura entre 1954 y 2000. Los resultados muestran que, aunque las explotaciones pequeñas continúan concentrando la mayor parte de las unidades productivas, su superficie media se reduce de forma progresiva, lo que confirma un proceso sostenido de fragmentación del minifundio. En los estratos intermedios, la superficie media presenta una evolución más inestable, reflejando procesos de recomposición y ajuste en la estructura productiva. Por su parte, las explotaciones de mayor tamaño reducen su superficie media en relación con los primeros censos, sin perder su condición de unidades de gran escala, lo que indica una moderación (más que una ruptura) de la concentración de la tierra.
+
+```{=latex}
+\suppressfloats[t]
+```
 
 ```{r}
 #| label: tbl-calculos-estratos
@@ -858,6 +866,7 @@ Finalmente, las explotaciones de 200 hectáreas y más representan 863 UPA, equi
 ```{r}
 #| label: tbl-upa-superficie-espac-2022
 #| tbl-cap: "Distribución muestral de las UPA y de la superficie agrícola por grupos de tamaño. Ecuador, ESPAC 2022"
+#| tbl-pos: t
 #| echo: false
 #| message: false
 #| warning: false
@@ -1133,6 +1142,7 @@ En forma de síntesis, la distribución observada confirma que la estructura de 
 ```{r}
 #| label: tbl-tenencia_tierrafpp
 #| tbl-cap: "Distribución muestral de las UPA según la forma de tenencia de la tierra. Ecuador, ESPAC 2022"
+#| tbl-pos: H
 #| echo: false
 #| message: false
 #| warning: false

@@ -12,7 +12,7 @@ Los módulos de detalle se consolidan por `Identificador` antes de integrarse. E
 
 La integración utiliza uniones izquierdas uno a uno respecto de la base maestra. Antes de cada unión se verifica la unicidad de ambas tablas y después se comprueba que no exista expansión de filas. Sobre la base consolidada se calculan `productividad_superficie` y `productividad_trabajo` únicamente cuando los denominadores respectivos son positivos. También se conserva `fact_exp_fin`, empleado cuando corresponden descripciones ponderadas; el capítulo metodológico establece que este factor no integra la especificación econométrica final reportada.
 
-Los filtros de completitud y comparabilidad requeridos por cada modelo se aplican después de generar la base analítica, de acuerdo con las variables de cada estimación. En particular, los estados tecnológicos `NO_APLICA` y ausentes no se confunden con respuestas negativas. Esta separación permite conservar en la base final la trazabilidad de los códigos y delimitar las muestras analíticas sin alterar el universo maestro durante la integración.
+Los filtros de completitud y comparabilidad requeridos por cada modelo se aplican después de generar la base analítica, de acuerdo con las variables de cada estimación. En particular, los estados tecnológicos `NO_APLICA` y ausentes no se confunden con respuestas negativas. Esta separación permite conservar en la base final la trazabilidad de los códigos y delimitar las muestras analíticas sin alterar el universo maestro durante la integración. La Tabla \ref{tbl-anexo-ii-etapas-base} sintetiza la secuencia desde la importación hasta la validación de la base final.
 
 \vspace{0.5cm}
 
