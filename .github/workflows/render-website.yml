@@ -1,0 +1,68 @@
+name: Render Quarto website
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quarto-website
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::here
+            any::tidyverse
+            any::readr
+            any::readxl
+            any::haven
+            any::janitor
+            any::skimr
+            any::knitr
+            any::kableExtra
+            any::ggplot2
+            any::scales
+            any::stringr
+            any::stringi
+            any::forcats
+            any::broom
+            any::broom.mixed
+            any::modelsummary
+            any::sjlabelled
+            any::DBI
+            any::odbc
+            any::survey
+            any::patchwork
+            any::sf
+            any::terra
+            any::tmap
+            any::classInt
+            any::rnaturalearth
+            any::frontier
+            any::lme4
+            any::lmerTest
+            any::lmtest
+            any::sandwich
+            any::performance
+      - name: Render HTML profile
+        run: quarto render --profile web
+      - name: Publish rendered docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git diff --cached --quiet || git commit -m "Actualiza sitio HTML"
+          git push
