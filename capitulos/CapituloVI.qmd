@@ -1942,7 +1942,8 @@ ggplot2::ggplot() +
     color = "white",
     linewidth = 0.35
   ) +
-  escala_fill_continua_tesis(
+  ggplot2::scale_fill_gradientn(
+    colours = c("#F7FCF5", "#74C476", "#00441B"),
     name = "Litros/día"
   ) +
   ggplot2::labs(
@@ -1957,6 +1958,7 @@ ggplot2::ggplot() +
     plot.margin = ggplot2::margin(5, 5, 5, 5)
   )
 ```
+
 
 El rendimiento lechero bovino presenta diferencias territoriales entre provincias. Los valores más altos de litros por vaca por día se concentran principalmente en el centro-norte de la región andina, donde destacan Pichincha, Cotopaxi y Carchi, que muestran los tonos más intensos del mapa. También se observan niveles relativamente elevados en Tungurahua y Chimborazo, lo que evidencia la presencia de sistemas lecheros con mayor rendimiento en este corredor interandino. En contraste, varias provincias del litoral y de la Amazonía presentan valores menores de litros por vaca, lo que sugiere que, aunque la actividad bovina está presente en estos territorios, el nivel de productividad lechera es relativamente más bajo. Este patrón territorial muestra que las diferencias en la producción lechera no solo dependen del tamaño del hato o del volumen total producido, sino también del rendimiento obtenido por animal en cada provincia (@fig-mapa-rendimiento-leche).
 
@@ -2017,7 +2019,8 @@ ggplot2::ggplot() +
     color = "white",
     linewidth = 0.35
   ) +
-  escala_fill_continua_tesis(
+  ggplot2::scale_fill_gradientn(
+    colours = c("#F7FCF5", "#74C476", "#00441B"),
     name = "Litros/vaca/día"
   ) +
   ggplot2::labs(
@@ -2528,13 +2531,10 @@ En términos de grandes magnitudes, los resultados muestran que las tierras en p
 
 Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento y aparcería en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
 
-```{=latex}
-\suppressfloats[t]
-```
-
 ```{r}
 #| label: tbl-tenencia-sector
 #| tbl-cap: "Distribución de la tenencia de la tierra según sector productivo dominante de la UPA, ESPAC 2022"
+#| tbl-pos: H
 #| echo: false
 #| message: false
 #| warning: false
@@ -2603,6 +2603,10 @@ tabla_usc(
     nota = "El sector dominante corresponde a la actividad de mayor valor productivo y los valores son proporciones promedio ponderadas de superficie.",
     fuente = fuente_espac
   )
+```
+
+```{=latex}
+\newpage
 ```
 
 ## Productividad de los factores y estructura agraria en las unidades agropecuarias
@@ -3404,7 +3408,7 @@ En términos generales, el patrón territorial evidencia mayores niveles de prod
 #|   I("Productividad típica de la tierra por provincia (mediana provincial), ESPAC 2022. \\newline Fuente: Elaboración propia a partir de la ESPAC 2022.")
 #| fig-align: center
 #| fig-width: 7.2
-#| fig-height: 5.2
+#| fig-height: 4.0
 
 normalizar_provincia <- function(x) {
   provincia_normalizada <- x |>
@@ -3469,7 +3473,8 @@ ggplot2::ggplot() +
     color = "white",
     linewidth = 0.35
   ) +
-  escala_fill_continua_tesis(
+  ggplot2::scale_fill_gradientn(
+    colours = c("#F7FCF5", "#74C476", "#00441B"),
     name = "USD/ha"
   ) +
   ggplot2::labs(
@@ -3484,6 +3489,7 @@ ggplot2::ggplot() +
     plot.margin = ggplot2::margin(5, 5, 5, 5)
   )
 ```
+
 
 El análisis territorial puede ampliarse incorporando el segundo factor productivo considerado en este estudio: el trabajo. Mientras que la productividad de la tierra refleja el valor generado por unidad de superficie, la productividad del trabajo permite aproximarse al rendimiento económico asociado a la mano de obra utilizada en las unidades agropecuarias. La representación espacial de este indicador permite identificar diferencias provinciales en la intensidad y el desempeño del factor trabajo dentro de la estructura productiva agropecuaria
 
@@ -3507,7 +3513,7 @@ El patrón territorial de la productividad del trabajo muestra una mayor concent
 #|   I("Productividad típica del trabajo por provincia (mediana provincial), ESPAC 2022. \\newline Fuente: Elaboración propia a partir de la ESPAC 2022.")
 #| fig-align: center
 #| fig-width: 7.2
-#| fig-height: 5.2
+#| fig-height: 3.6
 
 prod_trab_prov <- base |>
   dplyr::mutate(
@@ -3549,7 +3555,8 @@ ggplot2::ggplot() +
     color = "white",
     linewidth = 0.35
   ) +
-  escala_fill_continua_tesis(
+  ggplot2::scale_fill_gradientn(
+    colours = c("#F7FCF5", "#74C476", "#00441B"),
     name = "USD/trab."
   ) +
   ggplot2::labs(
@@ -3589,7 +3596,7 @@ En términos generales, el mapa del índice combinado evidencia que las mayores 
 #|   I("Índice combinado de productividad agropecuaria por provincia (mediana provincial), ESPAC 2022. \\newline Fuente: Elaboración propia a partir de la ESPAC 2022.")
 #| fig-align: center
 #| fig-width: 7.2
-#| fig-height: 5.2
+#| fig-height: 3.6
 
 indice_prov <- base |>
   dplyr::mutate(
