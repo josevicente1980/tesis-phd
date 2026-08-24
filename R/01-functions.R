@@ -1,6 +1,6 @@
 # ============================================================
 # FUNCIONES GLOBALES PARA TABLAS Y FIGURAS
-# Tesis doctoral - Jos? Vicente Ord??ez Yaguache
+# Tesis doctoral - José Vicente Ordóñez Yaguache
 # Estilo USC / EDIUS
 # ============================================================
 
@@ -92,13 +92,13 @@ tabla_usc <- function(
 nota_tabla <- function(
     tabla,
     nota = NULL,
-    fuente = "Elaboraci?n propia."
+    fuente = "Elaboración propia."
 ) {
   
   # ----------------------------------------------------------
   # CAMBIO 1:
   # Se verifica si realmente existe una nota.
-  # Si nota = NULL, "", NA o un vector vac?o, no se imprimir?
+  # Si nota = NULL, "", NA o un vector vacío, no se imprimirá
   # la palabra "Nota:".
   # ----------------------------------------------------------
   
@@ -114,14 +114,14 @@ nota_tabla <- function(
   
   # ----------------------------------------------------------
   # CAMBIO 2:
-  # Cuando s? existe nota, se construyen dos elementos:
+  # Cuando sí existe nota, se construyen dos elementos:
   #   1) el texto de la nota
   #   2) la fuente
   #
   # Al usar un vector con dos elementos y footnote_as_chunk = FALSE,
-  # kableExtra coloca la fuente en una l?nea nueva.
+  # kableExtra coloca la fuente en una línea nueva.
   #
-  # Cuando no existe nota, se imprime ?nicamente la fuente.
+  # Cuando no existe nota, se imprime únicamente la fuente.
   # ----------------------------------------------------------
   
   texto <- if (tiene_nota) {
@@ -144,8 +144,8 @@ nota_tabla <- function(
   
   # ----------------------------------------------------------
   # CAMBIO 3:
-  # Si hay nota, se imprime el t?tulo "Nota:".
-  # Si no hay nota, el t?tulo queda vac?o y solo aparece la fuente.
+  # Si hay nota, se imprime el título "Nota:".
+  # Si no hay nota, el título queda vacío y solo aparece la fuente.
   # ----------------------------------------------------------
   
   titulo <- if (tiene_nota) {
@@ -256,7 +256,7 @@ to_si_no <- function(x) {
     )
   )
   dplyr::case_when(
-    xs %in% c("SI", "S?") ~ "SI",
+    xs %in% c("SI", "SÍ") ~ "SI",
     xs == "NO" ~ "NO",
     TRUE ~ NA_character_
   )
