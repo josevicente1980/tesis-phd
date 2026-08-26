@@ -866,7 +866,7 @@ Finalmente, las explotaciones de 200 hectáreas y más representan 863 UPA, equi
 ```{r}
 #| label: tbl-upa-superficie-espac-2022
 #| tbl-cap: "Distribución muestral de las UPA y de la superficie agrícola por grupos de tamaño. Ecuador, ESPAC 2022"
-#| tbl-pos: t
+#| tbl-pos: H
 #| echo: false
 #| message: false
 #| warning: false
