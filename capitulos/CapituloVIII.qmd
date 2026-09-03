@@ -1,8 +1,6 @@
 # Conclusiones y recomendaciones {.unnumbered}
 
-\markboth{Conclusiones y recomendaciones}{Conclusiones y recomendaciones}
-
-## Conclusiones generales
+## Conclusiones generales {.unnumbered}
 
 Esta tesis se propuso analizar cómo se relaciona el régimen predominante de tenencia con la productividad agropecuaria de las unidades de producción agropecuaria (UPA) del Ecuador continental. La pregunta exigía distinguir el valor generado por hectárea del valor generado por trabajador, reconocer que las unidades operan en contextos provinciales diferentes y examinar su posición relativa frente a fronteras paramétricas condicionadas. Con información de la Encuesta de Superficie y Producción Agropecuaria Continua (ESPAC) 2022, la investigación articuló el estudio conceptual e histórico de la tenencia con una caracterización nacional y tres estrategias econométricas complementarias.
 
@@ -40,7 +38,7 @@ Las principales limitaciones delimitan el alcance de estas conclusiones. La ESPA
 
 Las futuras investigaciones se derivan de esas limitaciones. Datos longitudinales permitirían observar transiciones entre regímenes y separar mejor las diferencias persistentes de los cambios dentro de una misma UPA. Información contractual sobre duración, estabilidad, reparto del producto y capacidad de renovación ayudaría a evaluar el mecanismo asignativo sugerido por el desempeño de arrendamiento y aparcería. Mediciones de costos, capital, mecanización, suelo, distancia a mercados y asistencia técnica permitirían avanzar desde productividades parciales hacia indicadores de desempeño más integrales. Finalmente, la repetición del análisis en futuras rondas de la ESPAC permitiría determinar si la asociación de tenencia y los patrones territoriales identificados en 2022 son estables o responden a condiciones específicas de ese año.
 
-## Recomendaciones
+## Recomendaciones {.unnumbered}
 
 Las implicaciones para la acción pública deben leerse como orientaciones que requieren evaluación adicional. La primera es evitar políticas de productividad basadas exclusivamente en la modalidad de tenencia. El fortalecimiento de la seguridad jurídica puede proteger derechos y ampliar horizontes de inversión, pero sus resultados productivos dependerán del acceso complementario a mercados, financiamiento, infraestructura, información y tecnología. La formalización no sustituye estos componentes ni resuelve por sí sola las restricciones de las UPA.
 

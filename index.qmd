@@ -15,7 +15,6 @@ source(project_path("R", "01-functions.R"))
 \setcounter{page}{1}
 \pagestyle{fancy}
 
-{{< include preambulo/siglas.qmd >}}
 {{< include preambulo/dedicatoria.qmd >}}
 {{< include preambulo/agradecimientos.qmd >}}
 {{< include preambulo/resumen.qmd >}}
@@ -29,12 +28,16 @@ source(project_path("R", "01-functions.R"))
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Índice de tablas}
+\renewcommand{\listtablename}{Índice de tablas}
 \listoftables
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Índice de figuras}
+\renewcommand{\listfigurename}{Índice de figuras}
 \listoffigures
 \clearpage
+
+{{< include preambulo/siglas.qmd >}}
 
 \clearpage
 \pagenumbering{arabic}
@@ -54,9 +57,7 @@ source(project_path("R", "01-functions.R"))
 {{< include capitulos/CapituloV.qmd >}}
 {{< include capitulos/CapituloVI.qmd >}}
 {{< include capitulos/CapituloVII.qmd >}}
-\setcounter{secnumdepth}{-1}
 {{< include capitulos/CapituloVIII.qmd >}}
-\setcounter{secnumdepth}{4}
 
 # Bibliografía {.unnumbered}
 

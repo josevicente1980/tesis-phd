@@ -750,7 +750,7 @@ Los estratos intermedios muestran una recomposición progresiva, con una mayor p
 #| warning: false
 
 base_tbl <- tibble::tribble(
-  ~Tamaño, ~UPA_1954, ~UPA_1974, ~UPA_2000, ~Sup_1954, ~Sup_1974, ~Sup_2000,
+  ~`Tamaño`, ~UPA_1954, ~UPA_1974, ~UPA_2000, ~Sup_1954, ~Sup_1974, ~Sup_2000,
   "< 5 ha", 251686, 346847, 535309, 432200, 538668, 774225,
   "5-20 ha", 57650, 96360, 176726, 565800, 935291, 1706794,
   "20-100 ha", 27742, 64813, 111290, 1138700, 1664671, 4614436,
@@ -793,7 +793,7 @@ La @tbl-calculos-estratos se construye a partir de los valores absolutos present
 #| warning: false
 
 totales_estratos <- base_tbl |>
-  dplyr::filter(Tamaño == "Total")
+  dplyr::filter(`Tamaño` == "Total")
 
 calc_tbl_print <- base_tbl |>
   dplyr::mutate(
@@ -808,7 +808,7 @@ calc_tbl_print <- base_tbl |>
     `Media 2000` = Sup_2000 / UPA_2000
   ) |>
   dplyr::select(
-    Tamaño,
+    `Tamaño`,
     `UPA % 1954`,
     `UPA % 1974`,
     `UPA % 2000`,
@@ -1041,7 +1041,7 @@ tabla_usc(
   )
 ```
 
-Una vez analizado el patrón estructural de la distribución de las UPA según la forma de tenencia de la tierra correspondiente al año 2000, y antes de proceder a la comparación con los resultados de la ESPAC 2022, conviene precisar un aspecto metodológico relevante. Si bien los resultados sobre tenencia de la tierra para 2022 ya fueron abordados en el Capítulo II, específicamente en el apartado 2.4, aquellos que se presentan a continuación difieren en su enfoque analítico. En el Capítulo II el análisis se centró en la superficie asociada a cada régimen de tenencia, mientras que en esta sección las cifras se construyen a partir del número de UPA, lo que permite una lectura complementaria sobre la estructura de la tenencia desde la perspectiva de la distribución de las UPA.
+Una vez analizado el patrón estructural de la distribución de las UPA según la forma de tenencia de la tierra correspondiente al año 2000, y antes de proceder a la comparación con los resultados de la ESPAC 2022, conviene precisar un aspecto metodológico relevante. Si bien los resultados sobre tenencia de la tierra para 2022 ya fueron abordados en el capítulo 2, específicamente en el apartado 2.4, aquellos que se presentan a continuación difieren en su enfoque analítico. En el capítulo 2 el análisis se centró en la superficie asociada a cada régimen de tenencia, mientras que en esta sección las cifras se construyen a partir del número de UPA, lo que permite una lectura complementaria sobre la estructura de la tenencia desde la perspectiva de la distribución de las UPA.
 
 Cabe precisar también que, aunque la @tbl-tenencia_tierrafpp presenta un único régimen de tenencia por UPA, ello responde a que se ha considerado exclusivamente el régimen de tenencia predominante en cada predio. En contraste, la @tbl-sunac-tabla-mono-multi complementa este análisis al clasificar las UPA según presenten mono-tenencia o multi-tenencia, a partir de la identificación de regímenes distintos dentro de cada unidad productiva. La clasificación se elaboró identificando, para cada UPA, si los terrenos registrados en la encuesta se encontraban asociados a un único régimen de tenencia o a más de uno. A diferencia de las estimaciones nacionales expandidas, los resultados presentados corresponden a valores muestrales sin expansión, construidos directamente a partir de las 42.444 UPA incluidas en la base de análisis de la ESPAC 2022.
 

@@ -65,7 +65,7 @@ ruta_shp  <- path_shapes("SHP", "nxprovincias.shp")
 
 if (!file.exists(ruta_base)) {
   stop(
-    "No se encontró la base procesada del Capítulo VI en: ",
+    "No se encontró la base procesada del capítulo 6 en: ",
     ruta_base,
     call. = FALSE
   )
@@ -73,7 +73,7 @@ if (!file.exists(ruta_base)) {
 
 if (!file.exists(ruta_shp)) {
   stop(
-    "No se encontró el archivo cartográfico del Capítulo VI en: ",
+    "No se encontró el archivo cartográfico del capítulo 6 en: ",
     ruta_shp,
     call. = FALSE
   )
@@ -113,7 +113,7 @@ rutas_faltantes_capitulo_vi <- rutas_rds_capitulo_vi[
 
 if (length(rutas_faltantes_capitulo_vi) > 0) {
   stop(
-    "No se encontraron los siguientes insumos RDS del Capítulo VI: ",
+    "No se encontraron los siguientes insumos RDS del capítulo 6: ",
     paste(
       rutas_faltantes_capitulo_vi,
       collapse = ", "
@@ -152,6 +152,119 @@ Asimismo, se examina la estructura de la tenencia de la tierra, con el fin de ca
 [^productividad_trabajo]: Conviene precisar que, para efectos de este análisis, la productividad del trabajo se operacionaliza formalmente a partir de este momento, a través del indicador de productividad por persona ocupada en las UPA.
 
 Finalmente, a partir de estos resultados descriptivos, se realiza una primera aproximación a la relación entre tenencia de la tierra y productividad, explorando la existencia de diferencias sistemáticas en el desempeño productivo asociadas a los distintos regímenes de tenencia. Este ejercicio no persigue establecer relaciones causales, sino identificar regularidades empíricas y patrones observables que orienten el diseño y la interpretación de los análisis econométricos desarrollados en el capítulo siguiente.
+
+La @fig-mapa-politico-ecuador presenta la división político-administrativa provincial del Ecuador. Su finalidad es proporcionar una referencia territorial que facilite la identificación y la adecuada interpretación de las provincias y de los resultados espaciales analizados posteriormente en este capítulo.
+
+```{r}
+#| label: fig-mapa-politico-ecuador
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 6.6
+#| fig-height: 8.2
+#| out-width: "88%"
+#| fig-align: center
+#| fig-pos: "!htbp"
+#| fig-scap: "División político-administrativa provincial del Ecuador."
+#| fig-cap: !expr >-
+#|   I("División político-administrativa provincial del Ecuador. \\newline Fuente: Elaboración propia con base en la cartografía de la División Político-Administrativa 2012 del Instituto Nacional de Estadística y Censos (INEC).")
+
+provincias_politico <- provincias |>
+  dplyr::mutate(cod_prov = as.character(DPA_PROVIN)) |>
+  dplyr::filter(cod_prov != "90") |>
+  sf::st_make_valid()
+
+provincias_continentales <- provincias_politico |>
+  dplyr::filter(cod_prov != "20")
+
+etiquetas_provincias <- provincias_continentales |>
+  sf::st_point_on_surface() |>
+  dplyr::mutate(
+    nombre = stringr::str_to_title(DPA_DESPRO),
+    nombre = dplyr::recode(
+      nombre,
+      "Los Rios" = "Los R\u00edos",
+      "Santo Domingo De Los Tsachilas" = "Santo Domingo\nde los Ts\u00e1chilas",
+      "Morona Santiago" = "Morona\nSantiago",
+      "Zamora Chinchipe" = "Zamora\nChinchipe"
+    )
+  )
+
+mapa_continental <- ggplot2::ggplot() +
+  ggplot2::geom_sf(
+    data = provincias_continentales,
+    fill = color_fondo_mapa,
+    color = paleta_tesis[1],
+    linewidth = 0.45
+  ) +
+  ggrepel::geom_label_repel(
+    data = etiquetas_provincias,
+    ggplot2::aes(
+      geometry = geometry,
+      label = nombre
+    ),
+    stat = "sf_coordinates",
+    family = "serif",
+    size = 3.15,
+    lineheight = 0.9,
+    color = "#202428",
+    fill = "white",
+    label.size = 0,
+    label.padding = grid::unit(0.07, "lines"),
+    box.padding = 0.32,
+    point.padding = 0.12,
+    min.segment.length = 0,
+    segment.color = "#6C757D",
+    segment.size = 0.25,
+    max.overlaps = Inf,
+    max.time = 10,
+    max.iter = 100000,
+    force = 3,
+    seed = 2022
+  ) +
+  ggplot2::coord_sf(clip = "off") +
+  tema_figura_vacia_tesis +
+  ggplot2::theme(
+    plot.margin = ggplot2::margin(8, 28, 8, 28)
+  )
+
+mapa_galapagos <- ggplot2::ggplot() +
+  ggplot2::geom_sf(
+    data = dplyr::filter(provincias_politico, cod_prov == "20"),
+    fill = color_fondo_mapa,
+    color = paleta_tesis[1],
+    linewidth = 0.45
+  ) +
+  ggplot2::annotate(
+    "text",
+    x = Inf,
+    y = -Inf,
+    label = "Gal\u00e1pagos",
+    hjust = 1.05,
+    vjust = -0.6,
+    family = "serif",
+    size = 3.15,
+    color = "#202428"
+  ) +
+  tema_figura_vacia_tesis +
+  ggplot2::theme(
+    panel.border = ggplot2::element_rect(
+      color = color_borde_mapa,
+      fill = NA,
+      linewidth = 0.35
+    ),
+    plot.margin = ggplot2::margin(3, 3, 3, 3)
+  )
+
+mapa_galapagos_centrado <- patchwork::plot_spacer() +
+  mapa_galapagos +
+  patchwork::plot_spacer() +
+  patchwork::plot_layout(widths = c(1.2, 1, 1.2))
+
+mapa_continental /
+  mapa_galapagos_centrado +
+  patchwork::plot_layout(heights = c(4.4, 1))
+```
 
 ## Análisis de la ESPAC 2022
 
@@ -238,7 +351,7 @@ resumen_caracteristicas <- cgnac_fac |>
       levels = c(
         "Sexo",
         "Edad (rango)",
-        "Instrucción formal"
+        "Instrucci\u00f3n formal"
       )
     ),
 
@@ -267,7 +380,7 @@ resumen_caracteristicas <- cgnac_fac |>
         categoria == "No informa" ~ 99,
 
       # Instrucción formal
-      variable == "Instrucción formal" &
+      variable == "Instrucci\u00f3n formal" &
         categoria == "Ninguna" ~ 1,
       variable == "Instrucción formal" &
         categoria == "Primaria" ~ 2,
@@ -302,7 +415,7 @@ resumen_caracteristicas <- cgnac_fac |>
 # Tabla final
 tabla_caracteristicas <- resumen_caracteristicas |>
   dplyr::select(
-    Categoría = categoria,
+    `Categoría` = categoria,
     `Número de observaciones`,
     `Porcentaje (%)`
   )
@@ -317,7 +430,7 @@ n_edad <- sum(
 )
 
 n_inst <- sum(
-  resumen_caracteristicas$variable == "Instrucción formal"
+  resumen_caracteristicas$variable == "Instrucci\u00f3n formal"
 )
 
 # Presentación
@@ -341,7 +454,7 @@ tabla_usc(
     bold = FALSE
   ) |>
   kableExtra::pack_rows(
-    "Instrucción formal",
+    "Instrucci\u00f3n formal",
     n_sexo + n_edad + 1,
     n_sexo + n_edad + n_inst,
     bold = FALSE
@@ -475,7 +588,7 @@ Para analizar la distribución de la superficie con labor agropecuaria, se proce
 #|   I("Superficie con labor agropecuaria y superficie por uso agropecuario, 2022. \\newline Fuente: Elaboración propia, a partir de la ESPAC 2022.")
 #| fig-align: center
 #| fig-width: 7.2
-#| fig-height: 5.2
+#| fig-height: 3.8
 
 vars_usos_fig <- c(
   "us_k301ha",
@@ -894,7 +1007,7 @@ cp_fin <- top_cobertura_modulo(
   umbral = 0.80,
   etiqueta_otros = "Resto de permanentes"
 ) |>
-  dplyr::mutate(Módulo = "Cultivos permanentes")
+  dplyr::mutate(`Módulo` = "Cultivos permanentes")
 
 ct_fin <- top_cobertura_modulo(
   data = ctnac2022,
@@ -923,7 +1036,7 @@ ct_fin <- top_cobertura_modulo(
   dplyr::arrange(es_resto, dplyr::desc(superficie_ha)) |>
   dplyr::mutate(
     porcentaje_acumulado = cumsum(porcentaje),
-    Módulo = "Cultivos transitorios"
+    `Módulo` = "Cultivos transitorios"
   ) |>
   dplyr::select(-es_resto)
 
@@ -952,7 +1065,7 @@ pc_fin <- top_cobertura_pastos(
   dplyr::arrange(es_resto, dplyr::desc(superficie_ha)) |>
   dplyr::mutate(
     porcentaje_acumulado = cumsum(porcentaje),
-    Módulo = "Pastos cultivados"
+    `Módulo` = "Pastos cultivados"
   ) |>
   dplyr::select(-es_resto)
 
@@ -962,8 +1075,8 @@ tabla_cultivos <- dplyr::bind_rows(
   pc_fin
 ) |>
   dplyr::mutate(
-    Módulo = factor(
-      Módulo,
+    `Módulo` = factor(
+      `Módulo`,
       levels = c(
         "Cultivos permanentes",
         "Cultivos transitorios",
@@ -978,19 +1091,19 @@ tabla_cultivos <- dplyr::bind_rows(
 
 tabla_cultivos_print <- tabla_cultivos |>
   dplyr::select(
-    Módulo,
+    `Módulo`,
     Cultivo = cultivo,
     `Superficie (ha) (exp.)` = superficie_ha,
     `Porcentaje (%)` = porcentaje,
     `Porcentaje acumulado (%)` = porcentaje_acumulado
   )
 
-n_cp <- sum(tabla_cultivos_print$Módulo == "Cultivos permanentes")
-n_ct <- sum(tabla_cultivos_print$Módulo == "Cultivos transitorios")
-n_pc <- sum(tabla_cultivos_print$Módulo == "Pastos cultivados")
+n_cp <- sum(tabla_cultivos_print$`Módulo` == "Cultivos permanentes")
+n_ct <- sum(tabla_cultivos_print$`Módulo` == "Cultivos transitorios")
+n_pc <- sum(tabla_cultivos_print$`Módulo` == "Pastos cultivados")
 
 tabla_usc(
-  tabla_cultivos_print |> dplyr::select(-Módulo),
+  tabla_cultivos_print |> dplyr::select(-`Módulo`),
   align = c("l", "r", "r", "r"),
   digits = 1,
   font_size = 8
@@ -1461,7 +1574,7 @@ n_trans <- sum(tabla_flores$modulo == "Flores transitorias")
 
 tabla_flores_print <- tabla_flores |>
   dplyr::select(
-    Módulo = modulo,
+    `Módulo` = modulo,
     Flor = flor,
     `Superficie sembrada (ha)` = superficie,
     `Participación (%)` = porcentaje
@@ -1469,7 +1582,7 @@ tabla_flores_print <- tabla_flores |>
 
 tabla_usc(
   tabla_flores_print |>
-    dplyr::select(-Módulo),
+    dplyr::select(-`Módulo`),
   align = c("l", "r", "r"),
   digits = 1,
   font_size = 8
@@ -1626,7 +1739,7 @@ tabla_hato_print <- tabla_hato_bovino |>
     `Participación (%)` = round(`Participación (%)`, 1)
   ) |>
   dplyr::select(
-    Categoría = categoria,
+    `Categoría` = categoria,
     `Número de cabezas`,
     `Participación (%)`
   )
@@ -1769,7 +1882,7 @@ tabla_razas_print <- tabla_razas |>
     `Participación (%)` = round(`Participación (%)`, 1)
   ) |>
   dplyr::select(
-    Categoría = categoria,
+    `Categoría` = categoria,
     `Número de cabezas`,
     `Participación (%)`
   )
@@ -1838,7 +1951,7 @@ vacas_ordenadas_exp <- sum(
 )
 
 litros_ordenados_exp <- sum(
-  to_num(glnac2022$litros_ordeñados) * to_num(glnac2022$fact_exp_fin),
+  to_num(glnac2022$`litros_ordeñados`) * to_num(glnac2022$fact_exp_fin),
   na.rm = TRUE
 )
 
@@ -1905,7 +2018,7 @@ La distribución territorial de la producción diaria de leche bovina muestra un
 leche_prov <- glnac2022 |>
   dplyr::mutate(
     cod_prov = as.character(ual_prov),
-    leche = to_num(litros_ordeñados),
+    leche = to_num(`litros_ordeñados`),
     peso = to_num(fact_exp_fin)
   ) |>
   dplyr::filter(
@@ -1978,7 +2091,7 @@ rendimiento_prov <- glnac2022 |>
   dplyr::mutate(
     cod_prov = as.character(ual_prov),
     vacas = to_num(vacas_ordenadas),
-    leche = to_num(litros_ordeñados),
+    leche = to_num(`litros_ordeñados`),
     peso = to_num(fact_exp_fin)
   ) |>
   dplyr::filter(
@@ -2268,7 +2381,7 @@ upa_tenencia_final <- upa_total |>
     clase_mayoria = factor(
       clase_mayoria,
       levels = c("Dueño", "Arrendatario", "Especiales"),
-      labels = c("Tenencia directa", "arrendamiento y aparcería", "Otros regímenes de tenencia")
+      labels = c("Tenencia directa", "Arrendamiento y aparcería", "Otros regímenes de tenencia")
     )
   )
 
@@ -2325,7 +2438,7 @@ La distribución de los puntos evidencia una concentración hacia el vértice co
 
 ternaria <- base |>
   dplyr::mutate(
-    superficie_propiedad = to_num(tenencia_area_dueño),
+    superficie_propiedad = to_num(`tenencia_area_dueño`),
     superficie_arrendamiento = to_num(tenencia_area_arrendamiento),
     superficie_especiales = to_num(tenencia_area_especiales),
     superficie_tenencia_total =
@@ -2561,7 +2674,7 @@ tabla_tenencia_sector <- base |>
       actividad_dom == "valor_oe" ~ "Otros",
       TRUE ~ NA_character_
     ),
-    dueno = to_num(dueño),
+    dueno = to_num(`dueño`),
     arrendamiento_area = to_num(arrendamiento),
     especiales_area = to_num(especiales),
     peso = to_num(fact_exp_fin)
@@ -2719,13 +2832,13 @@ tabla_prod_tenencia <- base |>
   dplyr::mutate(
     tenencia_dom = dplyr::case_when(
       clase.mayoria == "dueño" ~ "Tenencia directa",
-      clase.mayoria == "arrendamiento" ~ "arrendamiento y aparcería",
+      clase.mayoria == "arrendamiento" ~ "Arrendamiento y aparcería",
       clase.mayoria == "especiales" ~ "Otros regímenes de tenencia",
       TRUE ~ NA_character_
     ),
     tenencia_dom = factor(
       tenencia_dom,
-      levels = c("Tenencia directa", "arrendamiento y aparcería", "Otros regímenes de tenencia")
+      levels = c("Tenencia directa", "Arrendamiento y aparcería", "Otros regímenes de tenencia")
     ),
     prod_sup = to_num(productividad_superficie),
     prod_trab = to_num(productividad_trabajo),
@@ -3030,7 +3143,7 @@ datos_prod_tierra_tenencia <- base |>
       ),
       labels = c(
         "Tenencia directa",
-        "arrendamiento y aparcería",
+        "Arrendamiento y aparcería",
         "Otros regímenes de tenencia"
       )
     ),
@@ -3122,7 +3235,7 @@ datos_prod_trabajo_tenencia <- base |>
       ),
       labels = c(
         "Tenencia directa",
-        "arrendamiento y aparcería",
+        "Arrendamiento y aparcería",
         "Otros regímenes de tenencia"
       )
     ),
@@ -3316,7 +3429,7 @@ datos_indice_tenencia <- base |>
       ),
       labels = c(
         "Tenencia directa",
-        "arrendamiento y aparcería",
+        "Arrendamiento y aparcería",
         "Otros regímenes de tenencia"
       )
     ),

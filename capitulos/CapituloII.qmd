@@ -240,12 +240,12 @@ upa_tenencia_sup <- upa_final |>
     dplyr::desc(`Porcentaje (%)`)
   ) |>
   dplyr::rename(
-    Categoría = tenencia_mayoritaria
+    `Categoría` = tenencia_mayoritaria
   )
 
 fila_total <- upa_tenencia_sup |>
   dplyr::summarise(
-    Categoría = "Total",
+    `Categoría` = "Total",
     `Superficie (ha)` = sum(`Superficie (ha)`, na.rm = TRUE),
     `Porcentaje (%)` = 100
   )
@@ -435,7 +435,7 @@ Otros regímenes de tenencia. Incluyen las tierras gestionadas de manera colecti
 #| warning: false
 
 tabla_tenencia <- tibble::tribble(
-  ~`Tipos de tenencia`,                         ~Categorías,       ~Descripción,
+  ~`Tipos de tenencia`,                         ~`Categorías`,       ~`Descripción`,
   "Tierras en propiedad o tenencia directa",    "Dueño",           "Propietario con título legal registrado de la tierra",
   "Tierras en propiedad o tenencia directa",    "Herencia",        "Tierra adquirida a través de la sucesión hereditaria",
   "Tierras en propiedad o tenencia directa",    "Usufructo",       "Derecho a usar y disfrutar la tierra sin ser propietario",

@@ -52,7 +52,7 @@ Analizar la asociación entre el régimen predominante de tenencia y el desempe�
 
 - Estimar y comparar, dentro de la submuestra aplicable, la posición relativa de las UPA respecto de fronteras paramétricas de productividad monetaria condicionada.
 
-## Expectativas empíricas
+## Algunas hipótesis a contrastar
 
 Las expectativas se derivan de los mecanismos teóricos y de la evidencia revisada, que no establecen una dirección universal. Se formulan como patrones contrastables y no como anticipaciones de los resultados particulares de la ESPAC 2022.
 
@@ -84,7 +84,7 @@ En esta tesis, la denominación *eficiencia técnica* se conserva por consistenc
 
 ### Relevancia social y económica
 
-La investigación identifica variables y contextos correlacionados con el desempeño, pero no estima el resultado de intervenciones. En consecuencia, sus hallazgos pueden señalar ámbitos que merecen atención, orientar diagnósticos y priorizar futuras evaluaciones sobre seguridad de tenencia, conectividad, formación o prácticas productivas. La decisión de intervenir en esos ámbitos exige evidencia causal adicional, análisis de costos y consideración de los arreglos locales.
+Las brechas de productividad inciden en la capacidad de las UPA para generar ingresos y sostener los medios de vida rurales. Identificar las condiciones asociadas con un mejor desempeño ayuda a evitar recomendaciones centradas exclusivamente en la titulación y orienta la atención hacia restricciones concomitantes como conectividad, formación, infraestructura y acceso seguro a la tierra. La evidencia es pertinente para políticas de desarrollo rural, siempre que se respete el carácter no causal de las estimaciones.
 
 ### Relevancia territorial e internacional
 
@@ -118,6 +118,6 @@ La contribución doctoral reside en la conclusión conjunta que esta arquitectur
 
 ## Organización de la tesis
 
-Después del Capítulo I, la tesis se organiza en dos partes. La Parte I. Marco conceptual y revisión de la literatura reúne los capítulos II, III y IV. El Capítulo II delimita los conceptos de propiedad, tenencia y seguridad, sus modalidades y los fundamentos de la productividad y la eficiencia, incluido el debate sobre el tamaño de las explotaciones. El Capítulo III reconstruye la evolución histórica, jurídica e institucional de la tenencia en Ecuador, con atención a las reformas agrarias y a la persistencia de la desigualdad. El Capítulo IV revisa la evidencia empírica nacional e internacional y precisa el estado de la cuestión y el vacío aplicado al Ecuador.
+Después del capítulo 1, la tesis se organiza en dos partes. La Parte I. Marco conceptual y revisión de la literatura reúne los capítulos 2, 3 y 4. El capítulo 2 delimita los conceptos de propiedad, tenencia y seguridad, sus modalidades y los fundamentos de la productividad y la eficiencia, incluido el debate sobre el tamaño de las explotaciones. El capítulo 3 reconstruye la evolución histórica, jurídica e institucional de la tenencia en Ecuador, con atención a las reformas agrarias y a la persistencia de la desigualdad. El capítulo 4 revisa la evidencia empírica nacional e internacional y precisa el estado de la cuestión y el vacío aplicado al Ecuador.
 
-La Parte II. Productividad agraria y tenencia de la tierra en el Ecuador: análisis estadístico y econométrico comprende los capítulos V, VI y VII. El Capítulo V presenta la ESPAC 2022, la construcción de variables y muestras y la estrategia metodológica. El Capítulo VI caracteriza la estructura productiva y territorial, las formas de tenencia y los patrones descriptivos de ambas productividades. El Capítulo VII desarrolla los diagnósticos y resultados de los modelos OLS, multinivel y de frontera estocástica, y discute sus asociaciones, la heterogeneidad provincial y la eficiencia estimada. Finalmente, el Capítulo VIII reúne las conclusiones, limitaciones y líneas de investigación e intervención que requieren evaluación adicional.
+La Parte II. Productividad agraria y tenencia de la tierra en el Ecuador: análisis estadístico y econométrico comprende los capítulos 5, 6 y 7. El capítulo 5 presenta la ESPAC 2022, la construcción de variables y muestras y la estrategia metodológica. El capítulo 6 caracteriza la estructura productiva y territorial, las formas de tenencia y los patrones descriptivos de ambas productividades. El capítulo 7 desarrolla los diagnósticos y resultados de los modelos OLS, multinivel y de frontera estocástica, y discute sus asociaciones, la heterogeneidad provincial y la eficiencia estimada. Finalmente, resumimos las principales conclusiones, limitaciones y líneas de investigación e intervención que requieren evaluación adicional.

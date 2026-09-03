@@ -1,25 +1,46 @@
 ```{=latex}
 \begin{titlepage}
-\thispagestyle{empty}%
+\thispagestyle{empty}
+
+\noindent
+\includegraphics[width=9cm]{usc-logo.png}
+
+\vspace{1.5cm}
+
 \begin{center}
-\vspace*{1cm}
 
-\includegraphics[width=4cm]{usc-logo.png}\\[1.5cm]
+{\small TESIS DOCTORAL}\\[0.55cm]
 
-{\large \textbf{UNIVERSIDAD DE SANTIAGO DE COMPOSTELA}}\\[0.5cm]
-{\large \textbf{Escuela de Doctorado Internacional (EDIUS)}}\\[2cm]
+{\large\bfseries
+Formas de tenencia de la tierra y productividad agropecuaria en Ecuador
+}\\[2.7cm]
 
-{\Huge \bfseries Formas de tenencia de la tierra y productividad agropecuaria en Ecuador}\\[3cm]
+{\small Autor}\\[0.30cm]
 
-{\large \textbf{Tesis Doctoral}}\\[0.5cm]
-{\large \textbf{José Vicente Ordóñez Yaguache}}\\[1cm]
+{\normalsize
+José Vicente Ordóñez Yaguache
+}\\[4.0cm]
 
-{\large Director de tesis: \textbf{Eduardo Jose Corbelle Rico}}\\[0.5cm]
-{\large Codirector de tesis: \textbf{Edelmiro López Iglesias}}\\[2cm]
+{\small
+Director: Eduardo Corbelle Rico
+}\\[0.35cm]
 
-{\large \textbf{Santiago de Compostela 2026}}\\[0.2cm]
+{\small
+Tutor: Edelmiro López Iglesias
+}\\[1.0cm]
+
+{\scriptsize\bfseries
+PROGRAMA DE DOCTORADO EN: GESTIÓN SOSTENIBLE DE LA TIERRA Y DEL TERRITORIO
+}\\[0.65cm]
+
+{\small
+SANTIAGO DE COMPOSTELA / 2026
+}
+
+\end{center}
 
 \vfill
-\end{center}
+
 \end{titlepage}
 ```
+

@@ -400,7 +400,7 @@ En consecuencia, la estrategia analítica desarrollada en este capítulo combina
 
 ## Construcción de la base analítica
 
-La base analítica se construyó a partir de base_final_v1.1.csv, siguiendo los criterios definidos en el pipeline reproducible (anexo2). La unidad de análisis es la UPA, identificada mediante Identificador. Las variables de productividad se obtienen a partir de la producción económica agregada de cada UPA. Como resultado del proceso de integración de los módulos de ESPAC 2022, la base oficial contiene observaciones con productividad igual a cero y observaciones con productividad estrictamente positiva. A partir de esta información se seleccionaron variables que permiten analizar dimensiones relacionadas con el régimen de tenencia, los recursos productivos, la adopción tecnológica, el capital humano, el acceso a información y la heterogeneidad territorial.
+La base analítica se construyó a partir de base_final_v1.1.csv, siguiendo los criterios definidos en el pipeline reproducible (anexo B). La unidad de análisis es la UPA, identificada mediante Identificador. Las variables de productividad se obtienen a partir de la producción económica agregada de cada UPA. Como resultado del proceso de integración de los módulos de ESPAC 2022, la base oficial contiene observaciones con productividad igual a cero y observaciones con productividad estrictamente positiva. A partir de esta información se seleccionaron variables que permiten analizar dimensiones relacionadas con el régimen de tenencia, los recursos productivos, la adopción tecnológica, el capital humano, el acceso a información y la heterogeneidad territorial.
 
 El análisis utiliza dos medidas complementarias de productividad. La productividad de la tierra se calculó como `produccion_ec / cg_superficie` para las UPA con superficie declarada estrictamente mayor que cero. De forma análoga, la productividad del trabajo se obtuvo como `produccion_ec / eu_k1301` cuando el trabajo declarado es estrictamente mayor que cero; si esta condición no se cumple o la información laboral no está disponible, la observación no puede utilizarse en las especificaciones que requieren productividad laboral. Ambas medidas presentan una elevada asimetría y contienen observaciones con productividad igual a cero. Por esta razón, en los modelos lineales y multinivel se aplicó la transformación $\ln(1+x)$, que reduce la influencia de los valores extremos sin excluir las observaciones con productividad igual a cero[^log].
 
@@ -425,7 +425,7 @@ La @tbl-variables-analiticas resume las variables utilizadas en los modelos econ
 
 variables_modelo <- tibble::tribble(
   ~Variable,
-  ~Descripción,
+  ~`Descripción`,
   ~Tipo,
 
   "Productividad de la tierra",
@@ -654,7 +654,7 @@ vars_corr_final <- Base_cap7 |>
     `Log superficie` = superficie_log_z,
     Edad = edad_z,
     Internet = internet,
-    Educación = educacion_num,
+    `Educación` = educacion_num,
     Mujer = sexo_num,
     Riego = riego,
     Fertilizantes = fertilizante,
@@ -926,7 +926,7 @@ tabla_bp <- tibble::tibble(
     "Productividad de la tierra",
     "Productividad del trabajo"
   ),
-  Estadístico = c(
+  `Estadístico` = c(
     unname(bp_sup$statistic),
     unname(bp_trab$statistic)
   ),
@@ -1073,7 +1073,7 @@ extraer_forma_funcional <- function(modelo, nombre) {
   )
 
   tibble::tibble(
-    Especificación = nombre,
+    `Especificación` = nombre,
     R2 = summary(modelo)$r.squared,
     `R2 ajustado` = summary(modelo)$adj.r.squared,
     AIC = stats::AIC(modelo),
@@ -1508,7 +1508,7 @@ predecir_promedio_ajustado <- function(
           "dueño" = "Tenencia directa",
           "especiales" = "Otros regímenes de tenencia"
         ),
-        Predicción = estimacion,
+        `Predicción` = estimacion,
         conf.low = estimacion - 1.96 * error,
         conf.high = estimacion + 1.96 * error
       )
@@ -1598,7 +1598,7 @@ tabla_ols_sup <- broom::tidy(
     `Error estándar` = std.error,
     `IC 95%` = conf.low,
     `IC 95% sup.` = conf.high,
-    Estadístico = statistic,
+    `Estadístico` = statistic,
     `Valor p` = p.value,
     Sig.
   )
@@ -1627,6 +1627,7 @@ Una vez representada la escala, fertilizantes y plaguicidas mantienen asociacion
 ```{r}
 #| label: tbl-ols-trabajo-cap7
 #| tbl-cap: "Modelo lineal ordinario para la productividad del trabajo"
+#| tbl-pos: H
 
 tabla_ols_trab <- broom::tidy(
   lmtest::coeftest(
@@ -1684,7 +1685,7 @@ tabla_ols_trab <- broom::tidy(
     `Error estándar` = std.error,
     `IC 95%` = conf.low,
     `IC 95% sup.` = conf.high,
-    Estadístico = statistic,
+    `Estadístico` = statistic,
     `Valor p` = p.value,
     Sig.
   )
@@ -1711,7 +1712,7 @@ La @tbl-modelos-progresivos-cap7 mantiene las mismas 22.075 UPA en todas las eta
 #| label: tbl-modelos-progresivos-cap7
 #| tbl-cap: "Evolución de los coeficientes de tenencia en modelos progresivos"
 
-resultados_progresivos |>
+tabla_modelos_progresivos <- resultados_progresivos |>
   dplyr::transmute(
     Resultado,
     Modelo = Etapa,
@@ -1735,11 +1736,27 @@ resultados_progresivos |>
     font_size = 7.2,
     scale_down = TRUE
   ) |>
+  kableExtra::row_spec(
+    8,
+    extra_latex_after = "\\noalign{\\vskip 0.6em}"
+  ) |>
   nota_tabla(
     nota = "M1: tenencia; M2: + escala; M3: + edad, educación, sexo e internet; M4: + riego, fertilizantes y plaguicidas. Errores estándar HC1. Referencia: arrendamiento y aparcería. N = 22.075 en todos los modelos.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
+
+latex_tabla <- as.character(tabla_modelos_progresivos)
+
+latex_tabla <- gsub(
+  "\\addlinespace",
+  "",
+  latex_tabla,
+  fixed = TRUE
+)
+
+knitr::asis_output(latex_tabla)
 ```
+
 
 En productividad de la tierra, la diferencia asociada con la tenencia directa pasa de `r formato_num(coef(modelos_progresivos_sup$M1)["clase.mayoriadueño"], 3)` en M1 a `r formato_num(coef(ols_sup)["clase.mayoriadueño"], 3)` en M4. La mayor atenuación ocurre al incorporar las variables tecnológicas, lo que indica que una parte de la brecha inicial coincide con diferencias observadas de adopción, sin que ello permita establecer una descomposición causal.
 
@@ -1919,7 +1936,7 @@ ggplot2::ggplot(
   predicciones_tenencia,
   ggplot2::aes(
     x = Tenencia,
-    y = Predicción,
+    y = `Predicción`,
     color = Tenencia
   )
 ) +
@@ -2562,7 +2579,7 @@ Comprobada la mejora de ajuste, el análisis se dirige a la distribución de los
 
 La representación cartográfica permite visualizar esa heterogeneidad espacial residual. Efectos estimados mayores que cero corresponden a provincias cuya productividad transformada supera el nivel previsto por las características incluidas; valores menores que cero indican el patrón opuesto.
 
-La @fig-multinivel-tierra-cap7 evidencia una distribución espacial definida de los efectos sobre productividad de la tierra. Los valores positivos identifican provincias cuyo intercepto condicionado se sitúa por encima del promedio nacional de la muestra, y los negativos indican la situación inversa. La figura complementa, pero no sustituye, los intervalos de la @fig-caterpillar-provincial-cap7.
+La @fig-multinivel-tierra-cap7 evidencia una distribución espacial definida de los efectos sobre productividad de la tierra. Los valores positivos identifican provincias cuyo intercepto condicionado se sitúa por encima del promedio nacional de la muestra tal es el caso de Cotopaxi, Tungurahua, Chimborazo, Pichincha en la sierra y Manabí en la costa, y los negativos indican la situación inversa como Paztaza, Orellana, Napo en la Amazonía y Santa Elena en la Costa. La figura complementa, pero no sustituye, los intervalos de la @fig-caterpillar-provincial-cap7.
 
 ```{r}
 #| label: mapa_sin_galapagos
@@ -2653,7 +2670,7 @@ ggplot2::ggplot() +
 
 El mapa de productividad de la tierra no anticipa necesariamente el patrón laboral. Comparar ambas respuestas permite establecer si las diferencias provinciales residuales se reproducen cuando el resultado se expresa por trabajador o si cada dimensión del desempeño presenta una geografía propia.
 
-La @fig-multinivel-trabajo-cap7 muestra una configuración parcialmente distinta para productividad laboral. Esta diferencia confirma que el contexto provincial no se relaciona de la misma forma con el aprovechamiento de la superficie y del trabajo. Los mapas deben leerse como heterogeneidad residual condicionada y no como efectos causales de la provincia.
+La @fig-multinivel-trabajo-cap7 muestra una configuración parcialmente distinta para productividad laboral. Esta diferencia confirma que el contexto provincial no se relaciona de la misma forma con el aprovechamiento de la superficie y del trabajo las provincias de Cotopaxi, Tungurahua, Chimborazo en la Sierra y Manabí en la costa se sitúan por encima del promedio, mientras que Paztaza, Orellana y Napo de la Amazonía, son las que se ubican en la parte inferior. Los mapas deben leerse como heterogeneidad residual condicionada y no como efectos causales de la provincia.
 
 ```{r}
 #| label: fig-multinivel-trabajo-cap7
@@ -3070,8 +3087,8 @@ resumir_eficiencia <- function(x, nombre_modelo) {
     Mediana = stats::median(x, na.rm = TRUE),
     `Primer cuartil` = stats::quantile(x, 0.25, na.rm = TRUE),
     `Tercer cuartil` = stats::quantile(x, 0.75, na.rm = TRUE),
-    Mínimo = min(x, na.rm = TRUE),
-    Máximo = max(x, na.rm = TRUE)
+    `Mínimo` = min(x, na.rm = TRUE),
+    `Máximo` = max(x, na.rm = TRUE)
   )
 }
 
@@ -3193,7 +3210,7 @@ tabla_sensibilidad_sfa <- tibble::tibble(
     ),
     each = 2
   ),
-  Distribución = rep(
+  `Distribución` = rep(
     c("Half-normal", "Truncated-normal"),
     times = 2
   ),
@@ -3562,7 +3579,8 @@ ggplot2::ggplot(
   ggplot2::aes(
     x = estimate,
     y = Modelo,
-    color = Tenencia
+    color = Tenencia,
+    shape = Tenencia
   )
 ) +
   ggplot2::geom_vline(
@@ -3583,17 +3601,27 @@ ggplot2::ggplot(
     position = ggplot2::position_dodge(width = 0.35),
     size = 2
   ) +
-  ggplot2::facet_wrap(~ Resultado, scales = "free_x") +
+  ggplot2::facet_wrap(
+    ~ Resultado,
+    scales = "free_x"
+  ) +
   ggplot2::scale_color_manual(
     values = c(
       "Tenencia directa" = paleta_figuras_tesis["principal"],
       "Otros regímenes de tenencia" = paleta_figuras_tesis["acento"]
     )
   ) +
+  ggplot2::scale_shape_manual(
+    values = c(
+      "Tenencia directa" = 16,
+      "Otros regímenes de tenencia" = 17
+    )
+  ) +
   ggplot2::labs(
     x = "Coeficiente e IC 95 %",
     y = NULL,
-    color = "Comparación frente a\narrendamiento y aparcería"
+    color = "Comparación frente a\narrendamiento y aparcería",
+    shape = "Comparación frente a\narrendamiento y aparcería"
   ) +
   tema_figura_tesis
 ```

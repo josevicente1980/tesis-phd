@@ -16,11 +16,15 @@ DEA & Análisis envolvente de datos (\textit{Data Envelopment Analysis}) \\
 DFBETA & Cambio estandarizado de un coeficiente al excluir una observación \\
 ECUARUNARI & Ecuador Runacunapac Riccharimui \\
 ESPAC & Encuesta de Superficie y Producción Agropecuaria Continua \\
+ET & Eficiencia técnica \\
 FENOC & Federación Nacional de Organizaciones Campesinas \\
 FIDA & Fondo Internacional de Desarrollo Agrícola \\
 GPS & Sistema de posicionamiento global (\textit{Global Positioning System}) \\
 ha & Hectárea \\
 HC1 & Corrección tipo 1 de la matriz robusta de varianzas y covarianzas \\
+HC2 & Corrección tipo 2 de la matriz robusta de varianzas y covarianzas \\
+HC3 & Corrección tipo 3 de la matriz robusta de varianzas y covarianzas \\
+IC & Intervalo de confianza \\
 ICC & Coeficiente de correlación intraclase (\textit{Intraclass Correlation Coefficient}) \\
 IDEA & Instituto de Estrategias Agropecuarias \\
 IERAC & Instituto Ecuatoriano de Reforma Agraria y Colonización \\
@@ -30,11 +34,17 @@ INIAP & Instituto Nacional de Investigaciones Agropecuarias \\
 ISI & Industrialización por sustitución de importaciones \\
 LOESS & Suavización local mediante regresión (\textit{Locally Estimated Scatterplot Smoothing}) \\
 LOTRTA & Ley Orgánica de Tierras Rurales y Territorios Ancestrales \\
+M1 & Modelo progresivo 1: tenencia \\
+M2 & Modelo progresivo 2: tenencia y escala \\
+M3 & Modelo progresivo 3: tenencia, escala y características sociodemográficas \\
+M4 & Modelo progresivo 4: especificación completa con variables tecnológicas \\
 MAGAP & Ministerio de Agricultura, Ganadería, Acuacultura y Pesca \\
 MCO & Mínimos cuadrados ordinarios \\
 NA & Valor ausente o no disponible en los datos \\
 OLS & Mínimos cuadrados ordinarios (\textit{Ordinary Least Squares}) \\
+PL & Productividad del trabajo \\
 PRAT & Programa de Regularización y Administración de Tierras Rurales \\
+PT & Productividad de la tierra \\
 PTF & Productividad total de los factores \\
 RESET & Prueba de especificación de Ramsey (\textit{Regression Equation Specification Error Test}) \\
 RI & Relación inversa entre el tamaño de la explotación y la productividad de la tierra \\

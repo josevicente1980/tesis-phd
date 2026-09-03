@@ -29,14 +29,14 @@
 % -------------------------------------------------
 \usepackage{fancyhdr}
 
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
 
 \pagestyle{fancy}
 \fancyhf{}
 
 % Cambiar el nombre si se requiere otro autor/a.
-\fancyhead[LE]{\textsc{José Vicente Ordóñez Yaguache}}
-\fancyhead[RO]{\nouppercase{\leftmark}}
+\fancyhead[LE]{{\fontsize{10}{12}\selectfont\textsc{José Vicente Ordóñez Yaguache}}}
+\fancyhead[RO]{{\fontsize{10}{12}\selectfont\nouppercase{\leftmark}}}
 
 \fancyfoot[LE,RO]{\thepage}
 
@@ -60,11 +60,11 @@
 \usepackage{titlesec}
 
 % Capítulo
-\titleformat{\chapter}[display]
+\titleformat{\chapter}[hang]
   {\normalfont\bfseries\fontsize{15}{18}\selectfont\raggedleft}
-  {\MakeUppercase{\chaptername~\thechapter}}
-  {0pt}
-  {\MakeUppercase}
+  {\thechapter.}
+  {0.5em}
+  {}
 
 % Antes del título: 3 retornos de línea. Después: 1 retorno de línea.
 \titlespacing*{\chapter}
@@ -124,8 +124,8 @@
 \renewcommand{\cfttoctitlefont}{\hfill\bfseries\fontsize{15}{18}\selectfont}
 \renewcommand{\cftaftertoctitle}{\hfill}
 
-\renewcommand{\listfigurename}{ÍNDICE DE FIGURAS}
-\renewcommand{\listtablename}{ÍNDICE DE TABLAS}
+\renewcommand{\listfigurename}{Índice de figuras}
+\renewcommand{\listtablename}{Índice de tablas}
 
 \renewcommand{\cftloftitlefont}{\hfill\bfseries\fontsize{15}{18}\selectfont}
 \renewcommand{\cftafterloftitle}{\hfill}
