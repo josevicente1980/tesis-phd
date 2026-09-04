@@ -28,7 +28,7 @@ format:
       - twoside
       - openany
 
-    papersize: letter
+    papersize: a4
 
     toc: false
 
