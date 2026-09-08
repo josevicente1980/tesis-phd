@@ -3092,7 +3092,8 @@ ggplot2::ggplot(
     method = "loess",
     se = TRUE,
     color = paleta_figuras_tesis["principal"],
-    fill = "white",
+    fill = paleta_figuras_tesis["principal"],
+    alpha = 0.12,
     linewidth = 0.8
   ) +
   ggplot2::scale_x_log10(
