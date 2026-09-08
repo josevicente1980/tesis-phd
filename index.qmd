@@ -68,7 +68,7 @@ source(project_path("R", "01-functions.R"))
 \chapter*{ANEXOS}
 \addcontentsline{toc}{chapter}{ANEXOS}
 \cleardoublepage
-\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{Anexo~}}
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{Anexo~}\protect\setlength{\protect\cftchapnumwidth}{7em}}
 \appendix
 \renewcommand{\appendixname}{Anexo}
 \renewcommand{\chaptername}{Anexo}
