@@ -1,4 +1,4 @@
-# Resumo {.unnumbered}
+# Resumo {.unnumbered .unlisted}
 
 A tenza da terra condiciona o acceso a un recurso produtivo central, mais a súa relación co rendemento agropecuario tamén depende da escala, das capacidades das persoas produtoras, da tecnoloxía e do territorio. Esta tese analiza a asociación entre o réxime predominante de tenza e a produtividade das unidades de produción agropecuaria (UPA) do Ecuador continental, distinguindo a produtividade da terra da produtividade do traballo.
 

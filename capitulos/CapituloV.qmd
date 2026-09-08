@@ -60,6 +60,7 @@ En los casos en que no se encontró información completa en las fuentes oficial
 La relación completa de los precios utilizados, sus fuentes, las unidades originales, los factores de conversión y los criterios de selección se presenta en el [Anexo A](#sec-anexo-precios). A partir de esta información, las cantidades físicas reportadas por la ESPAC se multiplicaron por sus respectivos precios de referencia. Posteriormente, los valores de los diferentes componentes agrícolas y pecuarios se agregaron a nivel de UPA para construir la variable `produccion_ec`.
 
 Esta variable representa el valor bruto estimado de la producción, no el ingreso neto ni el beneficio obtenido por cada UPA. Por tanto, no descuenta costos de producción, transporte o comercialización. Su construcción permite expresar productos heterogéneos en una unidad monetaria común y utilizarla posteriormente en el cálculo de los indicadores de productividad de la tierra y del trabajo.
+
 ### Indicadores de productividad
 
 La productividad de la tierra se calculó cuando la superficie declarada (`cg_superficie`) fue estrictamente positiva:
@@ -222,7 +223,7 @@ expresa la proporción de la varianza compuesta atribuida al componente de inefi
 
 ## Diagnóstico, comparación e interpretación
 
-Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad, heterocedasticidad, forma funcional e influencia. El Capítulo VII reporta el factor de inflación de la varianza (VIF), la prueba de Breusch-Pagan (BP), la prueba de especificación de Ramsey (RESET), residuos frente a valores ajustados y diagnósticos sintéticos de leverage, distancia de Cook y cambios estandarizados DFBETA para los coeficientes de tenencia. Las observaciones influyentes se examinan como sensibilidad y no se eliminan automáticamente. La significancia se acompaña de magnitud, intervalos de confianza y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
+Antes de interpretar los modelos se verifican completitud, rango de la matriz de diseño, multicolinealidad, heterocedasticidad, forma funcional e influencia. El Capítulo 7 reporta el factor de inflación de la varianza (VIF), la prueba de Breusch-Pagan (BP), la prueba de especificación de Ramsey (RESET), residuos frente a valores ajustados y diagnósticos sintéticos de leverage, distancia de Cook y cambios estandarizados DFBETA para los coeficientes de tenencia. Las observaciones influyentes se examinan como sensibilidad y no se eliminan automáticamente. La significancia se acompaña de magnitud, intervalos de confianza y dirección de los coeficientes; no se equipara significancia estadística con relevancia causal o de política.
 
 Las comparaciones del criterio de información de Akaike (AIC), el criterio de información bayesiano (BIC) y la log-verosimilitud se realizan solo entre modelos estimados sobre la misma respuesta, muestra y función de verosimilitud. No se comparan directamente los criterios de ajuste de OLS, multinivel y SFA cuando sus universos o supuestos difieren. Del mismo modo, las eficiencias técnicas de las fronteras de tierra y trabajo son medidas específicas de cada respuesta y no indicadores intercambiables.
 

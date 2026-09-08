@@ -1,4 +1,4 @@
-# Dedicatoria {.unnumbered}
+# Dedicatoria {.unnumbered .unlisted}
 
 A mi familia, por sostenerme con amor y paciencia a lo largo de este camino. A mi esposa, Andrea; a mi madre, Susana; a mis hijos, José Vicente y José Andrés; a mis hermanos, Manolo, Andrea y Patricia; a mis sobrinos, Camilita y Luis Andrés ; y a mi cuñado, Diego.
 

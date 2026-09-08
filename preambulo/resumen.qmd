@@ -1,4 +1,4 @@
-# Resumen {.unnumbered}
+# Resumen {.unnumbered .unlisted}
 
 La tenencia de la tierra condiciona el acceso a un recurso productivo central, pero su relación con el desempeño agropecuario depende también de la escala, las capacidades de las personas productoras, la tecnología y el territorio. Esta tesis analiza la asociación entre el régimen predominante de tenencia y la productividad de las unidades de producción agropecuaria (UPA) del Ecuador continental, distinguiendo la productividad de la tierra de la productividad del trabajo.
 

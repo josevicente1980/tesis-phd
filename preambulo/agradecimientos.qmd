@@ -1,4 +1,4 @@
-# Agradecimientos {.unnumbered}
+# Agradecimientos {.unnumbered .unlisted}
 
 Expreso mi más profundo agradecimiento a quienes hicieron posible la culminación de esta tesis doctoral, después de un largo camino de aprendizaje, esfuerzo y perseverancia.
 

@@ -26,7 +26,7 @@ format:
 
     classoption:
       - twoside
-      - openany
+      - openright
 
     papersize: a4
 

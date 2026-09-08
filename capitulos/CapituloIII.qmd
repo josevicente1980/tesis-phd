@@ -96,7 +96,7 @@ Estos datos ofrecieron la primera evidencia empírica sistematizada del patrón 
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Distribución de la superficie agraria y número de UPA por tamaño en Sierra y Costa, 1954. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 1954."
+#| fig-cap: "Distribución porcentual de la superficie agraria (barras) y número de UPA (línea) por tamaño en Sierra y Costa, 1954. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 1954."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 3.8
@@ -225,7 +225,7 @@ En conjunto, la Ley de 1964 constituyó un hito en la historia agraria del país
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Adjudicación de tierras con la primera Ley de Reforma Agraria. Fuente: Elaboración propia a partir de Barsky et al. (1982)."
+#| fig-cap: "Adjudicación de tierras con la primera Ley de Reforma Agraria: hectáreas adjudicadas (barras) y promedio de hectáreas por UPA (línea). Fuente: Elaboración propia a partir de Barsky et al. (1982)."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 3.2
@@ -443,7 +443,7 @@ Estos resultados mostraban la persistencia de una estructura agraria polarizada,
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Superficie agraria controlada y porcentaje de UPA según tamaño. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 2000."
+#| fig-cap: "Superficie agraria controlada (barras) y porcentaje de UPA (línea) según tamaño. Fuente: Elaboración propia a partir de INEC, Censo Agropecuario de 2000."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 3.2
@@ -556,7 +556,7 @@ Esta diferencia extrema implica una proporción de 1.000 a 1 entre las grandes y
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: "Distribución de la superficie agraria y de las UPA según tamaño de explotación en Ecuador. Fuente: Elaboración propia a partir de Salgado (2022)."
+#| fig-cap: "Distribución de la superficie agraria (barras) y de las UPA (línea) según tamaño de explotación en Ecuador. Fuente: Elaboración propia a partir de Salgado (2022)."
 #| fig-align: center
 #| fig-width: 7
 #| fig-height: 4.2

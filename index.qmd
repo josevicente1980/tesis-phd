@@ -9,7 +9,7 @@ source(project_path("R", "01-functions.R"))
 
 {{< include Portada.qmd >}}
 
-\clearpage
+\cleardoublepage
 
 \pagenumbering{roman}
 \setcounter{page}{1}
@@ -21,25 +21,21 @@ source(project_path("R", "01-functions.R"))
 {{< include preambulo/resumo.qmd >}}
 {{< include preambulo/abstract.qmd >}}
 
-\phantomsection
-\addcontentsline{toc}{chapter}{Índice}
+\cleardoublepage
 \renewcommand{\contentsname}{ÍNDICE}
+\setcounter{tocdepth}{1}
 \tableofcontents
-\clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{Índice de tablas}
+\cleardoublepage
 \renewcommand{\listtablename}{Índice de tablas}
 \listoftables
-\clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{Índice de figuras}
+\cleardoublepage
 \renewcommand{\listfigurename}{Índice de figuras}
 \listoffigures
-\clearpage
+\cleardoublepage
 
 {{< include preambulo/siglas.qmd >}}
 
-\clearpage
+\cleardoublepage
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \pagestyle{fancy}
@@ -66,19 +62,20 @@ source(project_path("R", "01-functions.R"))
 ::: {#refs}
 :::
 
-\clearpage
+\cleardoublepage
 
 \phantomsection
 \chapter*{ANEXOS}
 \addcontentsline{toc}{chapter}{ANEXOS}
-\clearpage
+\cleardoublepage
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{Anexo~}}
 \appendix
 \renewcommand{\appendixname}{Anexo}
 \renewcommand{\chaptername}{Anexo}
 
 {{< include anexos/AnexoI_Precios.qmd >}}
 
-\clearpage
+\cleardoublepage
 
 {{< include anexos/AnexoII_Construccion_Base.qmd >}}
 

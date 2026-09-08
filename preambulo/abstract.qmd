@@ -1,4 +1,4 @@
-# Abstract {.unnumbered}
+# Abstract {.unnumbered .unlisted}
 
 Land tenure governs access to a key productive resource, but its relationship with agricultural performance also depends on farm scale, producers’ capabilities, technology, and location. This dissertation examines the association between the predominant tenure arrangement and productivity among agricultural production units (UPAs) in mainland Ecuador, distinguishing land productivity from labor productivity.
 

@@ -120,6 +120,11 @@
 % -------------------------------------------------
 \usepackage{tocloft}
 
+% Prefijo solo para capítulos numerados del índice (no para anexos).
+\renewcommand{\cftchappresnum}{Capítulo~}
+\renewcommand{\cftchapaftersnum}{.}
+\setlength{\cftchapnumwidth}{7em}
+
 \renewcommand{\contentsname}{ÍNDICE}
 \renewcommand{\cfttoctitlefont}{\hfill\bfseries\fontsize{15}{18}\selectfont}
 \renewcommand{\cftaftertoctitle}{\hfill}
@@ -160,6 +165,9 @@
 
 % Texto de tablas en Trebuchet MS 9 pt.
 \usepackage{etoolbox}
+
+% El backmatter automático al final de Quarto no debe crear un verso vacío.
+\patchcmd{\backmatter}{\cleardoublepage}{\clearpage}{}{}
 
 \def\uscNoShortCaption{\uscNoShortCaption}
 \long\def\uscEmitFigureCaption#1#2{%

@@ -1,4 +1,4 @@
-# Siglas utilizadas {.unnumbered}
+# Siglas utilizadas {.unnumbered .unlisted}
 
 \begingroup
 \scriptsize
