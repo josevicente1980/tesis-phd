@@ -1,0 +1,15 @@
+﻿```{=latex}
+\thispagestyle{empty}
+\vspace*{0.25\textheight}
+
+\begin{center}
+{\bfseries\fontsize{15}{18}\selectfont DECLARACIÓN SOBRE CONFLICTO DE INTERESES}
+\end{center}
+
+\vspace{2\baselineskip}
+
+El doctorando declara no tener ningún conflicto de interés en relación con la tesis doctoral.
+
+\clearpage
+
+```
