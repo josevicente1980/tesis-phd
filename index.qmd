@@ -7,7 +7,12 @@ source(project_path("R", "00-setup.R"))
 source(project_path("R", "01-functions.R"))
 ```
 
-{{< include Portada.qmd >}}
+```{=latex}
+\includepdf[pages=-]{docs/edius/modelos/cubierta_usc.pdf}
+\includepdf[pages=-]{docs/edius/modelos/portada_interna_usc.pdf}
+```
+
+{{< include preambulo/conflicto_intereses.qmd >}}
 
 \cleardoublepage
 
@@ -79,4 +84,7 @@ source(project_path("R", "01-functions.R"))
 
 {{< include anexos/AnexoII_Construccion_Base.qmd >}}
 
-
+```{=latex}
+\clearpage
+\includepdf[pages=-]{docs/edius/modelos/antecubierta_usc.pdf}
+```
