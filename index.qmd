@@ -66,9 +66,7 @@ source(project_path("R", "01-functions.R"))
   {0pt}
   {\MakeUppercase}
 \part*{CONCLUSIONES Y RECOMENDACIONES}
-
-
-
+```
 
 {{< include capitulos/CapituloVIII.qmd >}}
 
