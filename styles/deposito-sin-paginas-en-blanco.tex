@@ -1,0 +1,17 @@
+% =================================================
+% TESIS PARA DEPOSITAR | SIN PAGINAS EN BLANCO
+% =================================================
+% Esta capa se carga despues de usc-header.tex y afecta unicamente
+% a la rama tesis-para-depositar.
+%
+% Objetivo: impedir que la clase book, \frontmatter, \mainmatter,
+% \part, \chapter u otros comandos inserten paginas de cortesia
+% para forzar comienzos en pagina impar.
+%
+% Se mantiene el modo twoside y, por tanto, los margenes interiores/
+% exteriores y los encabezados alternos. Solo se elimina el salto
+% adicional de paridad.
+
+\makeatletter
+\let\cleardoublepage\clearpage
+\makeatother
