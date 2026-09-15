@@ -59,14 +59,8 @@ source(project_path("R", "01-functions.R"))
 {{< include capitulos/CapituloVI.qmd >}}
 {{< include capitulos/CapituloVII.qmd >}}
 
-```{=latex}
-\titleformat{name=\part,numberless}[display]
-  {\normalfont\bfseries\fontsize{15}{18}\selectfont\centering}
-  {}
-  {0pt}
-  {\MakeUppercase}
 \part*{CONCLUSIONES Y RECOMENDACIONES}
-```
+
 
 {{< include capitulos/CapituloVIII.qmd >}}
 
