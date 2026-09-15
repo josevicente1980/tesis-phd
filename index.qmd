@@ -58,6 +58,9 @@ source(project_path("R", "01-functions.R"))
 {{< include capitulos/CapituloV.qmd >}}
 {{< include capitulos/CapituloVI.qmd >}}
 {{< include capitulos/CapituloVII.qmd >}}
+
+\part*{CONCLUSIONES Y RECOMENDACIONES}
+
 {{< include capitulos/CapituloVIII.qmd >}}
 
 # Bibliografía {.unnumbered}
