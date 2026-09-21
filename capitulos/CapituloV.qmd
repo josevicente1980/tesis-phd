@@ -132,7 +132,8 @@ Fertilizantes & \texttt{fertilizante} & Uso observado en al menos un módulo de 
 Plaguicidas & \texttt{plaguicida} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
 Factor de expansión & \texttt{fact\_exp\_fin} & Peso final utilizado en los análisis descriptivos ponderados; no integra la especificación econométrica final reportada. \\
 \hline
-\multicolumn{3}{p{14cm}}{\footnotesize Nota: \texttt{NO\_APLICA} y los valores faltantes de los tres indicadores tecnológicos se excluyen de las muestras econométricas. Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
+\multicolumn{3}{p{14cm}}{\footnotesize Nota: \texttt{NO\_APLICA} y los valores faltantes de los tres indicadores tecnológicos se excluyen de las muestras econométricas.}\\
+\multicolumn{3}{p{14cm}}{\footnotesize Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
 \end{tabular}
 \end{table}
 
