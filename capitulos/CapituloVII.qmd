@@ -1184,7 +1184,7 @@ La importancia sustantiva del resultado radica en su dirección: una vez conside
 
 [^trans_log]: Para variables categóricas en modelos con variable dependiente logarítmica, el efecto porcentual exacto respecto a la categoría de referencia (*arrendamiento y aparcería*) se calcula mediante la fórmula $\% \Delta = (e^{\beta} - 1) \times 100$. Aplicando los coeficientes sin redondear, para *tenencia directa* ($\beta = -0,256$) el impacto es $(e^{-0,256} - 1) \times 100 = -22,6\%$, mientras que para *otros regímenes* ($\beta = -0,446$) es $(e^{-0,446} - 1) \times 100 = -36,0\%$.
 
-La superficie en niveles estandarizados presenta una asociación negativa: un incremento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con menor producción total. La distinción es sustantivamente importante, porque el coeficiente describe la intensidad productiva de la superficie y no afirma que las explotaciones grandes generen menos producto agregado. Este resultado es coherente con la relación inversa entre escala y productividad de la tierra documentada para explotaciones familiares [@saini1971holding; @hossain1977farm]. En educación, primaria y secundaria presentan asociaciones negativas frente a ninguna educación, mientras superior y posgrado presentan asociaciones positivas, mientras que el sexo y la edad no presentan diferencias estadísticamente discernibles en esta respuesta; esto último significa que, una vez consideradas las restantes covariables, la información disponible no permite separar sus asociaciones de cero con suficiente precisión.
+La superficie en niveles estandarizados presenta una asociación negativa: un incremento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con menor producción total. La distinción es sustantivamente importante, porque el coeficiente describe la intensidad productiva de la superficie y no afirma que las explotaciones grandes generen menos producto agregado. Este resultado es coherente con la relación inversa entre escala y productividad de la tierra documentada para explotaciones familiares [@saini1971holding; @hossain1977farm]. En educación, primaria y secundaria presentan asociaciones negativas frente a ninguna educación, mientras superior y posgrado presentan asociaciones positivas. La edad muestra una asociación negativa con evidencia al 10 %, mientras que el sexo no presenta una diferencia estadísticamente discernible en esta respuesta; en este último caso, una vez consideradas las restantes covariables, la información disponible no permite separar su asociación de cero con suficiente precisión.
 
 En el bloque tecnológico, fertilizantes, internet, plaguicidas y riego se asocian con niveles más elevados de productividad de la tierra. Sus diferencias exactas en $1+Y$ son, respectivamente, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["fertilizante"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["internet"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["plaguicida"]) - 1), 1)` y `r formato_pct(100 * (exp(coef(modelo_vif_sup)["riego"]) - 1), 1)`. La comparación se refiere a UPA usuarias y no usuarias dentro del universo aplicable. Económicamente, el patrón es compatible con una producción más intensiva por superficie y coincide con la literatura que relaciona las condiciones tecnológicas y el uso de insumos con diferencias de productividad y eficiencia agrícola [@perdomo_factores_2007]. Dado el diseño transversal, las estimaciones no separan el efecto de la adopción de la selección de UPA con mejores condiciones para utilizar estas tecnologías.
 
@@ -2287,14 +2287,10 @@ Mientras que el ICC de los modelos nulos cuantifica la proporción de variabilid
 
 La @tbl-varianza-multinivel-cap7 muestra que la mayor parte de la variabilidad residual permanece entre UPA de una misma provincia. El ICC completo alcanza `r formato_num(performance::icc(ml_sup)$ICC_adjusted, 3)` en productividad de la tierra y `r formato_num(performance::icc(ml_trab)$ICC_adjusted, 3)` en productividad del trabajo. En ambas respuestas persiste, por tanto, una fracción territorial sustantiva después de incorporar las covariables. Esto significa que tenencia, escala, tecnología y características sociodemográficas explican solo una parte de las diferencias provinciales; otras condiciones territoriales compartidas continúan asociadas con el desempeño.
 
-```{=latex}
-\suppressfloats[t]
-```
-
 ```{r}
 #| label: tbl-varianza-multinivel-cap7
 #| tbl-cap: "Componentes de varianza e ICC de los modelos multinivel"
-#| tbl-pos: "H"
+#| tbl-pos: "!htp"
 
 extraer_varianza_ml <- function(modelo, nombre_modelo) {
 
