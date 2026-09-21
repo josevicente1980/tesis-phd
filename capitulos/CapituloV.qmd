@@ -89,7 +89,7 @@ La Tabla \ref{tbl-operacionalizacion-resultados-cap5} presenta las variables de 
 
 \begingroup
 \small
-\setlength{\LTpre}{0pt}
+\setlength{\LTpre}{10pt}
 \setlength{\LTpost}{6pt}
 \begin{longtable}{@{}p{3.2cm}p{3.8cm}p{7.0cm}@{}}
 \caption{Operacionalización de las variables de resultado y estructurales}\label{tbl-operacionalizacion-resultados-cap5}\\
@@ -114,19 +114,15 @@ Provincia & \texttt{territorio} & Provincia de ubicación; nivel de agrupación 
 
 La Tabla \ref{tbl-operacionalizacion-controles-cap5} completa la operacionalización con las covariables sociodemográficas, tecnológicas y el factor de expansión.
 
-\begingroup
+\vspace{10pt}
+\begin{table}[H]
+\centering
 \small
-\setlength{\LTpre}{0pt}
-\setlength{\LTpost}{6pt}
-\begin{longtable}{@{}p{3.2cm}p{3.8cm}p{7.0cm}@{}}
-\caption{Operacionalización de las covariables sociodemográficas y tecnológicas}\label{tbl-operacionalizacion-controles-cap5}\\
+\caption{Operacionalización de las covariables sociodemográficas y tecnológicas}
+\label{tbl-operacionalizacion-controles-cap5}
+\begin{tabular}{@{}p{3.2cm}p{3.8cm}p{7.0cm}@{}}
 \textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
 \hline
-\endfirsthead
-\multicolumn{3}{l}{\textit{Continuación de la tabla \ref{tbl-operacionalizacion-controles-cap5}}}\\
-\textbf{Variable} & \textbf{Nombre analítico} & \textbf{Definición operativa} \\
-\hline
-\endhead
 Edad & \texttt{edad\_z} & Edad de la persona productora o responsable, estandarizada. \\
 Educación & \texttt{educacion} & Nivel educativo categórico: ninguna educación, primaria, secundaria, superior y posgrado. \\
 Sexo & \texttt{sexo} & Sexo de la persona productora; hombre es la categoría de referencia. \\
@@ -137,8 +133,8 @@ Plaguicidas & \texttt{plaguicida} & Uso observado en al menos un módulo de cult
 Factor de expansión & \texttt{fact\_exp\_fin} & Peso final utilizado en los análisis descriptivos ponderados; no integra la especificación econométrica final reportada. \\
 \hline
 \multicolumn{3}{p{14cm}}{\footnotesize Nota: \texttt{NO\_APLICA} y los valores faltantes de los tres indicadores tecnológicos se excluyen de las muestras econométricas. Fuente: elaboración propia a partir de la ESPAC 2022 y de la base analítica final.}\\
-\end{longtable}
-\endgroup
+\end{tabular}
+\end{table}
 
 La división en dos tablas evita un escalado que reduzca la legibilidad y permite que cada tabla continúe automáticamente si alcanza el final de la página. Los nombres presentados coinciden con la especificación ejecutada y distinguen las variables utilizadas en la construcción de aquellas incorporadas finalmente en los modelos.
 
