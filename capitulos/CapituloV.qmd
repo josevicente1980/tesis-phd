@@ -137,7 +137,7 @@ Factor de expansión & \texttt{fact\_exp\_fin} & Peso final utilizado en los an�
 \end{tabular}
 \end{table}
 
-La división en dos tablas evita un escalado que reduzca la legibilidad y permite que cada tabla continúe automáticamente si alcanza el final de la página. Los nombres presentados coinciden con la especificación ejecutada y distinguen las variables utilizadas en la construcción de aquellas incorporadas finalmente en los modelos.
+La división en dos tablas evita un escalado que reduzca la legibilidad y permite presentar íntegramente la tabla de covariables sin fraccionarla entre páginas. Los nombres presentados coinciden con la especificación ejecutada y distinguen las variables utilizadas en la construcción de aquellas incorporadas finalmente en los modelos.
 
 ## Muestras analíticas
 
