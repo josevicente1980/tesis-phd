@@ -295,7 +295,10 @@ cgnac_fac <- cgnac2022 |>
     cg_k100 = factor(
       as.numeric(haven::zap_labels(cg_k100)),
       levels = c(1, 2),
-      labels = c("Hombre", "Mujer")
+      labels = c(
+        "Hombre",
+        "Mujer"
+      )
     ),
 
     # Edad
@@ -313,9 +316,16 @@ cgnac_fac <- cgnac2022 |>
     ),
 
     # Instrucción formal
+    # Codificación original ESPAC:
+    # 7 = Ninguna
+    # 1 = Primaria
+    # 2 = Secundaria
+    # 3 = Superior
+    # 4 = Posgrado
+    # 9 = No informa
     cg_k102 = factor(
       as.numeric(haven::zap_labels(cg_k102)),
-      levels = c(1, 2, 3, 4, 7, 9),
+      levels = c(7, 1, 2, 3, 4, 9),
       labels = c(
         "Ninguna",
         "Primaria",
@@ -326,6 +336,7 @@ cgnac_fac <- cgnac2022 |>
       )
     )
   )
+
 
 # Resumen de características
 resumen_caracteristicas <- cgnac_fac |>
@@ -340,66 +351,93 @@ resumen_caracteristicas <- cgnac_fac |>
     values_to = "categoria"
   ) |>
   dplyr::mutate(
+
+    # Convertir a texto para facilitar la construcción de la tabla
+    categoria = as.character(categoria),
+
+    # Valores ausentes
     categoria = dplyr::if_else(
       is.na(categoria),
       "No informa",
-      as.character(categoria)
+      categoria
     ),
 
+    # Orden de los bloques de variables
     variable = factor(
       variable,
       levels = c(
         "Sexo",
         "Edad (rango)",
-        "Instrucci\u00f3n formal"
+        "Instrucción formal"
       )
     ),
 
+    # Orden interno de las categorías
     orden_categoria = dplyr::case_when(
 
       # Sexo
       variable == "Sexo" &
         categoria == "Hombre" ~ 1,
+
       variable == "Sexo" &
         categoria == "Mujer" ~ 2,
+
       variable == "Sexo" &
         categoria == "No informa" ~ 99,
+
 
       # Edad
       variable == "Edad (rango)" &
         categoria == "Entre 15 y 24 años" ~ 1,
+
       variable == "Edad (rango)" &
         categoria == "Entre 25 y 34 años" ~ 2,
+
       variable == "Edad (rango)" &
         categoria == "Entre 35 y 44 años" ~ 3,
+
       variable == "Edad (rango)" &
         categoria == "Entre 45 y 64 años" ~ 4,
+
       variable == "Edad (rango)" &
         categoria == "65 años y más" ~ 5,
+
       variable == "Edad (rango)" &
         categoria == "No informa" ~ 99,
 
+
       # Instrucción formal
-      variable == "Instrucci\u00f3n formal" &
+      variable == "Instrucción formal" &
         categoria == "Ninguna" ~ 1,
+
       variable == "Instrucción formal" &
         categoria == "Primaria" ~ 2,
+
       variable == "Instrucción formal" &
         categoria == "Secundaria" ~ 3,
+
       variable == "Instrucción formal" &
         categoria == "Superior" ~ 4,
+
       variable == "Instrucción formal" &
         categoria == "Posgrado" ~ 5,
+
       variable == "Instrucción formal" &
-        categoria == "No informa" ~ 99
+        categoria == "No informa" ~ 99,
+
+      TRUE ~ 999
     )
   ) |>
+
+  # Frecuencias
   dplyr::count(
     variable,
     categoria,
     orden_categoria,
     name = "Número de observaciones"
   ) |>
+
+  # Porcentajes dentro de cada variable
   dplyr::group_by(variable) |>
   dplyr::mutate(
     `Porcentaje (%)` =
@@ -407,10 +445,13 @@ resumen_caracteristicas <- cgnac_fac |>
       sum(`Número de observaciones`)
   ) |>
   dplyr::ungroup() |>
+
+  # Orden final
   dplyr::arrange(
     variable,
     orden_categoria
   )
+
 
 # Tabla final
 tabla_caracteristicas <- resumen_caracteristicas |>
@@ -419,6 +460,7 @@ tabla_caracteristicas <- resumen_caracteristicas |>
     `Número de observaciones`,
     `Porcentaje (%)`
   )
+
 
 # Número de filas por bloque
 n_sexo <- sum(
@@ -430,8 +472,9 @@ n_edad <- sum(
 )
 
 n_inst <- sum(
-  resumen_caracteristicas$variable == "Instrucci\u00f3n formal"
+  resumen_caracteristicas$variable == "Instrucción formal"
 )
+
 
 # Presentación
 tabla_usc(
@@ -454,7 +497,7 @@ tabla_usc(
     bold = FALSE
   ) |>
   kableExtra::pack_rows(
-    "Instrucci\u00f3n formal",
+    "Instrucción formal",
     n_sexo + n_edad + 1,
     n_sexo + n_edad + n_inst,
     bold = FALSE
@@ -2638,9 +2681,13 @@ Los resultados muestran que la estructura de la tenencia de la tierra se caracte
 
 A partir de esta configuración institucional general, resulta pertinente examinar si las distintas modalidades de acceso a la tierra se distribuyen de manera similar entre los diferentes sistemas productivos del sector agropecuario. En particular, es relevante identificar si determinados sectores productivos presentan una mayor presencia relativa de modalidades como el arrendamiento-aparcería u otros regímenes de tenencia, lo cual podría reflejar estrategias productivas diferenciadas en el uso de la tierra.
 
-La @tbl-tenencia-sector presenta la distribución promedio del área de las UPA según los principales regímenes de tenencia de la tierra y el sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante en cada UPA a partir del rubro con mayor valor económico de producción entre las actividades reportadas en la encuesta. Posteriormente, estas actividades se agruparon en cuatro sectores productivos (agricultura, pecuario, forestal y otros); la categoría otros comprende la cría de asnos, caballos, mulas y cabras. Finalmente, se calculó la proporción promedio del área del predio bajo cada régimen de tenencia (tenencia directa, arrendamiento-aparcería y otros regímenes de tenencia) para cada grupo de UPA.
+La @tbl-tenencia-sector presenta la distribución promedio ponderada de la superficie de las UPA según régimen de tenencia y sector productivo dominante. Para su construcción se identificó primero la actividad productiva predominante de cada UPA a partir del rubro con mayor valor económico de producción. Posteriormente, las actividades se agruparon en cuatro sectores productivos —agricultura, pecuario, forestal y otros— y se calculó, para cada UPA, la proporción de su superficie bajo tenencia directa, arrendamiento y aparcería, y otros regímenes de tenencia.
 
-En términos de grandes magnitudes, los resultados muestran que las tierras en propiedad constituyen la forma predominante de acceso en los cuatro sectores, con participaciones comprendidas entre el 78,6 % en agricultura y el 88,4 % en el sector forestal. Las unidades con orientación agrícola presentan la mayor proporción promedio de área bajo arrendamiento y aparcería (7,3 %), seguidas por las pecuarias (4,3 %), otros sectores (4,2 %) y el sector forestal (1,1 %). Los otros regímenes de tenencia representan entre el 10,5 % del área en el sector forestal y el 14,1 % en agricultura.
+Los resultados muestran que la tenencia directa constituye la modalidad predominante en los cuatro sectores, con participaciones promedio de superficie comprendidas entre el 90,2 % en agricultura y el 94,7 % en el sector forestal. La mayor participación de superficie bajo arrendamiento y aparcería se observa en las UPA con orientación agrícola (8,9 %), seguida por otros sectores (5,5 %), el sector pecuario (5,4 %) y el forestal (1,3 %). Los otros regímenes de tenencia presentan una participación relativamente reducida, con un máximo de 4,0 % en el sector forestal y un mínimo de 1,0 % en agricultura.
+
+En conjunto, estos resultados muestran que la composición de la tenencia de la tierra varía entre sectores productivos, aunque en todos ellos predomina ampliamente la tenencia directa. La mayor participación relativa del arrendamiento y aparcería en agricultura constituye una diferencia descriptiva en la estructura de acceso a la tierra y no implica, por sí misma, un efecto causal sobre la elección de actividades o sobre el desempeño productivo.
+
+En términos de grandes magnitudes, la tenencia directa constituye la modalidad predominante en los cuatro sectores, con participaciones promedio de superficie comprendidas entre el 90,2 % en agricultura y el 94,7 % en el sector forestal. La mayor participación de superficie bajo arrendamiento y aparcería se observa en las UPA con orientación agrícola (8,9 %), seguida por otros sectores (5,5 %), el sector pecuario (5,4 %) y el forestal (1,3 %). Los otros regímenes de tenencia presentan una participación relativamente reducida, con un máximo de 4,0 % en el sector forestal y un mínimo de 1,0 % en agricultura.
 
 Estos resultados sugieren que las modalidades de acceso a la tierra no se distribuyen de manera homogénea entre los distintos sistemas productivos del sector agropecuario ecuatoriano. En particular, la mayor presencia relativa del arrendamiento y aparcería en las actividades agrícolas podría asociarse con estrategias productivas más intensivas o con una mayor flexibilidad en el acceso a la tierra para cultivos específicos.
 
@@ -2653,73 +2700,220 @@ Estos resultados sugieren que las modalidades de acceso a la tierra no se distri
 #| warning: false
 
 vars_valor <- base |>
-  dplyr::select(dplyr::starts_with("valor_")) |>
+  dplyr::select(
+    dplyr::starts_with("valor_")
+  ) |>
   names()
 
 tabla_tenencia_sector <- base |>
   dplyr::mutate(
+
+    # --------------------------------------------------------
+    # Actividad económica dominante de cada UPA
+    # --------------------------------------------------------
+
     actividad_dom = vars_valor[
       max.col(
-        dplyr::select(
-          dplyr::pick(dplyr::all_of(vars_valor)),
-          dplyr::everything()
+        dplyr::pick(
+          dplyr::all_of(vars_valor)
         ),
         ties.method = "first"
       )
     ],
+
     sector_prod = dplyr::case_when(
-      actividad_dom %in% c("valor_cp", "valor_ct", "valor_fp", "valor_ft") ~ "Agricultura",
-      actividad_dom %in% c("valor_gl", "valor_gp", "valor_gv", "valor_ac", "valor_ap", "valor_pc") ~ "Pecuario",
-      actividad_dom == "valor_ad" ~ "Forestal",
-      actividad_dom == "valor_oe" ~ "Otros",
+
+      actividad_dom %in%
+        c(
+          "valor_cp",
+          "valor_ct",
+          "valor_fp",
+          "valor_ft"
+        ) ~ "Agricultura",
+
+      actividad_dom %in%
+        c(
+          "valor_gl",
+          "valor_gp",
+          "valor_gv",
+          "valor_ac",
+          "valor_ap",
+          "valor_pc"
+        ) ~ "Pecuario",
+
+      actividad_dom == "valor_ad" ~
+        "Forestal",
+
+      actividad_dom == "valor_oe" ~
+        "Otros",
+
       TRUE ~ NA_character_
     ),
-    dueno = to_num(`dueño`),
-    arrendamiento_area = to_num(arrendamiento),
-    especiales_area = to_num(especiales),
-    peso = to_num(fact_exp_fin)
+
+    # --------------------------------------------------------
+    # Superficie de la UPA según régimen de tenencia
+    # Clasificación corregida P2
+    # --------------------------------------------------------
+
+    area_directa =
+      to_num(
+        tenencia_area_dueño
+      ),
+
+    area_arrendamiento =
+      to_num(
+        tenencia_area_arrendamiento
+      ),
+
+    area_otros =
+      to_num(
+        tenencia_area_especiales
+      ),
+
+    area_tenencia_total =
+      area_directa +
+      area_arrendamiento +
+      area_otros,
+
+    # --------------------------------------------------------
+    # Proporción de la superficie de cada UPA
+    # --------------------------------------------------------
+
+    prop_directa = dplyr::if_else(
+      is.finite(area_tenencia_total) &
+        area_tenencia_total > 0,
+      area_directa /
+        area_tenencia_total,
+      NA_real_
+    ),
+
+    prop_arrendamiento = dplyr::if_else(
+      is.finite(area_tenencia_total) &
+        area_tenencia_total > 0,
+      area_arrendamiento /
+        area_tenencia_total,
+      NA_real_
+    ),
+
+    prop_otros = dplyr::if_else(
+      is.finite(area_tenencia_total) &
+        area_tenencia_total > 0,
+      area_otros /
+        area_tenencia_total,
+      NA_real_
+    ),
+
+    peso =
+      to_num(
+        fact_exp_fin
+      )
   ) |>
+
+  # ----------------------------------------------------------
+  # Casos utilizables
+  # ----------------------------------------------------------
+
   dplyr::filter(
     !is.na(sector_prod),
-    is.finite(dueno),
-    is.finite(arrendamiento_area),
-    is.finite(especiales_area),
+
+    is.finite(prop_directa),
+    is.finite(prop_arrendamiento),
+    is.finite(prop_otros),
+
     is.finite(peso),
     peso > 0
   ) |>
-  dplyr::group_by(sector_prod) |>
+
+  # ----------------------------------------------------------
+  # Promedio ponderado de la proporción de superficie
+  # ----------------------------------------------------------
+
+  dplyr::group_by(
+    sector_prod
+  ) |>
+
   dplyr::summarise(
-    `Tierras en propiedad (%)` = 100 * w_mean(dueno, peso),
-    `arrendamiento y aparcería (%)` = 100 * w_mean(arrendamiento_area, peso),
-    `Otros regímenes de tenencia (%)` = 100 * w_mean(especiales_area, peso),
+
+    `Tenencia directa (%)` =
+      100 *
+      w_mean(
+        prop_directa,
+        peso
+      ),
+
+    `Arrendamiento y aparcería (%)` =
+      100 *
+      w_mean(
+        prop_arrendamiento,
+        peso
+      ),
+
+    `Otros regímenes de tenencia (%)` =
+      100 *
+      w_mean(
+        prop_otros,
+        peso
+      ),
+
     .groups = "drop"
   ) |>
+
+  # ----------------------------------------------------------
+  # Formato
+  # ----------------------------------------------------------
+
   dplyr::mutate(
-    `Tierras en propiedad (%)` = round(`Tierras en propiedad (%)`, 1),
-    `arrendamiento y aparcería (%)` = round(`arrendamiento y aparcería (%)`, 1),
-    `Otros regímenes de tenencia (%)` = round(`Otros regímenes de tenencia (%)`, 1)
+
+    `Tenencia directa (%)` =
+      round(
+        `Tenencia directa (%)`,
+        1
+      ),
+
+    `Arrendamiento y aparcería (%)` =
+      round(
+        `Arrendamiento y aparcería (%)`,
+        1
+      ),
+
+    `Otros regímenes de tenencia (%)` =
+      round(
+        `Otros regímenes de tenencia (%)`,
+        1
+      )
   ) |>
+
   dplyr::arrange(
-    dplyr::desc(`Tierras en propiedad (%)`)
+    dplyr::desc(
+      `Tenencia directa (%)`
+    )
   ) |>
+
   dplyr::rename(
-    `Sector productivo` = sector_prod
+    `Sector productivo` =
+      sector_prod
   )
 
 tabla_usc(
   tabla_tenencia_sector,
-  align = c("l", "r", "r", "r"),
+  align = c(
+    "l",
+    "r",
+    "r",
+    "r"
+  ),
   digits = 1,
   font_size = 8
 ) |>
   nota_tabla(
-    nota = "El sector dominante corresponde a la actividad de mayor valor productivo y los valores son proporciones promedio ponderadas de superficie.",
+    nota = paste0(
+      "El sector dominante corresponde a la actividad de mayor valor productivo. ",
+      "Los porcentajes representan la proporción promedio ponderada de la superficie ",
+      "de cada UPA bajo tenencia directa, arrendamiento y aparcería, y otros regímenes ",
+      "de tenencia."
+    ),
     fuente = fuente_espac
   )
-```
-
-```{=latex}
-\newpage
 ```
 
 ## Productividad de los factores y estructura agraria en las unidades agropecuarias
@@ -2811,9 +3005,9 @@ tabla_usc(
 
 Si bien las diferencias por sector productivo permiten identificar contrastes relevantes en la especialización económica de las unidades agropecuarias, el análisis puede profundizarse incorporando la dimensión institucional del acceso a la tierra. En este sentido, resulta pertinente examinar si los niveles típicos de productividad también difieren según el régimen predominante de tenencia, dado que las modalidades de acceso y control del suelo pueden condicionar la intensidad productiva, la escala de operación y las decisiones de uso de los factores.
 
-La @tbl-productividad-tenencia presenta la mediana de los indicadores de productividad de la tierra y del trabajo según el régimen predominante de tenencia de las UPA. Para su construcción se identificó el régimen de tenencia dominante en cada unidad a partir de la mayor proporción del área del predio bajo cada modalidad (tenencia directa, arrendamiento y aparcería u otros regímenes de tenencia). Se utilizó la misma muestra de 28.580 UPA de la @tbl-productividad-sector, restringida a observaciones con ambas productividades finitas y estrictamente positivas y con un factor de expansión finito y positivo; por construcción, estos criterios requieren producción valorizada, superficie declarada y número de personas ocupadas estrictamente positivos. Posteriormente, se calcularon las medianas de productividad de cada grupo para representar sus valores típicos y reducir la influencia de valores extremos.
+Los resultados muestran una ordenación consistente en ambas medidas de productividad (@tbl-productividad-tenencia). Las unidades en las que predomina el arrendamiento y aparcería presentan las mayores medianas de productividad de la tierra y del trabajo; la tenencia directa ocupa una posición intermedia, mientras que los otros regímenes de tenencia registran las menores medianas. Estas diferencias son descriptivas y no implican, por sí mismas, una relación causal entre la modalidad de tenencia y el desempeño productivo. Se utilizó la misma muestra de 28.580 UPA de la @tbl-productividad-sector, restringida a observaciones con ambas productividades finitas y estrictamente positivas y con un factor de expansión finito y positivo; por construcción, estos criterios requieren producción valorizada, superficie declarada y número de personas ocupadas estrictamente positivos. Posteriormente, se calcularon las medianas de productividad de cada grupo para representar sus valores típicos y reducir la influencia de valores extremos.
 
-Los resultados muestran que las unidades en las que predomina el arrendamiento y aparcería registran las mayores magnitudes de productividad dentro del conjunto analizado, con una mediana de productividad de la tierra de 2.486 USD/ha y una mediana de productividad del trabajo de 4.075 USD por persona ocupada. Las unidades donde predomina la tenencia directa presentan medianas de 1.790 USD/ha y 3.275 USD por persona ocupada, respectivamente. Las unidades bajo otros regímenes de tenencia registran las menores medianas de productividad de la tierra (1.503 USD/ha) y del trabajo (2.140 USD por persona ocupada).
+Los resultados muestran una ordenación consistente en ambas medidas de productividad (@tbl-productividad-tenencia). Las unidades en las que predomina el arrendamiento y aparcería presentan las mayores medianas de productividad de la tierra y del trabajo; la tenencia directa ocupa una posición intermedia, mientras que los otros regímenes de tenencia registran las menores medianas. Estas diferencias son descriptivas y no implican, por sí mismas, una relación causal entre la modalidad de tenencia y el desempeño productivo.
 
 En términos analíticos, estos resultados sugieren que las distintas formas de acceso a la tierra se asocian con diferencias en los niveles de productividad observados en las unidades agropecuarias. En particular, la mayor productividad mediana observada en los predios bajo arrendamiento y aparcería podría estar relacionada con estrategias productivas más intensivas o con un uso más eficiente de los factores productivos en contextos donde el acceso a la tierra se realiza a través de mecanismos de mercado.
 
@@ -3120,7 +3314,7 @@ ggplot2::ggplot(
 
 Una vez examinada la relación entre la productividad de la tierra y la productividad del trabajo, se estima adecuado analizar cómo estos niveles de desempeño productivo se distribuyen entre los distintos regímenes de tenencia de la tierra presentes en las unidades agropecuarias.
 
-La @fig-prod-tierra-tenencia muestra que la productividad de la tierra presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares entre categorías, aunque el arrendamiento y aparcería registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en rangos intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos evidencian una elevada heterogeneidad dentro de cada régimen. En particular, los otros regímenes de tenencia presentan una mayor dispersión hacia niveles bajos de productividad. En conjunto, los resultados sugieren que la variabilidad intragrupo es superior a las diferencias observadas entre los distintos regímenes de tenencia.
+La @fig-prod-tierra-tenencia muestra diferencias descriptivas en la distribución de la productividad de la tierra según el régimen predominante de tenencia. Las UPA bajo arrendamiento y aparcería presentan la mediana más elevada, seguidas por las unidades con tenencia directa, mientras que los otros regímenes de tenencia registran la mediana más baja. Al mismo tiempo, las distribuciones presentan una amplia variabilidad dentro de cada categoría, por lo que estas diferencias deben interpretarse como patrones descriptivos y no como efectos causales atribuibles al régimen de tenencia.
 
 ```{r}
 #| label: fig-prod-tierra-tenencia
@@ -3212,7 +3406,7 @@ ggplot2::ggplot(
   )
 ```
 
-Complementariamente, resulta pertinente analizar si este patrón también se observa en la productividad del trabajo según el régimen predominante de tenencia de la tierra. La @fig-prod-trabajo-tenencia muestra que la productividad del trabajo presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia. Los niveles centrales de productividad son similares, aunque el arrendamiento y aparcería registra una mediana ligeramente superior. Asimismo, la mayor concentración de observaciones se ubica en niveles intermedios de productividad, mientras que las colas extendidas y la presencia de valores extremos reflejan una elevada heterogeneidad dentro de cada régimen. Los otros regímenes de tenencia exhiben una mayor dispersión y una distribución más extendida hacia niveles altos de productividad. En conjunto, los resultados indican que la variabilidad intragrupo supera las diferencias observadas entre los distintos regímenes de tenencia. 
+Complementariamente, la @fig-prod-trabajo-tenencia permite examinar la productividad del trabajo según el régimen predominante de tenencia. La ordenación de las medianas es similar a la observada para la productividad de la tierra: las UPA bajo arrendamiento y aparcería presentan el valor central más elevado, la tenencia directa ocupa una posición intermedia y los otros regímenes de tenencia registran la mediana más baja. Las distribuciones mantienen, sin embargo, una considerable heterogeneidad interna, de modo que la comparación describe diferencias entre grupos sin establecer una relación causal entre tenencia y productividad laboral.
 
 ```{r}
 #| label: fig-prod-trabajo-tenencia
@@ -3406,7 +3600,7 @@ ggplot2::ggplot(
 
 Una vez examinada la distribución del índice combinado de productividad, es relevante evaluar cómo este indicador se distribuye entre los distintos regímenes de tenencia de la tierra presentes en las unidades agropecuarias.
 
-La @fig-indice-productividad-tenencia evidencia que el índice combinado de productividad presenta distribuciones ampliamente superpuestas entre los distintos regímenes de tenencia, lo que sugiere un desempeño agregado similar entre categorías. Los niveles centrales muestran diferencias moderadas, observándose una mediana ligeramente superior en las unidades bajo arrendamiento y aparcería, mientras que la tenencia directa exhibe valores cercanos y los otros regímenes de tenencia presentan una mediana levemente inferior. Asimismo, la mayor concentración de observaciones se localiza en rangos intermedios del índice, aunque las distribuciones muestran colas extendidas y una marcada presencia de valores extremos, reflejando una elevada heterogeneidad interna. En particular, los otros regímenes de tenencia registran la mayor dispersión, con una distribución más amplia hacia valores bajos y altos de productividad. En conjunto, la evidencia sugiere que las diferencias en el índice combinado entre regímenes de tenencia son reducidas en comparación con la variabilidad existente dentro de cada grupo, lo que indica que otros factores estructurales y productivos podrían desempeñar un papel más relevante en la explicación del desempeño agregado de las unidades agropecuarias.
+La @fig-indice-productividad-tenencia muestra que el índice combinado de productividad también presenta una ordenación diferenciada según el régimen predominante de tenencia. Las UPA bajo arrendamiento y aparcería registran la mediana más elevada del índice, seguidas por las unidades con tenencia directa, mientras que los otros regímenes de tenencia presentan la mediana más baja. La variabilidad observada dentro de cada grupo indica que el régimen de tenencia constituye solo una dimensión de una estructura productiva más amplia; por tanto, estas diferencias tienen carácter descriptivo y no deben interpretarse como efectos causales.
 
 ```{r}
 #| label: fig-indice-productividad-tenencia

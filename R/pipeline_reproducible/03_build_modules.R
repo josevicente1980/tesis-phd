@@ -46,15 +46,36 @@ sunac <- data.table::as.data.table(raw$sunac2022)
 sunac[, Identificador := as_id(Identificador)]
 sunac[, su_tenencia_label := as_label(su_tenencia)]
 sunac[, tenencia_grupo := data.table::fcase(
-  su_tenencia_label == "DUEÑO", "dueño",
-  su_tenencia_label == "ARRENDATARIO", "arrendamiento",
-  default = "especiales"
+  su_tenencia_label %in% c(
+    "DUEÑO",
+    "HERENCIA",
+    "USUFRUCTO",
+    "POSECIÓN"
+  ), "dueño",
+  
+  su_tenencia_label %in% c(
+    "ARRENDATARIO",
+    "APARCERÍA O AL PARTIR"
+  ), "arrendamiento",
+  
+  su_tenencia_label %in% c(
+    "COMUNERO",
+    "INVASIÓN",
+    "LITIGIO",
+    "OTRO"
+  ), "especiales",
+  
+  default = NA_character_
 )]
 sunac_agg <- sunac[, .(
   sup_total_ha = safe_sum(supertotal),
   sup_uso_total_ha = safe_sum(su_k202ha),
   area.total = safe_sum(su_k202ha),
-  fact_exp_fin = first_non_missing(as.character(fact_exp_fin)),
+  fact_exp_fin = {
+    x <- as_num(fact_exp_fin)
+    x <- x[!is.na(x)]
+    if (length(x) == 0) NA_real_ else x[1]
+  },
   fact_exp_fin_unique_values = data.table::uniqueN(fact_exp_fin, na.rm = TRUE)
 ), by = Identificador]
 tenencia_wide <- sunac[, .(area_ha = safe_sum(supertotal)), by = .(Identificador, tenencia_grupo)]

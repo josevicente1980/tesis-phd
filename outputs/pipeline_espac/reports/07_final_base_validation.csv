@@ -11,10 +11,10 @@ join_cardinality_no_expansion,TRUE,0
 join_cardinality_one_to_one,TRUE,0
 factor_expansion_present,TRUE,0
 factor_expansion_numeric_nonnegative,TRUE,0
-production_economic_formula_consistent,TRUE,4.84287738800049e-08
+production_economic_formula_consistent,TRUE,"0,0000000484287738800049"
 production_economic_nonnegative,TRUE,0
-productivity_surface_formula_consistent,TRUE,4.65661287307739e-09
-productivity_labor_formula_consistent,TRUE,1.00117176771164e-08
+productivity_surface_formula_consistent,TRUE,"0,00000000465661287307739"
+productivity_labor_formula_consistent,TRUE,"0,0000000100117176771164"
 module_aggregates_unique,TRUE,0
 module_aggregates_no_duplicate_identifiers,TRUE,0
 price_imputation_trace_complete,TRUE,1003

@@ -144,9 +144,12 @@ certification <- c(
   "",
   "## Dimensiones",
   "",
-  paste0("- Filas de la base oficial v1.0: ", dimensions$candidate[dimensions$metric == "rows"], "."),
-  paste0("- Columnas de la base oficial v1.0: ", dimensions$candidate[dimensions$metric == "columns"], "."),
-  paste0("- Identificadores unicos de la base oficial v1.0: ", dimensions$candidate[dimensions$metric == "unique_identifiers"], "."),
+  paste0("- Filas de la base oficial `", official_base_filename, "`: ",
+         dimensions$candidate[dimensions$metric == "rows"], "."),
+  paste0("- Columnas de la base oficial `", official_base_filename, "`: ",
+         dimensions$candidate[dimensions$metric == "columns"], "."),
+  paste0("- Identificadores unicos de la base oficial `", official_base_filename, "`: ",
+         dimensions$candidate[dimensions$metric == "unique_identifiers"], "."),
   "",
   "## Diferencias contra base anterior",
   "",
@@ -163,7 +166,8 @@ certification <- c(
   "",
   "- El archivo de precios es un insumo metodologico del investigador, no documentacion oficial ESPAC.",
   "- La imputacion `0.10 USD/kg` para productos sin precio es una regla metodologica explicita del investigador.",
-  "- La base v1.0 no busca reproducir exactamente la base historica; la reemplaza como base analitica oficial reproducible.",
+  paste0("- La base `", official_base_filename,
+         "` no busca reproducir exactamente la base historica; la reemplaza como base analitica oficial reproducible."),
   paste0("- El pipeline oficial genera `", official_base_filename, "`."),
   "",
   "## Trazabilidad",
@@ -183,7 +187,11 @@ certification <- c(
   "## Recomendacion tecnica",
   "",
   if (all_validation_passed) {
-    "Las validaciones tecnicas son satisfactorias. La base v1.0 queda certificada como base oficial de la tesis doctoral."
+    paste0(
+      "Las validaciones tecnicas son satisfactorias. La base `",
+      official_base_filename,
+      "` queda certificada como base oficial de la tesis doctoral."
+    )
   } else {
     "No se recomienda reemplazar la base anterior hasta resolver las validaciones fallidas."
   }

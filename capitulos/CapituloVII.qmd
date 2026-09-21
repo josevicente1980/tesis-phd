@@ -47,119 +47,124 @@ Base_final <- readr::read_csv(
 Base_cap7 <- Base_final |>
   dplyr::mutate(
 
-    ln_prod_sup =
-      log1p(
-        as.numeric(productividad_superficie)
-      ),
+    ln_prod_sup = log1p(
+      as.numeric(productividad_superficie)
+    ),
 
-    ln_prod_trab =
-      log1p(
-        as.numeric(productividad_trabajo)
-      ),
+    ln_prod_trab = log1p(
+      as.numeric(productividad_trabajo)
+    ),
 
-    superficie_total_z =
-      z_score(sup_ha),
+    superficie_total_z = z_score(
+      sup_ha
+    ),
 
-    superficie_log_z =
-      z_score(
-        log1p(sup_ha)
-      ),
+    superficie_log_z = z_score(
+      log1p(sup_ha)
+    ),
 
-    edad_z =
-      z_score(cg_k101),
+    edad_z = z_score(
+      cg_k101
+    ),
 
-    riego =
-      dplyr::if_else(
-        to_si_no(usa_riego_global) == "SI",
-        1,
-        0,
-        missing = NA_real_
-      ),
+    riego = dplyr::if_else(
+      to_si_no(usa_riego_global) == "SI",
+      1,
+      0,
+      missing = NA_real_
+    ),
 
-    fertilizante =
-      dplyr::if_else(
-        to_si_no(usa_fert_global) == "SI",
-        1,
-        0,
-        missing = NA_real_
-      ),
+    fertilizante = dplyr::if_else(
+      to_si_no(usa_fert_global) == "SI",
+      1,
+      0,
+      missing = NA_real_
+    ),
 
-    plaguicida =
-      dplyr::if_else(
-        to_si_no(usa_plag_global) == "SI",
-        1,
-        0,
-        missing = NA_real_
-      ),
+    plaguicida = dplyr::if_else(
+      to_si_no(usa_plag_global) == "SI",
+      1,
+      0,
+      missing = NA_real_
+    ),
 
-    internet =
-      dplyr::if_else(
-        as.numeric(cg_dispo_internet) == 1,
-        1,
-        0,
-        missing = NA_real_
-      ),
+    internet = dplyr::if_else(
+      as.numeric(cg_dispo_internet) == 1,
+      1,
+      0,
+      missing = NA_real_
+    ),
 
-    educacion_num =
-      dplyr::case_when(
-        cg_k102 == 1 ~ 0,
-        cg_k102 == 2 ~ 1,
-        cg_k102 == 3 ~ 2,
-        cg_k102 == 4 ~ 3,
-        TRUE ~ NA_real_
-      ),
+    # Educación:
+    # 7 = Ninguna
+    # 1 = Primaria
+    # 2 = Secundaria
+    # 3 = Superior
+    # 4 = Posgrado
+    # 9 = No informa
+    educacion_num = dplyr::case_when(
+      as.numeric(cg_k102) == 7 ~ 0,
+      as.numeric(cg_k102) == 1 ~ 1,
+      as.numeric(cg_k102) == 2 ~ 2,
+      as.numeric(cg_k102) == 3 ~ 3,
+      as.numeric(cg_k102) == 4 ~ 4,
+      TRUE ~ NA_real_
+    ),
 
-    educacion =
-      factor(
-        educacion_num,
-        levels = 0:3,
-        labels = c(
-          "Ninguna",
-          "Primaria",
-          "Secundaria",
-          "Superior"
-        )
-      ),
-
-    educacion_z =
-      z_score(educacion_num),
-
-    sexo =
-      factor(
-        as.numeric(cg_k100),
-        levels = c(1, 2),
-        labels = c(
-          "Hombre",
-          "Mujer"
-        )
-      ),
-
-    sexo_num =
-      dplyr::if_else(
-        as.numeric(cg_k100) == 2,
-        1,
-        0,
-        missing = NA_real_
-      ),
-
-    clase.mayoria =
-      factor(clase.mayoria),
-
-    territorio =
-      factor(
-        stringr::str_pad(
-          as.character(ual_prov),
-          width = 2,
-          side = "left",
-          pad = "0"
-        )
+    educacion = factor(
+      educacion_num,
+      levels = 0:4,
+      labels = c(
+        "Ninguna",
+        "Primaria",
+        "Secundaria",
+        "Superior",
+        "Posgrado"
       )
+    ),
+
+    educacion_z = z_score(
+      educacion_num
+    ),
+
+    sexo = factor(
+      as.numeric(cg_k100),
+      levels = c(1, 2),
+      labels = c(
+        "Hombre",
+        "Mujer"
+      )
+    ),
+
+    sexo_num = dplyr::if_else(
+      as.numeric(cg_k100) == 2,
+      1,
+      0,
+      missing = NA_real_
+    ),
+
+    clase.mayoria = factor(
+      clase.mayoria
+    ),
+
+    territorio = factor(
+      stringr::str_pad(
+        as.character(ual_prov),
+        width = 2,
+        side = "left",
+        pad = "0"
+      )
+    )
   )
 
 diagnostico_tecnologicas_cap7 <- Base_cap7 |>
   dplyr::summarise(
     dplyr::across(
-      c(riego, fertilizante, plaguicida),
+      c(
+        riego,
+        fertilizante,
+        plaguicida
+      ),
       list(
         n = ~ sum(!is.na(.x)),
         varianza = ~ stats::var(.x, na.rm = TRUE),
@@ -189,6 +194,7 @@ stopifnot(
   )
 )
 ```
+
 
 ```{r}
 #| label: flujo-muestral-cap7
@@ -220,7 +226,7 @@ criterio_covariables_basicas <-
 
 criterio_educacion <-
   criterio_covariables_basicas &
-  Base_cap7$cg_k102 %in% 1:4
+  Base_cap7$cg_k102 %in% c(7, 1, 2, 3, 4)
 
 criterio_sexo <-
   criterio_educacion &
@@ -260,7 +266,7 @@ tabla_flujo_muestral <- tibble::tibble(
     "Productividad de la tierra disponible",
     "Productividad de la tierra y del trabajo disponibles",
     "Más tenencia, superficie, edad, internet y provincia",
-    "Más educación válida (códigos 1 a 4)",
+    "Más educación válida (códigos 7, 1, 2, 3 y 4)",
     "Más sexo disponible",
     "Más riego, fertilizantes y plaguicidas en SI/NO",
     "Más ambas productividades estrictamente positivas (SFA)"
@@ -469,7 +475,7 @@ variables_modelo <- tibble::tribble(
   "Tecnología productiva",
 
   "Educación",
-  "Nivel educativo como factor: ninguna, primaria, secundaria y superior",
+  "Nivel educativo como factor: ninguna, primaria, secundaria, superior y posgrado",
   "Capital humano",
 
   "Sexo",
@@ -492,7 +498,7 @@ variables_modelo |>
   )
 ```
 
-La muestra econométrica se construyó mediante una secuencia explícita de criterios de inclusión (@tbl-flujo-muestral-cap7). De las 42.444 UPA para las que se dispone de productividad de la tierra, 30.502 cuentan también con información válida para calcular la productividad del trabajo. Los demás controles básicos no generan pérdidas adicionales. Al exigir información educativa válida en los cuatro niveles analizados, la muestra se reduce a 26.392 UPA; posteriormente, la exigencia conjunta de estados `SI` o `NO` en riego, fertilizantes y plaguicidas conduce a las 22.075 UPA utilizadas en los modelos OLS y multinivel. El sexo está disponible para todas las observaciones que cumplen el criterio educativo y, por tanto, no produce una reducción adicional. Finalmente, la frontera estocástica (SFA), que requiere que ambas medidas de productividad sean estrictamente positivas, se estima con 21.430 UPA.
+La muestra econométrica se construyó mediante una secuencia explícita de criterios de inclusión (@tbl-flujo-muestral-cap7). De las 42.444 UPA para las que se dispone de productividad de la tierra, 30.502 cuentan también con información válida para calcular la productividad del trabajo. Los demás controles básicos no generan pérdidas adicionales. Al exigir información educativa válida en los cinco niveles analizados, la muestra se reduce a 30.501 UPA; posteriormente, la exigencia conjunta de estados `SI` o `NO` en riego, fertilizantes y plaguicidas conduce a las 25.325 UPA utilizadas en los modelos OLS y multinivel. El sexo está disponible para todas las observaciones que cumplen el criterio educativo y, por tanto, no produce una reducción adicional. Finalmente, la frontera estocástica (SFA), que requiere que ambas medidas de productividad sean estrictamente positivas, se estima con 24.613 UPA.
 
 ```{=latex}
 \suppressfloats[b]
@@ -524,7 +530,7 @@ tabla_flujo_muestral |>
   )
 ```
 
-La @tbl-composicion-muestra-cap7 muestra que la aplicación de estos criterios no solo reduce el número de observaciones, sino que también modifica la composición de la muestra. El arrendamiento y aparcería representa el 2,4 % de las UPA excluidas y el 5,4 % de las incluidas; la tenencia directa, el 87,5 % y el 82,7 %, respectivamente; y otros regímenes de tenencia, el 10,2 % y el 11,9 %. Las mujeres representan el 27,2 % de las UPA incluidas, frente al 24,3 % de las excluidas. También existen diferencias en escala productiva: la superficie mediana alcanza 5 ha en la muestra econométrica, frente a 1,42 ha entre las UPA excluidas. Estas diferencias son relevantes para interpretar los resultados: las asociaciones estimadas corresponden a las UPA que cumplen los requisitos de información y aplicabilidad tecnológica definidos para los modelos y no deben interpretarse como una corrección de posibles procesos de selección asociados a características no observadas.
+La @tbl-composicion-muestra-cap7 muestra que la composición también cambia de forma observable entre las UPA incluidas y excluidas. Arrendamiento y aparcería representa el 2,4 % de las UPA excluidas y el 6,4 % de las incluidas; la tenencia directa, el 94,1 % y el 92,3 %, respectivamente; y otros regímenes de tenencia, el 3,5 % y el 1,4 %. Entre las UPA incluidas, las mujeres representan el 28,8 %, frente al 21,4 % entre las excluidas. La superficie mediana alcanza 4,47 ha en la muestra econométrica y 1,20 ha entre las UPA excluidas. Estas diferencias delimitan el dominio de inferencia de los modelos: las asociaciones estimadas corresponden a las UPA que cumplen los requisitos de información y aplicabilidad tecnológica definidos para el análisis y no constituyen una corrección de posibles procesos de selección asociados con características no observadas.
 
 ```{r}
 #| label: tbl-composicion-muestra-cap7
@@ -539,12 +545,12 @@ tabla_composicion_muestra |>
     font_size = 8
   ) |>
   nota_tabla(
-    nota = "Incluidas corresponde a las 22.075 UPA de los modelos OLS y multinivel. Los porcentajes se calculan dentro de cada estado de inclusión.",
+    nota = "Incluidas corresponde a las 25.325 UPA de los modelos OLS y multinivel. Los porcentajes se calculan dentro de cada estado de inclusión.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
 ```
 
-A partir de estas variables se definió una especificación común para las tres estrategias econométricas, lo que permite comparar sus resultados sobre una base explicativa consistente. Los indicadores de riego, fertilización y plaguicidas presentan los estados `SI` y `NO` dentro del universo aplicable y se incorporaron conjuntamente. Los modelos OLS y multinivel se estiman con una muestra común de 22.075 UPA, mientras que la SFA utiliza 21.430 UPA debido al requisito adicional de que ambas medidas de productividad sean estrictamente positivas. En todos los casos, las matrices de diseño tienen rango completo[^rango_completo], por lo que los parámetros incluidos pueden estimarse sin problemas de identificación derivados de dependencias lineales exactas entre las variables explicativas. Por tanto, la especificación econométrica general utilizada en esta investigación puede expresarse de la siguiente manera, en primera instancia para el modelo lineal múltiple:
+A partir de estas variables se definió una especificación común para las tres estrategias econométricas, lo que permite comparar sus resultados sobre una base explicativa consistente. Los indicadores de riego, fertilización y plaguicidas presentan los estados `SI` y `NO` dentro del universo aplicable y se incorporaron conjuntamente. Los modelos OLS y multinivel se estiman con una muestra común de 25.325 UPA, mientras que la SFA utiliza 24.613 UPA debido al requisito adicional de que ambas medidas de productividad sean estrictamente positivas. En todos los casos, las matrices de diseño tienen rango completo[^rango_completo], por lo que los parámetros incluidos pueden estimarse sin problemas de identificación derivados de dependencias lineales exactas entre las variables explicativas. Por tanto, la especificación econométrica general utilizada en esta investigación puede expresarse de la siguiente manera, en primera instancia para el modelo lineal múltiple:
 
 [^rango_completo]: Una matriz de diseño tiene **rango completo** cuando ninguna variable explicativa puede expresarse como una combinación lineal exacta de las demás. En términos prácticos, esto permite estimar de manera separada los coeficientes incluidos en el modelo. Si existiera una dependencia lineal perfecta entre variables, algunos parámetros no podrían identificarse de forma única.
 
@@ -1008,7 +1014,7 @@ ggplot2::ggplot(
 
 La superficie presenta una distribución fuertemente asimétrica: la mediana es de 5 ha, el percentil 90 alcanza 89,6 ha, el percentil 99 llega a 885,64 ha y el valor máximo es de 42.000 ha. Estas cifras muestran que la mayoría de las UPA se concentra en superficies relativamente pequeñas, mientras que un número reducido de explotaciones presenta extensiones muy superiores. La estandarización facilita la comparación de los coeficientes, pero no corrige esta asimetría, ya que las explotaciones extremadamente grandes continúan alejadas del conjunto principal de observaciones.
 
-Por esta razón, se compararon tres formas de representar la superficie sobre las mismas 22.075 UPA: niveles estandarizados (A), $z[\ln(1+\text{superficie})]$ (B) y esta última transformación acompañada por un término cuadrático (C). La transformación logarítmica reduce la influencia relativa de las explotaciones de mayor tamaño, mientras que el término cuadrático permite representar una relación no lineal, es decir, que la asociación entre superficie y productividad pueda variar a medida que aumenta la escala. La @tbl-forma-superficie-cap7 reúne las medidas de ajuste y los resultados de la prueba RESET[^reset]. La alternativa C se evaluó porque las especificaciones A y B mantuvieron evidencia de error funcional y porque permite incorporar esa curvatura mediante una modificación limitada e interpretable del modelo.
+Por esta razón, se compararon tres formas de representar la superficie sobre las mismas 25.325 UPA: niveles estandarizados (A), $z[\ln(1+\text{superficie})]$ (B) y esta última transformación acompañada por un término cuadrático (C). La transformación logarítmica reduce la influencia relativa de las explotaciones de mayor tamaño, mientras que el término cuadrático permite representar una relación no lineal, es decir, que la asociación entre superficie y productividad pueda variar a medida que aumenta la escala. La @tbl-forma-superficie-cap7 reúne las medidas de ajuste y los resultados de la prueba RESET[^reset]. La alternativa C se evaluó porque las especificaciones A y B mantuvieron evidencia de error funcional y porque permite incorporar esa curvatura mediante una modificación limitada e interpretable del modelo.
 
 [^reset]: La prueba RESET de Ramsey evalúa si la forma funcional especificada en un modelo lineal puede estar omitiendo relaciones no lineales relevantes. Su hipótesis nula establece, de forma general, que la especificación funcional es adecuada. Un rechazo de esta hipótesis sugiere que la relación entre la variable dependiente y los regresores podría no estar completamente representada por la forma funcional utilizada. La prueba no identifica por sí sola cuál es la especificación correcta, por lo que debe interpretarse junto con criterios de ajuste, diagnóstico y plausibilidad económica.
 
@@ -1168,7 +1174,7 @@ ggplot2::ggplot(
 
 Los modelos OLS constituyen el punto de partida del análisis econométrico y permiten examinar cómo se relacionan, en promedio, las características observadas de las UPA con las dos medidas de productividad. En particular, se estiman asociaciones entre la productividad transformada mediante $\ln(1+x)$ y el régimen de tenencia, junto con características productivas, tecnológicas y sociodemográficas. Cada coeficiente representa la diferencia promedio asociada con una característica determinada, manteniendo constantes las demás variables incluidas en el modelo. Estas asociaciones no deben interpretarse como efectos causales. Los modelos OLS sirven, además, como referencia para evaluar posteriormente si los resultados cambian al incorporar explícitamente la heterogeneidad territorial mediante los modelos multinivel estimados sobre la misma muestra.
 
-La especificación incorpora variables asociadas al régimen de tenencia, tamaño de la explotación, edad, acceso a internet, educación y uso de riego, fertilizantes y plaguicidas. Debido a la heterocedasticidad identificada, las estimaciones utilizan errores estándar robustos tipo HC1. Esta corrección no modifica los coeficientes estimados, sino la cuantificación de su incertidumbre, de manera que los errores estándar y las pruebas de significancia sean válidos ante una variabilidad no constante de los residuos. La muestra analítica contiene 22.075 UPA con variables dependientes y covariables completas y, específicamente, estados `SI` o `NO` en los tres indicadores tecnológicos.
+La especificación incorpora variables asociadas al régimen de tenencia, tamaño de la explotación, edad, acceso a internet, educación y uso de riego, fertilizantes y plaguicidas. Debido a la heterocedasticidad identificada, las estimaciones utilizan errores estándar robustos tipo HC1. Esta corrección no modifica los coeficientes estimados, sino la cuantificación de su incertidumbre, de manera que los errores estándar y las pruebas de significancia sean válidos ante una variabilidad no constante de los residuos. La muestra analítica contiene 25.325 UPA con variables dependientes y covariables completas y, específicamente, estados `SI` o `NO` en los tres indicadores tecnológicos.
 
 ### Productividad de la tierra
 
@@ -1178,7 +1184,7 @@ La importancia sustantiva del resultado radica en su dirección: una vez conside
 
 [^trans_log]: Para variables categóricas en modelos con variable dependiente logarítmica, el efecto porcentual exacto respecto a la categoría de referencia (*arrendamiento y aparcería*) se calcula mediante la fórmula $\% \Delta = (e^{\beta} - 1) \times 100$. Aplicando los coeficientes sin redondear, para *tenencia directa* ($\beta = -0,256$) el impacto es $(e^{-0,256} - 1) \times 100 = -22,6\%$, mientras que para *otros regímenes* ($\beta = -0,446$) es $(e^{-0,446} - 1) \times 100 = -36,0\%$.
 
-La superficie en niveles estandarizados presenta una asociación negativa: un incremento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con menor producción total. La distinción es sustantivamente importante, porque el coeficiente describe la intensidad productiva de la superficie y no afirma que las explotaciones grandes generen menos producto agregado. Este resultado es coherente con la relación inversa entre escala y productividad de la tierra documentada para explotaciones familiares [@saini1971holding; @hossain1977farm]. La educación muestra un gradiente concentrado en secundaria y superior frente a ninguna educación, mientras que el sexo y la edad no presentan diferencias estadísticamente discernibles en esta respuesta; esto último significa que, una vez consideradas las restantes covariables, la información disponible no permite separar sus asociaciones de cero con suficiente precisión.
+La superficie en niveles estandarizados presenta una asociación negativa: un incremento de una desviación estándar en el tamaño de la UPA se relaciona con menor producto por hectárea, no con menor producción total. La distinción es sustantivamente importante, porque el coeficiente describe la intensidad productiva de la superficie y no afirma que las explotaciones grandes generen menos producto agregado. Este resultado es coherente con la relación inversa entre escala y productividad de la tierra documentada para explotaciones familiares [@saini1971holding; @hossain1977farm]. En educación, primaria y secundaria presentan asociaciones negativas frente a ninguna educación, mientras superior y posgrado presentan asociaciones positivas, mientras que el sexo y la edad no presentan diferencias estadísticamente discernibles en esta respuesta; esto último significa que, una vez consideradas las restantes covariables, la información disponible no permite separar sus asociaciones de cero con suficiente precisión.
 
 En el bloque tecnológico, fertilizantes, internet, plaguicidas y riego se asocian con niveles más elevados de productividad de la tierra. Sus diferencias exactas en $1+Y$ son, respectivamente, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["fertilizante"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["internet"]) - 1), 1)`, `r formato_pct(100 * (exp(coef(modelo_vif_sup)["plaguicida"]) - 1), 1)` y `r formato_pct(100 * (exp(coef(modelo_vif_sup)["riego"]) - 1), 1)`. La comparación se refiere a UPA usuarias y no usuarias dentro del universo aplicable. Económicamente, el patrón es compatible con una producción más intensiva por superficie y coincide con la literatura que relaciona las condiciones tecnológicas y el uso de insumos con diferencias de productividad y eficiencia agrícola [@perdomo_factores_2007]. Dado el diseño transversal, las estimaciones no separan el efecto de la adopción de la selección de UPA con mejores condiciones para utilizar estas tecnologías.
 
@@ -1586,6 +1592,7 @@ tabla_ols_sup <- broom::tidy(
       "educacionPrimaria" = "Educación: primaria",
       "educacionSecundaria" = "Educación: secundaria",
       "educacionSuperior" = "Educación: superior",
+      "educacionPosgrado" = "Educación: posgrado",
       "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
@@ -1622,7 +1629,7 @@ La productividad del trabajo confirma la misma ordenación observada previamente
 
 La superficie logarítmica estandarizada registra una asociación positiva y su término cuadrático es negativo. La combinación de ambos términos representa una relación no lineal: la productividad laboral aumenta con la escala, pero cada ampliación adicional se asocia con un incremento progresivamente menor dentro del rango observado. Esta curvatura es coherente con economías de organización y mecanización parcial que elevan el producto por trabajador, acompañadas por rendimientos progresivamente menores de la expansión de escala [@gollin2018farm]. Debido al término cuadrático, los dos coeficientes deben interpretarse conjuntamente y no como efectos constantes aislados; el término lineal establece la dirección inicial de la relación y el cuadrático describe cómo cambia su pendiente.
 
-Una vez representada la escala, fertilizantes y plaguicidas mantienen asociaciones positivas con la productividad laboral, mientras riego no presenta una diferencia estadísticamente discernible. Internet conserva una asociación positiva, aunque menor que en la productividad de la tierra. Esto sugiere que las tecnologías e insumos no se relacionan del mismo modo con la intensificación por hectárea y con el producto obtenido por trabajador. Las UPA encabezadas por mujeres muestran una diferencia condicionada de `r formato_pct(100 * (exp(coef(ols_trab)["sexoMujer"]) - 1), 1)` frente a las encabezadas por hombres. Educación secundaria presenta una asociación negativa frente a ninguna educación, mientras primaria y superior no ofrecen evidencia concluyente al 5 %. Estos patrones pueden reflejar diferencias de actividad, organización y acceso a recursos, pero el modelo no identifica los mecanismos que las originan.
+Una vez representada la escala, fertilizantes y plaguicidas mantienen asociaciones positivas con la productividad laboral, mientras riego no presenta una diferencia estadísticamente discernible. Internet conserva una asociación positiva, aunque menor que en la productividad de la tierra. Esto sugiere que las tecnologías e insumos no se relacionan del mismo modo con la intensificación por hectárea y con el producto obtenido por trabajador. Las UPA encabezadas por mujeres muestran una diferencia condicionada de `r formato_pct(100 * (exp(coef(ols_trab)["sexoMujer"]) - 1), 1)` frente a las encabezadas por hombres. Frente a ninguna educación, primaria no presenta una diferencia estadísticamente discernible; secundaria muestra una asociación negativa con evidencia al 10 %; superior presenta una asociación negativa estadísticamente discernible al 5 %; y posgrado no ofrece evidencia concluyente. Estos patrones pueden reflejar diferencias de actividad, organización y acceso a recursos, pero el modelo no identifica los mecanismos que las originan.
 
 ```{r}
 #| label: tbl-ols-trabajo-cap7
@@ -1673,6 +1680,7 @@ tabla_ols_trab <- broom::tidy(
       "educacionPrimaria" = "Educación: primaria",
       "educacionSecundaria" = "Educación: secundaria",
       "educacionSuperior" = "Educación: superior",
+      "educacionPosgrado" = "Educación: posgrado",
       "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
@@ -1706,7 +1714,7 @@ tabla_ols_trab |>
 
 ### Evolución de la asociación de tenencia
 
-La @tbl-modelos-progresivos-cap7 mantiene las mismas 22.075 UPA en todas las etapas. M1 incorpora solo tenencia; M2 añade escala con la forma funcional seleccionada para cada respuesta; M3 agrega edad, educación, sexo e internet; y M4 incorpora riego, fertilizantes y plaguicidas. Esta incorporación secuencial permite observar si la brecha asociada con la tenencia se mantiene o se atenúa al comparar UPA cada vez más similares en características observadas. Los movimientos de los coeficientes describen cambios en la asociación condicionada y no una descomposición causal: una reducción no demuestra qué variable origina la brecha, sino que muestra cuánto coincide con el bloque añadido.
+La @tbl-modelos-progresivos-cap7 mantiene las mismas 25.325 UPA en todas las etapas. M1 incorpora solo tenencia; M2 añade escala con la forma funcional seleccionada para cada respuesta; M3 agrega edad, educación, sexo e internet; y M4 incorpora riego, fertilizantes y plaguicidas. Esta incorporación secuencial permite observar si la brecha asociada con la tenencia se mantiene o se atenúa al comparar UPA cada vez más similares en características observadas. Los movimientos de los coeficientes describen cambios en la asociación condicionada y no una descomposición causal: una reducción no demuestra qué variable origina la brecha, sino que muestra cuánto coincide con el bloque añadido.
 
 ```{r}
 #| label: tbl-modelos-progresivos-cap7
@@ -1741,7 +1749,7 @@ tabla_modelos_progresivos <- resultados_progresivos |>
     extra_latex_after = "\\noalign{\\vskip 0.6em}"
   ) |>
   nota_tabla(
-    nota = "M1: tenencia; M2: + escala; M3: + edad, educación, sexo e internet; M4: + riego, fertilizantes y plaguicidas. Errores estándar HC1. Referencia: arrendamiento y aparcería. N = 22.075 en todos los modelos.",
+    nota = "M1: tenencia; M2: + escala; M3: + edad, educación, sexo e internet; M4: + riego, fertilizantes y plaguicidas. Errores estándar HC1. Referencia: arrendamiento y aparcería. N = 25.325 en todos los modelos.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
 
@@ -1814,7 +1822,7 @@ ggplot2::ggplot(
 
 Los indicadores de la @tbl-ajuste-ols-cap7 muestran que las covariables explican `r formato_pct(100 * summary(ols_sup)$r.squared, 1)` de la variación de la productividad de la tierra y `r formato_pct(100 * summary(ols_trab)$r.squared, 1)` de la productividad del trabajo. El $R^2$ cuantifica la proporción de variación observada que la especificación representa de manera conjunta, pero no mide causalidad ni garantiza que cada predicción individual sea precisa. El primer valor confirma que una proporción amplia de la heterogeneidad por hectárea permanece asociada con composición productiva, calidad del suelo, infraestructura y otras dimensiones no observadas explícitamente. El segundo aumenta de forma sustantiva al representar la escala laboral con logaritmo y curvatura cuadrática, lo que reafirma que la forma funcional de la superficie es decisiva para comprender las diferencias de producto por trabajador. El objetivo de los modelos continúa siendo estimar asociaciones condicionadas, no predecir completamente la productividad de cada UPA.
 
-Los criterios AIC y BIC se reportan como indicadores de ajuste dentro de cada familia de modelos. Ambos penalizan la complejidad y favorecen valores menores, de modo que permiten valorar si una mejora de ajuste justifica los parámetros adicionales. Los dos modelos OLS fueron estimados sobre 22.075 observaciones con estados `SI` o `NO` en los tres indicadores y covariables completas. La comparación directa entre productividad de la tierra y productividad del trabajo no es metodológicamente equivalente porque corresponden a variables dependientes distintas; por tanto, sus valores no deben utilizarse para decidir cuál de las dos productividades está mejor explicada en términos absolutos.
+Los criterios AIC y BIC se reportan como indicadores de ajuste dentro de cada familia de modelos. Ambos penalizan la complejidad y favorecen valores menores, de modo que permiten valorar si una mejora de ajuste justifica los parámetros adicionales. Los dos modelos OLS fueron estimados sobre 25.325 observaciones con estados `SI` o `NO` en los tres indicadores y covariables completas. La comparación directa entre productividad de la tierra y productividad del trabajo no es metodológicamente equivalente porque corresponden a variables dependientes distintas; por tanto, sus valores no deben utilizarse para decidir cuál de las dos productividades está mejor explicada en términos absolutos.
 
 ```{r}
 #| label: tbl-ajuste-ols-cap7
@@ -1897,7 +1905,7 @@ resultados_sensibilidad_ols |>
     scale_down = TRUE
   ) |>
   nota_tabla(
-    nota = "Principal: educación categórica y sexo. Ponderado: mínimos cuadrados ponderados (WLS) con fact_exp_fin y HC1; no equivale a la reconstrucción integral del diseño complejo. Referencia: arrendamiento y aparcería. N = 22.075.",
+    nota = "Principal: educación categórica y sexo. Ponderado: mínimos cuadrados ponderados (WLS) con fact_exp_fin y HC1; no equivale a la reconstrucción integral del diseño complejo. Referencia: arrendamiento y aparcería. N = 25.325.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
 ```
@@ -2111,7 +2119,7 @@ tabla_icc |>
   ) |>
   nota_tabla(
     nota =
-      "El ICC se estima a partir del modelo nulo con intercepto aleatorio provincial sobre la muestra común de 22.075 UPA con estados SI o NO en los tres indicadores tecnológicos.",
+      "El ICC se estima a partir del modelo nulo con intercepto aleatorio provincial sobre la muestra común de 25.325 UPA con estados SI o NO en los tres indicadores tecnológicos.",
     fuente =
       "Elaboración propia a partir de ESPAC 2022."
   )
@@ -2121,7 +2129,7 @@ Con base en esta evidencia, se estimaron modelos multinivel con interceptos alea
 
 Al incorporar el intercepto provincial, la tenencia directa (`r formato_num(lme4::fixef(ml_sup)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(lme4::fixef(ml_sup)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería (@tbl-ml-superficie-cap7). Estos coeficientes comparan UPA bajo distintos regímenes después de considerar tanto las covariables observadas como el nivel de productividad compartido por su provincia. La proximidad con OLS indica que la diferencia de tenencia no se explica por completo mediante la distribución provincial de las UPA: el patrón también aparece al efectuar la comparación dentro de la estructura territorial modelada.
 
-La superficie conserva el signo negativo. Riego, fertilizantes, plaguicidas e internet mantienen asociaciones positivas, aunque riego y fertilizantes se atenúan al reconocer el contexto provincial compartido. Educación secundaria y superior conservan diferencias positivas frente a ninguna educación; edad y sexo no aportan diferencias concluyentes. El modelo confirma así una asociación conjunta entre régimen institucional, escala, tecnologías y productividad por hectárea, con un componente territorial adicional.
+La superficie conserva el signo negativo. Riego, fertilizantes, plaguicidas e internet mantienen asociaciones positivas, aunque riego y fertilizantes se atenúan al reconocer el contexto provincial compartido. En educación, primaria y secundaria presentan coeficientes negativos frente a ninguna educación, mientras superior y posgrado presentan coeficientes positivos; la edad presenta una asociación negativa estadísticamente discernible, mientras el sexo no aporta una diferencia concluyente. El modelo confirma así una asociación conjunta entre régimen institucional, escala, tecnologías y productividad por hectárea, con un componente territorial adicional.
 
 ```{r}
 #| label: tbl-ml-superficie-cap7
@@ -2164,6 +2172,7 @@ tabla_ml_sup <- broom.mixed::tidy(
         "educacionPrimaria" = "Educación: primaria",
         "educacionSecundaria" = "Educación: secundaria",
         "educacionSuperior" = "Educación: superior",
+        "educacionPosgrado" = "Educación: posgrado",
         "sexoMujer" = "Sexo: mujer",
         "riego" = "Riego",
         "fertilizante" = "Fertilizantes",
@@ -2195,7 +2204,7 @@ tabla_ml_sup |>
   )
 ```
 
-En productividad del trabajo, la forma cóncava de la superficie se mantiene con alta precisión (@tbl-ml-trabajo-cap7), lo que confirma que el producto por trabajador crece con la escala a una tasa decreciente incluso después de reconocer las diferencias provinciales. Fertilizantes y plaguicidas conservan asociaciones positivas; riego e internet dejan de ser estadísticamente discernibles al incorporar el intercepto provincial. Este cambio no demuestra ausencia de relación, sino que indica que el modelo ya no puede separar con suficiente precisión su asociación individual de las características compartidas dentro de las provincias. El sexo femenino mantiene una diferencia negativa moderada, y educación secundaria continúa por debajo de ninguna educación dentro de esta especificación condicionada.
+En productividad del trabajo, la forma cóncava de la superficie se mantiene con alta precisión (@tbl-ml-trabajo-cap7), lo que confirma que el producto por trabajador crece con la escala a una tasa decreciente incluso después de reconocer las diferencias provinciales. Fertilizantes y plaguicidas conservan asociaciones positivas; riego e internet dejan de ser estadísticamente discernibles al incorporar el intercepto provincial. Este cambio no demuestra ausencia de relación, sino que indica que el modelo ya no puede separar con suficiente precisión su asociación individual de las características compartidas dentro de las provincias. El sexo femenino presenta una diferencia negativa con evidencia al 10 %, y educación secundaria y superior presentan las diferencias negativas más claras frente a ninguna educación, mientras primaria y posgrado no se separan con claridad de la categoría de referencia.
 
 La tenencia directa (`r formato_num(lme4::fixef(ml_trab)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(lme4::fixef(ml_trab)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería. La atenuación respecto de OLS muestra que una parte de las brechas laborales coincide con la composición provincial: los regímenes no se distribuyen de la misma manera entre territorios con distintos niveles de productividad. Sin embargo, su persistencia confirma que el patrón central no desaparece al reconocer la estructura territorial.
 
@@ -2240,6 +2249,7 @@ tabla_ml_trab <- broom.mixed::tidy(
         "educacionPrimaria" = "Educación: primaria",
         "educacionSecundaria" = "Educación: secundaria",
         "educacionSuperior" = "Educación: superior",
+        "educacionPosgrado" = "Educación: posgrado",
         "sexoMujer" = "Sexo: mujer",
         "riego" = "Riego",
         "fertilizante" = "Fertilizantes",
@@ -2755,7 +2765,7 @@ Los modelos lineales y multinivel permiten identificar factores asociados a la p
 
 Siguiendo el planteamiento de @aigner_formulation_1977 y los desarrollos posteriores de @battese_model_1995, la frontera estocástica descompone el término de error en dos componentes: uno simétrico, asociado a perturbaciones aleatorias fuera del control del productor, y otro unilateral, vinculado a ineficiencia técnica. Esta separación evita atribuir automáticamente a ineficiencia toda desviación respecto de la frontera, pues reconoce que el clima, la medición y otros eventos aleatorios también pueden afectar el resultado observado. La aproximación permite estimar simultáneamente asociaciones entre covariables y productividad, junto con un indicador de eficiencia técnica para cada unidad productiva agropecuaria bajo supuestos paramétricos específicos.
 
-A diferencia de los modelos lineales y multinivel, la frontera estocástica conserva únicamente UPA con `productividad_superficie > 0`, `productividad_trabajo > 0`, covariables completas y estados `SI` o `NO` en riego, fertilizantes y plaguicidas. Esta restricción produce una muestra común de 21.430 UPA.
+A diferencia de los modelos lineales y multinivel, la frontera estocástica conserva únicamente UPA con `productividad_superficie > 0`, `productividad_trabajo > 0`, covariables completas y estados `SI` o `NO` en riego, fertilizantes y plaguicidas. Esta restricción produce una muestra común de 24.613 UPA.
 
 Por tanto, los resultados corresponden a la muestra analítica SFA definida por productividades estrictamente positivas, covariables completas y pertenencia al universo tecnológico aplicable. Las exclusiones corresponden a productividades iguales a cero, información incompleta o estados `NO_APLICA`; el criterio no redefine la cobertura de la base oficial.
 
@@ -2859,7 +2869,7 @@ Con base en esta especificación, se estimó la frontera estocástica para la pr
 
 En la frontera de la productividad de la tierra, la tenencia directa (`r formato_num(stats::coef(sfa_sup)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(stats::coef(sfa_sup)["clase.mayoriaespeciales"], 3)`) se sitúan por debajo de arrendamiento y aparcería (@tbl-sfa-superficie-cap7). Esto significa que, para UPA con características observadas comparables dentro de la muestra positiva, la frontera condicionada asociada con arrendamiento y aparcería se ubica en un nivel superior. La superficie conserva una asociación negativa, mientras riego, fertilizantes, plaguicidas e internet desplazan la frontera condicionada hacia niveles más elevados. Los coeficientes pertenecen a la ecuación de frontera y no a una ecuación separada de determinantes de ineficiencia; por ello describen dónde se sitúa la frontera según las covariables, pero no cuánto explica cada una la distancia individual hasta ella.
 
-La dirección del resultado de tenencia coincide con OLS y multinivel. La comparación específica con OLS sobre las mismas 21.430 UPA, presentada más adelante, muestra además que el cambio de muestra explica una parte de la variación de magnitud entre familias. La conclusión sustantiva es estable: arrendamiento y aparcería mantiene una posición condicionada superior dentro de la frontera paramétrica estimada.
+La dirección del resultado de tenencia coincide con OLS y multinivel. La comparación específica con OLS sobre las mismas 24.613 UPA, presentada más adelante, muestra además que el cambio de muestra explica una parte de la variación de magnitud entre familias. La conclusión sustantiva es estable: arrendamiento y aparcería mantiene una posición condicionada superior dentro de la frontera paramétrica estimada.
 
 ```{r}
 #| label: tbl-sfa-superficie-cap7
@@ -2897,6 +2907,7 @@ tabla_sfa_sup <- as.data.frame(res_sup) |>
       "educacionPrimaria" = "Educación: primaria",
       "educacionSecundaria" = "Educación: secundaria",
       "educacionSuperior" = "Educación: superior",
+      "educacionPosgrado" = "Educación: posgrado",
       "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
@@ -2928,7 +2939,7 @@ tabla_sfa_sup |>
 
 De manera complementaria, se estimó la frontera estocástica para la productividad del trabajo, cuyos resultados se presentan en la @tbl-sfa-trabajo-cap7.
 
-En la frontera de la productividad laboral, la superficie mantiene una relación positiva y cóncava con la productividad condicionada. En términos económicos, la escala desplaza hacia arriba el nivel potencial de producto por trabajador, aunque esa ventaja aumenta cada vez menos conforme se amplía la superficie. Fertilizantes y plaguicidas desplazan la frontera hacia niveles más elevados, mientras que riego presenta una asociación de menor magnitud. La tenencia directa (`r formato_num(stats::coef(sfa_trab)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(stats::coef(sfa_trab)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería (@tbl-sfa-trabajo-cap7).
+En la frontera de la productividad laboral, la superficie mantiene una relación positiva y cóncava con la productividad condicionada. En términos económicos, la escala desplaza hacia arriba el nivel potencial de producto por trabajador, aunque esa ventaja aumenta cada vez menos conforme se amplía la superficie. Fertilizantes y plaguicidas desplazan la frontera hacia niveles más elevados, mientras que riego no presenta una asociación estadísticamente discernible. La tenencia directa (`r formato_num(stats::coef(sfa_trab)["clase.mayoriadueño"], 3)`) y los otros regímenes de tenencia (`r formato_num(stats::coef(sfa_trab)["clase.mayoriaespeciales"], 3)`) permanecen por debajo de arrendamiento y aparcería (@tbl-sfa-trabajo-cap7).
 
 La convergencia de signos entre OLS, multinivel y SFA confirma la robustez relativa del patrón institucional: la ordenación de los regímenes se mantiene bajo tres formas distintas de representar el desempeño. Las magnitudes, sin embargo, no representan el mismo parámetro y no deben compararse como si fueran estimaciones intercambiables: OLS estima una media condicionada, el multinivel incorpora la agrupación provincial y SFA estima una frontera paramétrica sobre la submuestra positiva.
 
@@ -2968,6 +2979,7 @@ tabla_sfa_trab <- as.data.frame(res_trab) |>
       "educacionPrimaria" = "Educación: primaria",
       "educacionSecundaria" = "Educación: secundaria",
       "educacionSuperior" = "Educación: superior",
+      "educacionPosgrado" = "Educación: posgrado",
       "sexoMujer" = "Sexo: mujer",
       "riego" = "Riego",
       "fertilizante" = "Fertilizantes",
@@ -3001,7 +3013,7 @@ Los parámetros de varianza completan la lectura de las fronteras al mostrar el 
 
 Los resultados de la @tbl-parametros-sfa-cap7 muestran que gamma alcanza `r formato_num(stats::coef(sfa_sup)["gamma"], 4)` para la productividad de la tierra y `r formato_num(stats::coef(sfa_trab)["gamma"], 4)` para la productividad del trabajo. Gamma informa qué proporción de la varianza compuesta se atribuye al componente unilateral de ineficiencia dentro de cada modelo. Un valor próximo a cero indicaría que predomina el ruido aleatorio, mientras un valor mayor implica un mayor peso relativo de las desviaciones unilaterales asociadas con ineficiencia. No significa, sin embargo, que un factor productivo esté necesariamente peor administrado ni mide por sí solo la eficiencia promedio de las UPA.
 
-Sigma cuadrado resume la varianza total del error compuesto. Ambas fronteras se estiman sobre 21.430 UPA con productividades positivas, covariables completas y estados tecnológicos `SI` o `NO`. Como las respuestas y formas funcionales difieren, gamma y sigma cuadrado deben interpretarse dentro de cada frontera y no como una comparación directa de cuál productividad es intrínsecamente más eficiente o variable.
+Sigma cuadrado resume la varianza total del error compuesto. Ambas fronteras se estiman sobre 24.613 UPA con productividades positivas, covariables completas y estados tecnológicos `SI` o `NO`. Como las respuestas y formas funcionales difieren, gamma y sigma cuadrado deben interpretarse dentro de cada frontera y no como una comparación directa de cuál productividad es intrínsecamente más eficiente o variable.
 
 ```{=latex}
 \suppressfloats[t]
@@ -3124,7 +3136,7 @@ tabla_ef |>
 
 ### Comparabilidad de muestra y sensibilidad distributiva
 
-Para separar el cambio de muestra del cambio de estimador, la @tbl-comparacion-muestra-sfa-cap7 presenta OLS y SFA sobre las mismas 21.430 UPA. Esta comparación mantiene constantes las observaciones y los regresores, de modo que la diferencia restante puede atribuirse con mayor claridad a la forma de estimación. Los coeficientes se aproximan de forma apreciable dentro de esa muestra. Esto muestra que parte de la diferencia frente al OLS de 22.075 UPA se debe a la exclusión de productividades iguales a cero y no exclusivamente a la estructura de frontera.
+Para separar el cambio de muestra del cambio de estimador, la @tbl-comparacion-muestra-sfa-cap7 presenta OLS y SFA sobre las mismas 24.613 UPA. Esta comparación mantiene constantes las observaciones y los regresores, de modo que la diferencia restante puede atribuirse con mayor claridad a la forma de estimación. Los coeficientes se aproximan de forma apreciable dentro de esa muestra. Esto muestra que parte de la diferencia frente al OLS de 25.325 UPA se debe a la exclusión de productividades iguales a cero y no exclusivamente a la estructura de frontera.
 
 ```{=latex}
 \suppressfloats[t]
@@ -3180,7 +3192,7 @@ tabla_comparacion_muestra_sfa |>
   ) |>
   tabla_usc(font_size = 8) |>
   nota_tabla(
-    nota = "Ambos estimadores usan las mismas 21.430 UPA y los mismos regresores. Referencia: arrendamiento y aparcería.",
+    nota = "Ambos estimadores usan las mismas 24.613 UPA y los mismos regresores. Referencia: arrendamiento y aparcería.",
     fuente = "Elaboración propia a partir de ESPAC 2022."
   )
 ```
@@ -3484,7 +3496,7 @@ La evidencia describe una estructura multidimensional: tenencia, escala, tecnolo
 
 Las asociaciones tecnológicas también dependen de la medida de productividad. Riego, fertilizantes y plaguicidas acompañan mayores niveles de producto por hectárea; fertilizantes y plaguicidas conservan una relación positiva con el producto por trabajador después de representar adecuadamente la escala, pero riego no muestra una diferencia precisa en OLS o multinivel. La evidencia previa vincula insumos y condiciones tecnológicas con diferencias de productividad y eficiencia, sin exigir que su importancia sea idéntica por hectárea y por trabajador [@perdomo_factores_2007]. Internet se asocia con mayor productividad de la tierra y con una diferencia laboral menor, atenuada al incorporar provincia. La especificación definitiva tampoco sostiene la lectura anterior de una asociación laboral negativa de fertilizantes, que respondía a una representación insuficiente de la escala.
 
-Las variables sociodemográficas tampoco siguen un patrón uniforme. El sexo apenas diferencia la productividad de la tierra, mientras las UPA encabezadas por mujeres presentan menor productividad laboral condicionada. La educación no dibuja un gradiente lineal, lo que respalda su tratamiento categórico y desaconseja interpretar la escolaridad como una escala de rendimientos constantes. Las brechas pueden condensar diferencias de acceso a recursos, tipo de actividad y organización del trabajo; no representan efectos intrínsecos del sexo o la escolaridad.
+Las variables sociodemográficas tampoco siguen un patrón uniforme. El sexo no presenta una diferencia concluyente en OLS ni en el modelo multinivel para la productividad de la tierra, aunque en la frontera estocástica las UPA encabezadas por mujeres muestran una asociación positiva, mientras las UPA encabezadas por mujeres presentan menor productividad laboral condicionada. La educación no dibuja un gradiente lineal, lo que respalda su tratamiento categórico y desaconseja interpretar la escolaridad como una escala de rendimientos constantes. Las brechas pueden condensar diferencias de acceso a recursos, tipo de actividad y organización del trabajo; no representan efectos intrínsecos del sexo o la escolaridad.
 
 El resultado central corresponde a la tenencia. Tenencia directa y otros regímenes de tenencia presentan coeficientes negativos frente a arrendamiento y aparcería en los modelos progresivos, OLS finales, multinivel, efectos fijos provinciales, la sensibilidad ponderada y ambas distribuciones SFA. Cambian las magnitudes cuando se incorporan escala, tecnologías, provincia o la submuestra positiva, pero no la ordenación. Esta estabilidad significa que el resultado no depende de una única selección de controles, estructura territorial, muestra o supuesto distributivo. La evidencia respalda una asociación sistemática entre tenencia y productividad y contradice la expectativa de que la tenencia directa deba ocupar necesariamente la posición superior.
 
@@ -3689,7 +3701,7 @@ tabla_comp_final |>
   ) |>
   nota_tabla(
     nota =
-      "Los AIC, BIC y log-verosimilitudes son comparables solo entre modelos de la misma familia, respuesta, muestra y función de verosimilitud. OLS y multinivel usan 22.075 UPA; SFA usa 21.430 UPA con ambas productividades positivas. Todas las muestras se restringen a estados SI o NO en los tres indicadores tecnológicos.",
+      "Los AIC, BIC y log-verosimilitudes son comparables solo entre modelos de la misma familia, respuesta, muestra y función de verosimilitud. OLS y multinivel usan 25.325 UPA; SFA usa 24.613 UPA con ambas productividades positivas. Todas las muestras se restringen a estados SI o NO en los tres indicadores tecnológicos.",
     fuente =
       "Elaboración propia a partir de ESPAC 2022."
   )
@@ -3697,7 +3709,7 @@ tabla_comp_final |>
 
 Los modelos multinivel mejoran el ajuste frente a OLS cuando la comparación se realiza dentro de la misma respuesta y muestra. Los ICC nulos muestran que el `r formato_pct(100 * performance::icc(ml_sup_nulo)$ICC_adjusted, 1)` de la variabilidad de productividad de la tierra y el `r formato_pct(100 * performance::icc(ml_trab_nulo)$ICC_adjusted, 1)` de la productividad laboral se sitúan entre provincias antes de incorporar controles. En los modelos completos, las proporciones alcanzan `r formato_pct(100 * performance::icc(ml_sup)$ICC_adjusted, 1)` y `r formato_pct(100 * performance::icc(ml_trab)$ICC_adjusted, 1)`. La persistencia de estas proporciones después del ajuste muestra que las covariables observadas no agotan la dimensión territorial del desempeño agropecuario.
 
-Las fronteras estocásticas se estiman sobre 21.430 UPA y sus indicadores se reportan como medidas de ajuste interno. La sensibilidad distributiva conserva el patrón de tenencia, aunque no los niveles absolutos de eficiencia. Esto aconseja otorgar mayor confianza a la posición relativa y a la dirección de las asociaciones que a una lectura literal de las medias de eficiencia. La evidencia más sólida del capítulo reside en esa estabilidad direccional: la comparación frente a arrendamiento y aparcería mantiene el mismo signo en la media condicionada, la estructura multinivel y la frontera paramétrica.
+Las fronteras estocásticas se estiman sobre 24.613 UPA y sus indicadores se reportan como medidas de ajuste interno. La sensibilidad distributiva conserva el patrón de tenencia, aunque no los niveles absolutos de eficiencia. Esto aconseja otorgar mayor confianza a la posición relativa y a la dirección de las asociaciones que a una lectura literal de las medias de eficiencia. La evidencia más sólida del capítulo reside en esa estabilidad direccional: la comparación frente a arrendamiento y aparcería mantiene el mismo signo en la media condicionada, la estructura multinivel y la frontera paramétrica.
 
 ## Síntesis del capítulo
 

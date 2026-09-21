@@ -1,16 +1,16 @@
 # Decisiones metodologicas del pipeline oficial
 
-Fecha: 2026-07-13 11:40:47 -05
+Fecha: 2026-09-20 14:58:48 -05
 
 ## Fuentes oficiales
 
-- Documentacion oficial ESPAC: `docs/espac_2022/manuales/`.
-- Sintaxis oficial ESPAC: `docs/espac_2022/sintaxis_txt/`.
+- Documentacion oficial ESPAC: `datos/espac_2022/manuales/`.
+- Sintaxis oficial ESPAC: `datos/espac_2022/sintaxis_txt/`.
 - Datos crudos: `data/raw/`.
 
 ## Insumo metodologico del investigador
 
-- Archivo de precios: `docs/espac_2022/precios/Precio_Junio_25.xlsx`.
+- Archivo de precios: `datos/espac_2022/precios/Precio_Junio_25.xlsx`.
 - Este archivo no es documentacion oficial ESPAC.
 - Se utiliza como fuente oficial de valoracion economica dentro de la tesis.
 
@@ -30,7 +30,7 @@ Fecha: 2026-07-13 11:40:47 -05
 ## Precios
 
 - Para `avena`, se usa siempre el menor precio observado.
-- Para productos sin precio, se imputa precio fijo de `0.1 USD/kg`.
+- Para productos sin precio, se imputa precio fijo de `0,1 USD/kg`.
 - Cada imputacion se registra por modulo, UPA, producto, cantidad, motivo y valor imputado.
 
 ## Produccion y productividad
