@@ -654,7 +654,7 @@ ggplot2::ggplot(
 
 De acuerdo con el análisis del @magap_politica_2016, una comparación longitudinal de los datos sobre distribución de la tierra recogidos en los tres censos agropecuarios nacionales (1954, 1974 y 2000), así como en la ESPAC 2013, revela importantes transformaciones en el número de UPA registradas y la extensión de la superficie agrícola, aunque no así en la distribución de la tierra entre los productores.
 
-En efecto, entre 1954 y 2000 se registró un incremento de 496.811 nuevas unidades productivas y una expansión neta de 5.358.657 hectáreas de superficie agrícola. No obstante, tales avances en cobertura territorial y acceso formal no se tradujeron en una mejora sustantiva en los niveles de equidad de la distribución de la tierra entre unidades productivas. Por el contrario, la concentración estructural del recurso tierra se ha mantenido como una característica persistente del sistema agrario ecuatoriano.
+En efecto, entre 1954 y 2000 se registró un incremento de 492.648 unidades productivas y una expansión neta de 5.956.130 hectáreas de superficie agrícola. No obstante, tales avances en cobertura territorial y acceso formal no se tradujeron en una mejora sustantiva en los niveles de equidad de la distribución de la tierra entre unidades productivas. Por el contrario, la concentración estructural del recurso tierra se ha mantenido como una característica persistente del sistema agrario ecuatoriano.
 
 Esta situación se refleja en la evolución del coeficiente de Gini, indicador que mide el grado de desigualdad en la distribución de un recurso (@fig-gini-tierra):
 
