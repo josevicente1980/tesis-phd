@@ -87,8 +87,6 @@ La tenencia, la educación, el sexo y la provincia se trataron como factores. Ni
 
 La Tabla \ref{tbl-operacionalizacion-resultados-cap5} presenta las variables de resultado, la tenencia, las dos formas funcionales de superficie y el nivel territorial utilizado en los modelos.
 
-\clearpage
-
 \begingroup
 \small
 \setlength{\LTpre}{0pt}
@@ -130,7 +128,7 @@ La Tabla \ref{tbl-operacionalizacion-controles-cap5} completa la operacionalizac
 \hline
 \endhead
 Edad & \texttt{edad\_z} & Edad de la persona productora o responsable, estandarizada. \\
-Educación & \texttt{educacion} & Nivel educativo categórico: ninguna educación, primaria, secundaria y superior. \\
+Educación & \texttt{educacion} & Nivel educativo categórico: ninguna educación, primaria, secundaria, superior y posgrado. \\
 Sexo & \texttt{sexo} & Sexo de la persona productora; hombre es la categoría de referencia. \\
 Internet & \texttt{internet} & Indicador de acceso a internet. \\
 Riego & \texttt{riego} & Uso observado en al menos un módulo de cultivos; contraste entre estados \texttt{SI} y \texttt{NO}. \\
@@ -148,11 +146,11 @@ La división en dos tablas evita un escalado que reduzca la legibilidad y permit
 
 La base analítica inicial estuvo conformada por 42.444 UPA del Ecuador continental. A partir de esta base se construyeron muestras específicas para la estimación econométrica, de acuerdo con la disponibilidad y validez de las variables requeridas por cada familia de modelos.
 
-Los modelos OLS y multinivel se estimaron con una muestra común de 22.075 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el sexo, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
+Los modelos OLS y multinivel se estimaron con una muestra común de 25.325 UPA. Esta muestra incluye únicamente observaciones con información completa en los dos indicadores de productividad, el régimen predominante de tenencia, la superficie, la edad, la educación, el sexo, el acceso a internet, la provincia y los indicadores de riego, fertilizantes y plaguicidas. En estos tres últimos indicadores se conservaron exclusivamente las respuestas `SI` y `NO`, mientras que las categorías `NO_APLICA` y los valores faltantes fueron excluidos. La utilización de una muestra común permite que las diferencias entre los modelos de productividad de la tierra y del trabajo no se deban a cambios en la composición de las observaciones analizadas.
 
-La reducción de 42.444 a 22.075 UPA responde, por tanto, a la aplicación conjunta de los criterios de completitud y comparabilidad de las variables. No representa una selección discrecional de casos, aunque implica que los resultados econométricos corresponden a las UPA que disponen de información completa en todas las variables incluidas y no necesariamente a la totalidad de la muestra original de la ESPAC.
+La reducción de 42.444 a 25.325 UPA responde, por tanto, a la aplicación conjunta de los criterios de completitud y comparabilidad de las variables. No representa una selección discrecional de casos, aunque implica que los resultados econométricos corresponden a las UPA que disponen de información completa en todas las variables incluidas y no necesariamente a la totalidad de la muestra original de la ESPAC.
 
-Para los modelos de frontera estocástica se aplicó un criterio adicional de positividad. La muestra SFA quedó conformada por 21.430 UPA que, además de cumplir los criterios anteriores, presentaron valores estrictamente positivos en ambos indicadores de productividad. Esta restricción excluyó 645 observaciones adicionales y responde a las condiciones requeridas para la estimación de las fronteras y el cálculo de la eficiencia técnica.
+Para los modelos de frontera estocástica se aplicó un criterio adicional de positividad. La muestra SFA quedó conformada por 24.613 UPA que, además de cumplir los criterios anteriores, presentaron valores estrictamente positivos en ambos indicadores de productividad. Esta restricción excluyó 712 observaciones adicionales y responde a las condiciones requeridas para la estimación de las fronteras y el cálculo de la eficiencia técnica.
 
 En consecuencia, la muestra utilizada en los modelos SFA constituye una submuestra de la empleada en OLS y multinivel. Las comparaciones entre familias de modelos se realizan en términos de dirección, consistencia y relevancia de las asociaciones estimadas, y no mediante una comparación directa de sus coeficientes, criterios de información o medidas de ajuste.
 
@@ -205,7 +203,7 @@ $$
 \ln(1+Y_i)=\beta_0+\sum_{k=1}^{K}\beta_kX_{ki}+v_i-u_i,
 $$
 
-donde $v_i$ es un término simétrico de ruido y $u_i\geq0$ representa ineficiencia técnica. La especificación mantiene las mismas covariables y formas funcionales de superficie de los modelos comparativos y se estima sobre 21.430 UPA con ambas productividades positivas. La respuesta empírica es un indicador de productividad monetaria; por ello, la SFA se interpreta como frontera paramétrica de productividad condicionada y sus coeficientes no se presentan como elasticidades de una función física de producción completa. La distribución half-normal constituye la especificación principal y la truncated-normal se utiliza para evaluar la sensibilidad del orden relativo de las UPA, los coeficientes de tenencia, la eficiencia media y gamma al supuesto distributivo.
+donde $v_i$ es un término simétrico de ruido y $u_i\geq0$ representa ineficiencia técnica. La especificación mantiene las mismas covariables y formas funcionales de superficie de los modelos comparativos y se estima sobre 24.613 UPA con ambas productividades positivas. La respuesta empírica es un indicador de productividad monetaria; por ello, la SFA se interpreta como frontera paramétrica de productividad condicionada y sus coeficientes no se presentan como elasticidades de una función física de producción completa. La distribución half-normal constituye la especificación principal y la truncated-normal se utiliza para evaluar la sensibilidad del orden relativo de las UPA, los coeficientes de tenencia, la eficiencia media y gamma al supuesto distributivo.
 
 La eficiencia técnica individual se obtiene como
 
@@ -247,4 +245,4 @@ Finalmente, la restricción a estados tecnológicos `SI/NO` y a productividades 
 
 ## Síntesis del capítulo
 
-El diseño articula una fuente oficial, una unidad de análisis definida, dos indicadores complementarios y tres enfoques econométricos. La separación explícita entre las muestras de 22.075 y 21.430 UPA, el tratamiento de los estados tecnológicos, la definición de la tenencia predominante y la interpretación no causal aseguran la correspondencia entre la metodología y los resultados del capítulo 7. El capítulo siguiente caracteriza la estructura y productividad de las UPA; posteriormente se presentan los diagnósticos, estimaciones y medidas de eficiencia.
+El diseño articula una fuente oficial, una unidad de análisis definida, dos indicadores complementarios y tres enfoques econométricos. La separación explícita entre las muestras de 25.325 y 24.613 UPA, el tratamiento de los estados tecnológicos, la definición de la tenencia predominante y la interpretación no causal aseguran la correspondencia entre la metodología y los resultados del capítulo 7. El capítulo siguiente caracteriza la estructura y productividad de las UPA; posteriormente se presentan los diagnósticos, estimaciones y medidas de eficiencia.
